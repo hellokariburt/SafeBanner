@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import Script from "next/script";
 
 interface ConsentState {
   necessary: boolean;
@@ -27,309 +26,569 @@ declare global {
   }
 }
 
-function getBanner(): BannerAPI | null {
-  if (typeof window === "undefined") return null;
-  return window.safeBanner ?? null;
+interface BannerConfig {
+  position: "bottom" | "top" | "bottom-left" | "bottom-right";
+  theme: "light" | "dark";
+  color: string;
+  lang: "en" | "fr" | "de";
+  googleConsent: "advanced" | "basic" | "off";
+}
+
+interface LogEntry {
+  id: number;
+  time: string;
+  event: string;
+  details?: string;
+  type: "info" | "consent" | "google";
 }
 
 export default function DemoPage() {
   const [consent, setConsent] = useState<ConsentState | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [config, setConfig] = useState<BannerConfig>({
+    position: "bottom",
+    theme: "light",
+    color: "#2563eb",
+    lang: "en",
+    googleConsent: "advanced",
+  });
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const logIdRef = useRef(0);
+  const [customizeOpen, setCustomizeOpen] = useState(false);
+  const [devToolsOpen, setDevToolsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const addLog = useCallback((event: string, details?: string, type: LogEntry["type"] = "info") => {
+    const now = new Date();
+    const time = now.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    setLogs((prev) => [
+      { id: logIdRef.current++, time, event, details, type },
+      ...prev.slice(0, 19),
+    ]);
+  }, []);
 
   const refreshConsent = useCallback(() => {
-    const banner = getBanner();
-    if (banner) {
-      try {
-        const newConsent = banner.getConsent();
-        // Force update by creating a new object reference if consent exists
-        if (newConsent) {
-          setConsent({ ...newConsent });
-        } else {
-          setConsent(null);
-        }
-      } catch (error) {
-        console.error('Error refreshing consent:', error);
-        setConsent(null);
-      }
-    } else {
-      // If banner isn't available, set to null to show it's not loaded
-      setConsent(null);
+    if (typeof window !== "undefined" && window.safeBanner) {
+      const newConsent = window.safeBanner.getConsent();
+      setConsent(newConsent ? { ...newConsent } : null);
     }
   }, []);
 
+  // Load script on mount
+  useEffect(() => {
+    // Clear consent so banner shows
+    localStorage.removeItem("safebanner_consent");
+
+    // Load the script
+    const script = document.createElement('script');
+    script.src = '/safebanner.js';
+    script.dataset.position = config.position;
+    script.dataset.theme = config.theme;
+    script.dataset.color = config.color;
+    script.dataset.lang = config.lang;
+    script.dataset.googleConsent = config.googleConsent;
+    script.dataset.company = 'Demo Site';
+    script.dataset.privacy = '/privacy';
+    script.onload = () => {
+      setScriptLoaded(true);
+      addLog("Script Loaded", "SafeBanner initialized", "info");
+      if (config.googleConsent !== "off") {
+        addLog("Google Consent Default", "All signals denied, wait_for_update: 500ms", "google");
+      }
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup on unmount
+      script.remove();
+      document.querySelector('.cm-banner')?.remove();
+      document.querySelector('.cm-overlay')?.remove();
+      document.getElementById('consent-manager-styles')?.remove();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Poll for consent changes
   useEffect(() => {
     if (scriptLoaded) {
       refreshConsent();
-      const interval = setInterval(refreshConsent, 500);
+      const interval = setInterval(refreshConsent, 300);
       return () => clearInterval(interval);
     }
   }, [scriptLoaded, refreshConsent]);
 
+  // Listen for consent changes via storage event
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "safebanner_consent") {
+        refreshConsent();
+        if (e.newValue) {
+          const parsed = JSON.parse(e.newValue);
+          addLog(
+            "Consent Updated",
+            `Analytics: ${parsed.analytics ? "granted" : "denied"}, Marketing: ${parsed.marketing ? "granted" : "denied"}`,
+            "consent"
+          );
+          if (config.googleConsent !== "off") {
+            addLog(
+              "Google Consent Signal",
+              `analytics_storage: ${parsed.analytics ? "granted" : "denied"}, ad_storage: ${parsed.marketing ? "granted" : "denied"}`,
+              "google"
+            );
+          }
+        }
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [refreshConsent, addLog, config.googleConsent]);
+
   const handleReset = () => {
-    const banner = getBanner();
-    if (banner) {
-      banner.reset();
+    if (window.safeBanner) {
+      window.safeBanner.reset();
       setConsent(null);
+      addLog("Consent Reset", "Banner will reappear", "info");
     }
   };
 
-  const handleShow = () => {
-    const banner = getBanner();
-    if (banner) {
-      banner.show();
+  const applyConfig = () => {
+    // Remove existing banner elements from DOM
+    document.querySelector('.cm-banner')?.remove();
+    document.querySelector('.cm-overlay')?.remove();
+    document.getElementById('consent-manager-styles')?.remove();
+
+    // Clear consent so banner shows
+    localStorage.removeItem("safebanner_consent");
+    setConsent(null);
+
+    // Remove old script(s)
+    document.querySelectorAll('script[src^="/safebanner.js"]').forEach(el => el.remove());
+
+    // Create new script with updated config (cache-bust to force re-execution)
+    const script = document.createElement('script');
+    script.src = `/safebanner.js?t=${Date.now()}`;
+    script.dataset.position = config.position;
+    script.dataset.theme = config.theme;
+    script.dataset.color = config.color;
+    script.dataset.lang = config.lang;
+    script.dataset.googleConsent = config.googleConsent;
+    script.dataset.company = 'Demo Site';
+    script.dataset.privacy = '/privacy';
+    script.onload = () => {
+      setScriptLoaded(true);
+      addLog("Config Applied", `Position: ${config.position}, Theme: ${config.theme}, Lang: ${config.lang}`, "info");
+    };
+    document.body.appendChild(script);
+  };
+
+  const generateScriptTag = () => {
+    const attrs = [`src="https://cdn.safebanner.com/safebanner.js"`];
+    if (config.position !== "bottom") attrs.push(`data-position="${config.position}"`);
+    if (config.theme !== "light") attrs.push(`data-theme="${config.theme}"`);
+    if (config.color !== "#2563eb") attrs.push(`data-color="${config.color}"`);
+    if (config.lang !== "en") attrs.push(`data-lang="${config.lang}"`);
+    if (config.googleConsent !== "advanced") attrs.push(`data-google-consent="${config.googleConsent}"`);
+
+    if (attrs.length === 1) {
+      return `<script ${attrs[0]}></script>`;
     }
+    return `<script\n  ${attrs.join("\n  ")}\n></script>`;
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generateScriptTag());
+    setCopied(true);
+    addLog("Copied", "Script tag copied to clipboard", "info");
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      {/* Header */}
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            className="text-lg font-semibold text-zinc-900 dark:text-white"
-          >
+    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950">
+      {/* Minimal Header */}
+      <header className="fixed left-0 right-0 top-0 z-20 bg-zinc-100/80 backdrop-blur-sm dark:bg-zinc-950/80">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
             SafeBanner
           </Link>
-          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-            Live Demo
-          </span>
+          <Link href="/docs" className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300">
+            Docs
+          </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-12">
-        {/* Intro */}
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
-            Try It Live
-          </h1>
-          <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-            This page has the consent script installed. If you haven&apos;t
-            consented yet, you&apos;ll see the banner. Use the controls below to
-            test different scenarios.
-          </p>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-2">
-          {/* Controls */}
-          <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
-                Controls
-              </h2>
-              <span
-                className={`rounded-full px-2 py-1 text-xs ${
-                  scriptLoaded
-                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                }`}
-              >
-                {scriptLoaded ? "Script loaded" : "Loading..."}
-              </span>
+      {/* Fake page content - looks like a real SaaS/blog page */}
+      <div className="pointer-events-none fixed inset-0 hidden select-none overflow-hidden sm:block" aria-hidden="true">
+        <div className="mx-auto max-w-2xl px-6 pt-20">
+          <div className="opacity-50">
+            {/* Nav hint */}
+            <div className="flex items-center justify-between pb-6">
+              <div className="h-6 w-24 rounded bg-zinc-300 dark:bg-zinc-700" />
+              <div className="flex gap-4">
+                <div className="h-4 w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
+                <div className="h-4 w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
+                <div className="h-4 w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
+              </div>
             </div>
-            <div className="mt-6 flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={handleShow}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
-              >
-                Show Banner
-              </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
-              >
-                Reset Consent
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  refreshConsent();
-                }}
-                className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800"
-              >
-                Refresh State
-              </button>
+            {/* Hero */}
+            <div className="py-8">
+              <div className="h-10 w-80 rounded bg-zinc-300 dark:bg-zinc-700" />
+              <div className="mt-4 h-5 w-full max-w-lg rounded bg-zinc-200 dark:bg-zinc-800" />
+              <div className="mt-2 h-5 w-72 rounded bg-zinc-200 dark:bg-zinc-800" />
+              <div className="mt-6 flex gap-3">
+                <div className="h-10 w-32 rounded-lg bg-zinc-300 dark:bg-zinc-700" />
+                <div className="h-10 w-28 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+              </div>
+            </div>
+            {/* Feature image */}
+            <div className="mt-4 h-56 w-full rounded-xl bg-zinc-200 dark:bg-zinc-800" />
+            {/* Content section */}
+            <div className="mt-10">
+              <div className="h-6 w-48 rounded bg-zinc-300 dark:bg-zinc-700" />
+              <div className="mt-4 space-y-2">
+                <div className="h-4 w-full rounded bg-zinc-200 dark:bg-zinc-800" />
+                <div className="h-4 w-full rounded bg-zinc-200 dark:bg-zinc-800" />
+                <div className="h-4 w-4/5 rounded bg-zinc-200 dark:bg-zinc-800" />
+              </div>
+              {/* Bullet points */}
+              <div className="mt-6 space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-5 w-5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                  <div className="h-4 w-64 rounded bg-zinc-200 dark:bg-zinc-800" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-5 w-5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                  <div className="h-4 w-56 rounded bg-zinc-200 dark:bg-zinc-800" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-5 w-5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                  <div className="h-4 w-72 rounded bg-zinc-200 dark:bg-zinc-800" />
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Current State */}
-          <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
-              Current Consent State
-            </h2>
-            <div className="mt-6">
-              {consent ? (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-600 dark:text-zinc-400">
-                      Necessary
-                    </span>
-                    <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
-                      Always On
-                    </span>
+      {/* Main content - scrollable, centered */}
+      <div className="relative z-10 flex min-h-screen items-start justify-center px-4 pb-8 pt-16 sm:items-center sm:px-6 sm:pt-8">
+        <div className="w-full max-w-xl">
+          <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl sm:bg-white/95 sm:p-8 sm:backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-900 sm:dark:bg-zinc-900/95">
+            {/* Hero copy */}
+            <div className="text-center">
+              <h1 className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl dark:text-white">
+                Cookie consent, solved.
+              </h1>
+              <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                Open-source. One line to install. No dark patterns.
+              </p>
+            </div>
+
+            {/* The punchline - one line install */}
+            <div className="mt-6 sm:mt-8">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  Install in one line
+                </span>
+                <button
+                  onClick={handleCopy}
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <div className="mt-2 overflow-hidden rounded-lg bg-zinc-900 dark:bg-zinc-950">
+                <pre className="overflow-x-auto p-3 text-xs text-emerald-400 sm:p-4 sm:text-sm">
+                  <code>{`<script src="https://cdn.safebanner.com/safebanner.js"></script>`}</code>
+                </pre>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-400 sm:gap-x-4">
+                <span>No config required</span>
+                <span>Sensible defaults</span>
+                <span>MIT licensed</span>
+              </div>
+            </div>
+
+            {/* Trust signals */}
+            <div className="mt-5 grid grid-cols-2 gap-2 border-t border-zinc-100 pt-5 text-xs text-zinc-400 sm:mt-6 sm:flex sm:items-center sm:justify-center sm:gap-6 sm:pt-6 dark:border-zinc-800">
+              <span>~4kb gzipped</span>
+              <span>No tracking</span>
+              <span>GDPR-ready</span>
+              <span>Google Consent v2</span>
+            </div>
+
+            {/* Layer 2: Customize (collapsed) */}
+            <div className="mt-5 border-t border-zinc-100 pt-5 sm:mt-6 sm:pt-6 dark:border-zinc-800">
+              <button
+                onClick={() => setCustomizeOpen(!customizeOpen)}
+                className="flex w-full items-center justify-between text-left"
+              >
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  Defaults are fine. Tweak if needed.
+                </span>
+                <svg
+                  className={`h-4 w-4 text-zinc-400 transition-transform ${customizeOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {customizeOpen && (
+                <div className="mt-4 space-y-4">
+                  {/* Position */}
+                  <div>
+                    <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Position</label>
+                    <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                      {(["bottom", "top", "bottom-left", "bottom-right"] as const).map((pos) => (
+                        <button
+                          key={pos}
+                          onClick={() => setConfig((c) => ({ ...c, position: pos }))}
+                          className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                            config.position === pos
+                              ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                              : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                          }`}
+                        >
+                          {pos}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-600 dark:text-zinc-400">
-                      Analytics
-                    </span>
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-medium ${
-                        consent.analytics
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                      }`}
+
+                  {/* Theme + Language row */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Theme</label>
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        {(["light", "dark"] as const).map((theme) => (
+                          <button
+                            key={theme}
+                            onClick={() => setConfig((c) => ({ ...c, theme }))}
+                            className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                              config.theme === theme
+                                ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                            }`}
+                          >
+                            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Language</label>
+                      <div className="mt-2 grid grid-cols-3 gap-2">
+                        {(["en", "fr", "de"] as const).map((lang) => (
+                          <button
+                            key={lang}
+                            onClick={() => setConfig((c) => ({ ...c, lang }))}
+                            className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                              config.lang === lang
+                                ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                            }`}
+                          >
+                            {lang.toUpperCase()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Color */}
+                  <div>
+                    <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Button Color</label>
+                    <div className="mt-2 flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={config.color}
+                        onChange={(e) => setConfig((c) => ({ ...c, color: e.target.value }))}
+                        className="h-8 w-10 cursor-pointer rounded border border-zinc-200 dark:border-zinc-700"
+                      />
+                      <input
+                        type="text"
+                        value={config.color}
+                        onChange={(e) => setConfig((c) => ({ ...c, color: e.target.value }))}
+                        className="flex-1 rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Google Consent Mode */}
+                  <div>
+                    <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Google Consent Mode v2</label>
+                    <div className="mt-2 grid grid-cols-3 gap-2">
+                      {(["advanced", "basic", "off"] as const).map((mode) => (
+                        <button
+                          key={mode}
+                          onClick={() => setConfig((c) => ({ ...c, googleConsent: mode }))}
+                          className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                            config.googleConsent === mode
+                              ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                              : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                          }`}
+                        >
+                          {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={applyConfig}
+                    className="w-full rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  >
+                    Preview
+                  </button>
+
+                  {/* Show customized code if non-default */}
+                  {(config.position !== "bottom" || config.theme !== "light" || config.color !== "#2563eb" || config.lang !== "en" || config.googleConsent !== "advanced") && (
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Your customized code</span>
+                        <button
+                          onClick={handleCopy}
+                          className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                        >
+                          {copied ? "Copied!" : "Copy"}
+                        </button>
+                      </div>
+                      <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-zinc-900 p-3 text-xs text-emerald-400 dark:bg-zinc-950">
+                        {generateScriptTag()}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Layer 3: Developer tools (collapsed deeper) */}
+            <div className="mt-4 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+              <button
+                onClick={() => setDevToolsOpen(!devToolsOpen)}
+                className="flex w-full items-center justify-between text-left"
+              >
+                <span className="text-xs text-zinc-400">
+                  Developer tools
+                </span>
+                <svg
+                  className={`h-3 w-3 text-zinc-400 transition-transform ${devToolsOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {devToolsOpen && (
+                <div className="mt-4 space-y-4">
+                  {/* Actions */}
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={handleReset}
+                      disabled={!scriptLoaded}
+                      className="rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
                     >
-                      {consent.analytics ? "Accepted" : "Declined"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-600 dark:text-zinc-400">
-                      Marketing
-                    </span>
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-medium ${
-                        consent.marketing
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                      }`}
+                      Reset Consent
+                    </button>
+                    <button
+                      onClick={() => setLogs([])}
+                      className="rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
                     >
-                      {consent.marketing ? "Accepted" : "Declined"}
-                    </span>
+                      Clear Log
+                    </button>
                   </div>
-                  <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-700">
-                    <span className="text-sm text-zinc-500">
-                      Consented at:{" "}
-                      {new Date(consent.timestamp).toLocaleString()}
-                    </span>
+
+                  {/* Current consent state */}
+                  <div>
+                    <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">What your app sees</div>
+                    <div className="mt-2 space-y-1">
+                      {[
+                        { key: "necessary", label: "Necessary", value: true, locked: true },
+                        { key: "analytics", label: "Analytics", value: consent?.analytics ?? false, locked: false },
+                        { key: "marketing", label: "Marketing", value: consent?.marketing ?? false, locked: false },
+                      ].map(({ key, label, value, locked }) => (
+                        <div key={key} className="flex items-center justify-between rounded bg-zinc-50 px-2 py-1.5 dark:bg-zinc-800">
+                          <span className="text-xs text-zinc-600 dark:text-zinc-400">{label}</span>
+                          <span
+                            className={`text-xs font-medium ${
+                              locked
+                                ? "text-zinc-400"
+                                : value
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : "text-zinc-400"
+                            }`}
+                          >
+                            {locked ? "required" : value ? "granted" : "denied"}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Google signals */}
+                  {consent && config.googleConsent !== "off" && (
+                    <div>
+                      <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Google Consent Mode v2</div>
+                      <div className="mt-2 space-y-1 font-mono text-xs">
+                        {[
+                          { signal: "analytics_storage", value: consent.analytics },
+                          { signal: "ad_storage", value: consent.marketing },
+                          { signal: "ad_user_data", value: consent.marketing },
+                          { signal: "ad_personalization", value: consent.marketing },
+                        ].map(({ signal, value }) => (
+                          <div key={signal} className="flex justify-between gap-2 text-zinc-500 dark:text-zinc-500">
+                            <span className="truncate">{signal}</span>
+                            <span className={`shrink-0 ${value ? "text-emerald-600" : "text-zinc-400"}`}>
+                              {value ? "granted" : "denied"}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Event log */}
+                  <div>
+                    <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Event log</div>
+                    <div className="mt-2 max-h-40 space-y-1 overflow-y-auto">
+                      {logs.length === 0 ? (
+                        <p className="text-xs text-zinc-400">Events will appear here</p>
+                      ) : (
+                        logs.map((log) => (
+                          <div
+                            key={log.id}
+                            className="rounded bg-zinc-50 px-2 py-1.5 dark:bg-zinc-800"
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <span className="min-w-0 break-words text-xs text-zinc-600 dark:text-zinc-400">
+                                {log.event}
+                              </span>
+                              <span className="shrink-0 font-mono text-xs text-zinc-400">{log.time}</span>
+                            </div>
+                            {log.details && (
+                              <p className="mt-0.5 break-words text-xs text-zinc-400">{log.details}</p>
+                            )}
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <p className="text-zinc-500">
-                  No consent recorded yet. The banner should appear below.
-                </p>
               )}
             </div>
           </div>
-        </div>
 
-        {/* Code Example */}
-        <div className="mt-12 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
-            Installation Code
-          </h2>
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            Add this script tag to your site:
+          {/* Subtle differentiator */}
+          <p className="mt-4 px-2 text-center text-xs text-zinc-400 sm:mt-4 sm:px-0">
+            Built for teams who don&apos;t want OneTrust-level complexity.
           </p>
-          <div className="mt-4 overflow-x-auto rounded-lg bg-zinc-900 p-4">
-            <code className="text-sm text-green-400">
-              {`<script src="https://cdn.safebanner.com/safebanner.js"></script>`}
-            </code>
-          </div>
-
-          <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-            With Options
-          </h3>
-          <div className="mt-4 overflow-x-auto rounded-lg bg-zinc-900 p-4">
-            <pre className="text-sm text-green-400">
-              {`<script
-  src="https://cdn.safebanner.com/safebanner.js"
-  data-position="bottom-right"
-  data-theme="dark"
-  data-color="#8b5cf6"
-  data-company="Acme Inc"
-  data-privacy="https://acme.com/privacy"
-></script>`}
-            </pre>
-          </div>
-
-          <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-            JavaScript API
-          </h3>
-          <div className="mt-4 overflow-x-auto rounded-lg bg-zinc-900 p-4">
-            <pre className="text-sm text-green-400">
-              {`// Check consent status
-if (window.safeBanner.hasConsentFor('analytics')) {
-  // Load analytics
-}
-
-// Get full consent state
-window.safeBanner.getConsent()
-
-// Reset and show banner again
-window.safeBanner.reset()`}
-            </pre>
-          </div>
         </div>
+      </div>
 
-        {/* Customization Preview */}
-        <div className="mt-12 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
-            Customization Options
-          </h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <h3 className="font-medium text-zinc-900 dark:text-white">
-                Position
-              </h3>
-              <ul className="mt-2 space-y-1 text-sm text-zinc-600 dark:text-zinc-400">
-                <li>bottom (default)</li>
-                <li>top</li>
-                <li>bottom-left</li>
-                <li>bottom-right</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-zinc-900 dark:text-white">
-                Theme
-              </h3>
-              <ul className="mt-2 space-y-1 text-sm text-zinc-600 dark:text-zinc-400">
-                <li>light (default)</li>
-                <li>dark</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-zinc-900 dark:text-white">
-                Color
-              </h3>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                Any hex color for buttons
-              </p>
-            </div>
-            <div>
-              <h3 className="font-medium text-zinc-900 dark:text-white">
-                Privacy Link
-              </h3>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                URL to your privacy policy
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Back link */}
-        <div className="mt-12">
-          <Link
-            href="/"
-            className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
-          >
-            &larr; Back to home
-          </Link>
-        </div>
-      </main>
-
-      {/* Load SafeBanner script */}
-      <Script
-        src="/safebanner.js"
-        data-position="bottom"
-        data-theme="light"
-        data-company="Demo Site"
-        data-privacy="/privacy"
-        onLoad={() => setScriptLoaded(true)}
-        onError={() => console.error("Failed to load safebanner.js")}
-      />
     </div>
   );
 }

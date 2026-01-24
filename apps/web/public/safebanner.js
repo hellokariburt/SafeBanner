@@ -18,17 +18,19 @@
       ${o?n?"top: 16px;":"bottom: 16px;":""}
       background: ${t.theme==="dark"?"#1f2937":"#ffffff"};
       color: ${t.theme==="dark"?"#f9fafb":"#111827"};
-      padding: 20px 24px;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      padding: 24px 28px;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15), 0 -2px 8px rgba(0, 0, 0, 0.1);
       z-index: 99999;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 14px;
       line-height: 1.5;
       ${o?"border-radius: 12px;":""}
-      transform: translateY(${n?"-100%":"100%"});
-      transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(${n?"-8px":"8px"});
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
     .cm-banner.cm-visible {
+      opacity: 1;
       transform: translateY(0);
     }
 
