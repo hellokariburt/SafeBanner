@@ -113,26 +113,24 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
+      className="border-t border-zinc-800 bg-zinc-900"
     >
-      <div className="mx-auto max-w-5xl px-6 py-24">
-        <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
+      <div className="mx-auto max-w-5xl px-6 py-20">
+        <h2 className="text-3xl font-bold text-white">
           Free until you need proof.
         </h2>
 
         {/* Free Tier */}
         <div className="mt-12 max-w-md">
-          <div className="rounded-lg border-2 border-blue-600 bg-white p-6 dark:bg-zinc-800">
+          <div className="rounded-lg border-2 border-blue-600 bg-zinc-800 p-6">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-blue-600">Free</h3>
-              <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+              <h3 className="font-semibold text-blue-400">Free</h3>
+              <span className="rounded-full bg-blue-900/50 px-3 py-1 text-xs font-medium text-blue-300">
                 Available now
               </span>
             </div>
-            <p className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white">
-              $0
-            </p>
-            <ul className="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="mt-2 text-3xl font-bold text-white">$0</p>
+            <ul className="mt-6 space-y-3 text-sm text-zinc-400">
               <li>Banner + consent UI</li>
               <li>Local consent storage</li>
               <li>GDPR mode</li>
@@ -151,10 +149,10 @@ export default function PricingSection() {
 
         {/* Paid Features Coming Soon */}
         <div className="mt-16">
-          <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
+          <h3 className="text-xl font-semibold text-white">
             Paid features coming soon
           </h3>
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-zinc-400">
             Tell us what you need most. We&apos;ll build it first.
           </p>
 
@@ -162,13 +160,11 @@ export default function PricingSection() {
             {FEATURES.map((feature) => (
               <div
                 key={feature.id}
-                className="flex flex-col justify-between rounded-lg border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800"
+                className="flex flex-col justify-between rounded-lg border border-zinc-700 bg-zinc-800 p-5"
               >
                 <div>
-                  <h4 className="font-medium text-zinc-900 dark:text-white">
-                    {feature.name}
-                  </h4>
-                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  <h4 className="font-medium text-white">{feature.name}</h4>
+                  <p className="mt-2 text-sm text-zinc-400">
                     {feature.description}
                   </p>
                 </div>
@@ -177,8 +173,8 @@ export default function PricingSection() {
                   onClick={() => handleFeatureClick(feature.id)}
                   className={`mt-4 block rounded border px-3 py-2 text-center text-sm font-medium transition-colors ${
                     clickedFeatures.includes(feature.id)
-                      ? "border-green-300 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900/30 dark:text-green-400"
-                      : "border-zinc-300 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                      ? "border-green-700 bg-green-900/30 text-green-400"
+                      : "border-zinc-600 text-zinc-300 hover:bg-zinc-700"
                   }`}
                 >
                   {clickedFeatures.includes(feature.id) ? "Notified" : "Notify me"}
@@ -189,19 +185,17 @@ export default function PricingSection() {
         </div>
 
         {/* Enterprise */}
-        <div className="mt-16 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+        <div className="mt-16 rounded-lg border border-zinc-700 bg-zinc-800 p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h3 className="font-semibold text-zinc-900 dark:text-white">
-                Enterprise
-              </h3>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              <h3 className="font-semibold text-white">Enterprise</h3>
+              <p className="mt-1 text-sm text-zinc-400">
                 Need SLAs, dedicated support, or custom integrations? Let&apos;s talk.
               </p>
             </div>
             <a
               href="mailto:hello@safebanner.com?subject=Enterprise%20inquiry&body=I%27m%20interested%20in%20SafeBanner%20for%20enterprise%20use.%0A%0ACompany%3A%20%0AUse%20case%3A%20"
-              className="shrink-0 rounded-lg border border-zinc-300 px-4 py-2 text-center text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              className="shrink-0 rounded-lg border border-zinc-600 px-4 py-2 text-center text-sm font-medium text-zinc-300 hover:bg-zinc-700"
             >
               Contact us
             </a>
@@ -212,12 +206,11 @@ export default function PricingSection() {
       {/* Price Question Modal */}
       {showPriceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-zinc-800">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
-              Quick question
-            </h3>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              If SafeBanner solved your compliance problem today, which price would feel reasonable?
+          <div className="w-full max-w-md rounded-lg bg-zinc-800 p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-white">Quick question</h3>
+            <p className="mt-2 text-sm text-zinc-400">
+              If SafeBanner solved your compliance problem today, which price
+              would feel reasonable?
             </p>
             <div className="mt-6 space-y-2">
               {["$29/mo", "$79/mo", "$149/mo", "I wouldn't pay for this"].map(
@@ -225,7 +218,7 @@ export default function PricingSection() {
                   <button
                     key={price}
                     onClick={() => handlePriceSelection(price)}
-                    className="w-full rounded border border-zinc-300 px-4 py-2 text-left text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                    className="w-full rounded border border-zinc-600 px-4 py-2 text-left text-sm font-medium text-zinc-300 hover:bg-zinc-700"
                   >
                     {price}
                   </button>
@@ -234,7 +227,7 @@ export default function PricingSection() {
             </div>
             <button
               onClick={dismissPriceModal}
-              className="mt-4 w-full text-center text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
+              className="mt-4 w-full text-center text-sm text-zinc-400 hover:text-zinc-300"
             >
               Skip
             </button>
