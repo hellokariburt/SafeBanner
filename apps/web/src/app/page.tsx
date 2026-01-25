@@ -73,7 +73,7 @@ export default function Home() {
               {/* Code snippet */}
               <div className="overflow-hidden rounded-lg bg-zinc-950 p-4">
                 <code className="text-sm text-emerald-400">
-                  {'<script src="https://cdn.safebanner.com/safebanner.js"></script>'}
+                  {'<script src="https://www.safebanner.com/safebanner.js"></script>'}
                 </code>
               </div>
               <p className="mt-3 text-left text-xs text-zinc-500">

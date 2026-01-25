@@ -70,7 +70,7 @@ window.safeBanner.show() / .hide()       // Manual banner control
 
 ```html
 <script
-  src="https://cdn.safebanner.com/safebanner.js"
+  src="https://www.safebanner.com/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"

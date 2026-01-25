@@ -69,7 +69,7 @@ export default function DocsPage() {
               tag:
             </p>
             <CodeBlock>
-              {`<script src="https://cdn.safebanner.com/safebanner.js"></script>`}
+              {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
             </CodeBlock>
 
             <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
@@ -99,7 +99,7 @@ manager.init();`}
               Download the script and host it yourself:
             </p>
             <CodeBlock language="bash">
-              {`curl -o safebanner.js https://cdn.safebanner.com/safebanner.js`}
+              {`curl -o safebanner.js https://www.safebanner.com/safebanner.js`}
             </CodeBlock>
           </Section>
 
@@ -114,7 +114,7 @@ manager.init();`}
                   Add the script
                 </strong>
                 <CodeBlock>
-                  {`<script src="https://cdn.safebanner.com/safebanner.js"></script>`}
+                  {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
                 </CodeBlock>
               </li>
               <li>
@@ -144,7 +144,7 @@ manager.init();`}
             </p>
             <CodeBlock>
               {`<script
-  src="https://cdn.safebanner.com/safebanner.js"
+  src="https://www.safebanner.com/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
@@ -334,7 +334,7 @@ import Script from 'next/script';
 export function SafeBanner() {
   return (
     <Script
-      src="https://cdn.safebanner.com/safebanner.js"
+      src="https://www.safebanner.com/safebanner.js"
       data-position="bottom-right"
       data-theme="light"
       strategy="afterInteractive"
@@ -389,7 +389,7 @@ if (document.readyState === 'loading') {
             <CodeBlock language="php">
               {`// Add to your theme's functions.php
 function add_consent_manager() {
-  echo '<script src="https://cdn.safebanner.com/safebanner.js" data-company="' . get_bloginfo('name') . '"></script>';
+  echo '<script src="https://www.safebanner.com/safebanner.js" data-company="' . get_bloginfo('name') . '"></script>';
 }
 add_action('wp_footer', 'add_consent_manager');`}
             </CodeBlock>
@@ -409,7 +409,7 @@ add_action('wp_footer', 'add_consent_manager');`}
 export default {
   mounted() {
     const script = document.createElement('script');
-    script.src = 'https://cdn.safebanner.com/safebanner.js';
+    script.src = 'https://www.safebanner.com/safebanner.js';
     script.dataset.position = 'bottom-right';
     document.body.appendChild(script);
   }
@@ -446,7 +446,7 @@ export default {
             </h3>
             <CodeBlock language="bash">
               {`# Download the latest version
-curl -o safebanner.js https://cdn.safebanner.com/safebanner.js
+curl -o safebanner.js https://www.safebanner.com/safebanner.js
 
 # Host it on your server
 cp safebanner.js /var/www/html/js/`}
@@ -711,7 +711,7 @@ pnpm build
                 <li>
                   Use our CDN (
                   <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                    cdn.safebanner.com
+                    www.safebanner.com
                   </code>
                   ) which handles CORS automatically
                 </li>
