@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import PricingSection from "./components/PricingSection";
+import { CopyButton } from "./components/CopyButton";
 
 export default function Home() {
   return (
@@ -47,11 +48,30 @@ export default function Home() {
         </p>
 
         {/* Trust signals */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500">
-          <span>~4kb gzipped</span>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-zinc-500">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+            ~4kb gzipped
+          </span>
           <span>MIT licensed</span>
           <span>No cookies before consent</span>
           <span>Google Consent Mode v2</span>
+        </div>
+
+        {/* Honest social proof */}
+        <div className="mt-4 flex items-center justify-center gap-3">
+          <a
+            href="https://github.com/hellokariburt/SafeBanner"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-800/50 px-3 py-1 text-xs text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-300"
+          >
+            <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+            </svg>
+            View on GitHub
+          </a>
+          <span className="text-xs text-zinc-600">Built in public</span>
         </div>
 
         {/* Demo UI Preview - the hero visual */}
@@ -75,10 +95,11 @@ export default function Home() {
             {/* Demo content */}
             <div className="p-6">
               {/* Code snippet */}
-              <div className="overflow-hidden rounded-lg bg-zinc-950 p-4">
+              <div className="relative overflow-hidden rounded-lg bg-zinc-950 p-4 pr-20">
                 <code className="text-sm text-emerald-400">
                   {'<script src="https://www.safebanner.com/safebanner.js"></script>'}
                 </code>
+                <CopyButton text='<script src="https://www.safebanner.com/safebanner.js"></script>' />
               </div>
               <p className="mt-3 text-left text-xs text-zinc-500">
                 That&apos;s it. No config required. Defaults work out of the box.
@@ -313,42 +334,33 @@ export default function Home() {
             {/* What's not included */}
             <div>
               <h2 className="text-2xl font-bold text-white">
-                What SafeBanner does not do
+                Intentionally simple
               </h2>
-              <ul className="mt-6 space-y-3">
+              <p className="mt-2 text-zinc-400">
+                SafeBanner focuses on consent UI and signaling. It doesn&apos;t:
+              </p>
+              <ul className="mt-4 space-y-3">
                 {[
                   "Block or rewrite scripts",
                   "Manage vendors or IAB TCF strings",
                   "Act as a full CMP",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <svg
-                      className="mt-0.5 h-5 w-5 shrink-0 text-zinc-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                    <span className="text-zinc-400">{item}</span>
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-600"></span>
+                    <span className="text-zinc-500">{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-8 rounded-lg border border-zinc-700 bg-zinc-800 p-4">
+              <div className="mt-6 rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
                 <p className="text-sm text-zinc-300">
-                  <span className="font-medium text-white">
-                    SafeBanner exposes consent state.
+                  <span className="font-medium text-blue-400">
+                    You stay in control.
                   </span>{" "}
-                  You control how your scripts respond. Check{" "}
-                  <code className="rounded bg-zinc-700 px-1.5 py-0.5 text-xs text-emerald-400">
+                  SafeBanner exposes consent state via API. Check{" "}
+                  <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-emerald-400">
                     hasConsentFor(&apos;analytics&apos;)
                   </code>{" "}
-                  before loading trackers.
+                  before loading your trackers.
                 </p>
               </div>
             </div>

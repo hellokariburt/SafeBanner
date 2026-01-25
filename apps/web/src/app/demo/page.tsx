@@ -101,18 +101,22 @@ export default function DemoPage() {
       if (e.key === "safebanner_consent") {
         refreshConsent();
         if (e.newValue) {
-          const parsed = JSON.parse(e.newValue);
-          addLog(
-            "Consent Updated",
-            `Analytics: ${parsed.analytics ? "granted" : "denied"}, Marketing: ${parsed.marketing ? "granted" : "denied"}`,
-            "consent"
-          );
-          if (config.googleConsent !== "off") {
+          try {
+            const parsed = JSON.parse(e.newValue);
             addLog(
-              "Google Consent Signal",
-              `analytics_storage: ${parsed.analytics ? "granted" : "denied"}, ad_storage: ${parsed.marketing ? "granted" : "denied"}`,
-              "google"
+              "Consent Updated",
+              `Analytics: ${parsed.analytics ? "granted" : "denied"}, Marketing: ${parsed.marketing ? "granted" : "denied"}`,
+              "consent"
             );
+            if (config.googleConsent !== "off") {
+              addLog(
+                "Google Consent Signal",
+                `analytics_storage: ${parsed.analytics ? "granted" : "denied"}, ad_storage: ${parsed.marketing ? "granted" : "denied"}`,
+                "google"
+              );
+            }
+          } catch {
+            // Invalid JSON in localStorage, ignore
           }
         }
       }
@@ -198,7 +202,7 @@ export default function DemoPage() {
       {/* Fake page content - looks like a real SaaS/blog page */}
       <div className="pointer-events-none fixed inset-0 hidden select-none overflow-hidden sm:block" aria-hidden="true">
         <div className="mx-auto max-w-2xl px-6 pt-20">
-          <div className="opacity-50">
+          <div className="opacity-40 dark:opacity-30">
             {/* Nav hint */}
             <div className="flex items-center justify-between pb-6">
               <div className="h-6 w-24 rounded bg-zinc-300 dark:bg-zinc-700" />
@@ -299,13 +303,18 @@ export default function DemoPage() {
             <div className="mt-5 border-t border-zinc-100 pt-5 sm:mt-6 sm:pt-6 dark:border-zinc-800">
               <button
                 onClick={applyConfig}
-                className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="group w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
               >
-                {scriptLoaded ? "Preview Again" : "Preview Banner"}
+                <span className="flex items-center justify-center gap-2">
+                  {scriptLoaded ? "Show Banner Again" : "See It Live"}
+                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
               </button>
               {!scriptLoaded && (
                 <p className="mt-2 text-center text-xs text-zinc-400">
-                  See how the banner looks on your site
+                  The banner will appear at the bottom of this page
                 </p>
               )}
             </div>
@@ -317,7 +326,7 @@ export default function DemoPage() {
                 className="flex w-full items-center justify-between text-left"
               >
                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                  Defaults are fine. Tweak if needed.
+                  Customize appearance
                 </span>
                 <svg
                   className={`h-4 w-4 text-zinc-400 transition-transform ${customizeOpen ? "rotate-180" : ""}`}

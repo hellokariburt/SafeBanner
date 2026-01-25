@@ -45,9 +45,6 @@ const FEATURES = [
 const STORAGE_KEY = "safebanner_feature_interest";
 const PRICE_ASKED_KEY = "safebanner_price_asked";
 
-// Web3Forms
-const WEB3FORMS_ACCESS_KEY = "7f0bff49-00b8-4c4d-92ec-8131cbf8eb37";
-
 export default function PricingSection() {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [email, setEmail] = useState("");
@@ -77,16 +74,10 @@ export default function PricingSection() {
     setSubmitStatus("submitting");
 
     try {
-      const formData = new FormData();
-      formData.append("access_key", WEB3FORMS_ACCESS_KEY);
-      formData.append("email", email);
-      formData.append("features", selectedFeatures.join(", "));
-      formData.append("subject", "SafeBanner Waitlist Signup");
-      formData.append("from_name", "SafeBanner Waitlist");
-
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/waitlist", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, features: selectedFeatures }),
       });
 
       const data = await response.json();
