@@ -234,7 +234,10 @@ export default function PricingSection() {
             <div className="mt-8 max-w-md rounded-lg border border-green-700 bg-green-900/20 p-4">
               <p className="font-medium text-green-400">You&apos;re on the list!</p>
               <p className="mt-1 text-sm text-zinc-400">
-                We&apos;ll email you when these features are ready.
+                We&apos;ll email you when these features are ready. Questions? Reach us at{" "}
+                <a href="mailto:admin@safebanner.com" className="text-blue-400 hover:underline">
+                  admin@safebanner.com
+                </a>
               </p>
             </div>
           )}
@@ -247,6 +250,11 @@ export default function PricingSection() {
               <h3 className="font-semibold text-white">Enterprise</h3>
               <p className="mt-1 text-sm text-zinc-400">
                 Need SLAs, dedicated support, or custom integrations? Let&apos;s talk.
+              </p>
+              <p className="mt-2 text-sm">
+                <a href="mailto:admin@safebanner.com" className="text-blue-400 hover:underline">
+                  admin@safebanner.com
+                </a>
               </p>
             </div>
             <button
