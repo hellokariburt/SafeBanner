@@ -6,3 +6,12 @@ dist
 .DS_Store
 .env
 .env.local
+.env.example
+
+# Internal docs
+CLAUDE.md
+DECISIONS.md
+
+# Dev screenshots
+*.png
+!apps/web/public/*.png
