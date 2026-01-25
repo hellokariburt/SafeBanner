@@ -20,7 +20,7 @@ export default function DocsPage() {
               Demo
             </Link>
             <a
-              href="https://github.com/yourusername/safebanner"
+              href="https://github.com/hellokariburt/SafeBanner"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
@@ -457,7 +457,7 @@ cp safebanner.js /var/www/html/js/`}
             </h3>
             <CodeBlock language="bash">
               {`# Clone the repo
-git clone https://github.com/yourusername/safebanner.git
+git clone https://github.com/hellokariburt/SafeBanner.git
 cd safebanner
 
 # Install dependencies
@@ -740,7 +740,7 @@ pnpm build
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 Still stuck?{" "}
                 <a
-                  href="https://github.com/yourusername/safebanner/issues"
+                  href="https://github.com/hellokariburt/SafeBanner/issues"
                   className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
                 >
                   Open an issue on GitHub

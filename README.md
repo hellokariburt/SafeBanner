@@ -118,7 +118,7 @@ if (window.safeBanner?.hasConsentFor('analytics')) {
 ## Self-Hosting
 
 ```bash
-git clone https://github.com/yourusername/safebanner.git
+git clone https://github.com/hellokariburt/SafeBanner.git
 cd safebanner
 pnpm install
 pnpm build
@@ -184,4 +184,4 @@ MIT — use it however you want, including in commercial projects.
 
 - [Documentation](https://safebanner.com/docs)
 - [Live Demo](https://safebanner.com/demo)
-- [GitHub](https://github.com/yourusername/safebanner)
+- [GitHub](https://github.com/hellokariburt/SafeBanner)
