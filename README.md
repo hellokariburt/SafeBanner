@@ -115,6 +115,10 @@ if (window.safeBanner?.hasConsentFor('analytics')) {
 </a>
 ```
 
+## Browser Support
+
+SafeBanner works in all modern browsers (Chrome, Firefox, Safari, Edge). It does not support Internet Explorer 11.
+
 ## Self-Hosting
 
 ```bash

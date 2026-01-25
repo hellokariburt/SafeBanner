@@ -194,13 +194,10 @@ if (document.readyState === 'loading') {
 // Expose to window for programmatic access
 declare global {
   interface Window {
-    SafeBanner: typeof SafeBanner;
     safeBanner: SafeBanner;
   }
 }
 
-window.SafeBanner = SafeBanner;
 window.safeBanner = instance;
 
-export { SafeBanner };
 export default instance;
