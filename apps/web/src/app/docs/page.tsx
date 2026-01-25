@@ -1,20 +1,65 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+
+// GitHub icon component
+function GitHubIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+    </svg>
+  );
+}
+
+// Sidebar navigation structure
+const SIDEBAR_SECTIONS = [
+  {
+    title: "Getting Started",
+    items: [
+      { href: "#installation", label: "Installation" },
+      { href: "#quick-start", label: "Quick Start" },
+    ],
+  },
+  {
+    title: "Configuration",
+    items: [
+      { href: "#options", label: "Options" },
+      { href: "#categories", label: "Cookie Categories" },
+      { href: "#google-consent", label: "Google Consent Mode" },
+    ],
+  },
+  {
+    title: "Usage",
+    items: [
+      { href: "#javascript-api", label: "JavaScript API" },
+      { href: "#examples", label: "Framework Examples" },
+    ],
+  },
+  {
+    title: "Advanced",
+    items: [
+      { href: "#self-hosting", label: "Self-Hosting" },
+      { href: "#troubleshooting", label: "Troubleshooting" },
+    ],
+  },
+];
 
 export default function DocsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-white"
-          >
-            <Image src="/logo.png" alt="SafeBanner" width={28} height={28} />
-            SafeBanner
-          </Link>
-          <nav className="flex items-center gap-6">
+      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-zinc-800 dark:bg-zinc-950/95 dark:supports-[backdrop-filter]:bg-zinc-950/60">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-6">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/logo.png" alt="SafeBanner" width={28} height={28} />
+              <span className="font-semibold text-zinc-900 dark:text-white">SafeBanner</span>
+            </Link>
+            <span className="hidden text-sm text-zinc-400 sm:block">Documentation</span>
+          </div>
+          <nav className="flex items-center gap-4">
             <Link
               href="/demo"
               className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
@@ -25,935 +70,455 @@ export default function DocsPage() {
               href="https://github.com/hellokariburt/SafeBanner"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              className="flex items-center gap-1.5 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
             >
-              GitHub
+              <GitHubIcon className="h-5 w-5" />
+              <span className="hidden sm:inline">GitHub</span>
             </a>
           </nav>
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl px-6 py-12 lg:flex lg:gap-12">
-        {/* Sidebar */}
-        <aside className="hidden lg:block lg:w-64 lg:shrink-0">
-          <nav className="sticky top-24 space-y-1">
-            <SidebarLink href="#installation">Installation</SidebarLink>
-            <SidebarLink href="#quick-start">Quick Start</SidebarLink>
-            <SidebarLink href="#configuration">Configuration</SidebarLink>
-            <SidebarLink href="#javascript-api">JavaScript API</SidebarLink>
-            <SidebarLink href="#examples">Examples</SidebarLink>
-            <SidebarLink href="#self-hosting">Self-Hosting</SidebarLink>
-            <SidebarLink href="#paid-features">Paid Features</SidebarLink>
-            <SidebarLink href="#faq">FAQ</SidebarLink>
-            <SidebarLink href="#troubleshooting">Troubleshooting</SidebarLink>
-          </nav>
-        </aside>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="lg:flex lg:gap-8">
+          {/* Sidebar */}
+          <aside className="hidden lg:block lg:w-56 lg:shrink-0">
+            <nav className="sticky top-20 -ml-0.5 h-[calc(100vh-5rem)] overflow-y-auto py-8 pr-4">
+              {SIDEBAR_SECTIONS.map((section) => (
+                <div key={section.title} className="mb-6">
+                  <h5 className="mb-2 text-sm font-semibold text-zinc-900 dark:text-white">
+                    {section.title}
+                  </h5>
+                  <ul className="space-y-1">
+                    {section.items.map((item) => (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          className="block rounded-md px-3 py-1.5 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
+                        >
+                          {item.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          </aside>
 
-        {/* Content */}
-        <main className="min-w-0 flex-1">
-          <h1 className="text-4xl font-bold text-zinc-900 dark:text-white">
-            Documentation
-          </h1>
-          <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-            Everything you need to add compliant cookie consent to your site.
-          </p>
+          {/* Main content */}
+          <main className="min-w-0 flex-1 py-8 lg:py-12">
+            <div className="prose prose-zinc max-w-none dark:prose-invert prose-headings:scroll-mt-20 prose-h1:text-3xl prose-h2:border-b prose-h2:border-zinc-200 prose-h2:pb-2 prose-h2:text-xl prose-h2:font-semibold prose-h3:text-lg prose-code:before:content-none prose-code:after:content-none dark:prose-h2:border-zinc-800">
 
-          {/* Installation */}
-          <Section id="installation" title="Installation">
-            <h3 className="mt-6 text-lg font-semibold text-zinc-900 dark:text-white">
-              Script Tag (Recommended)
-            </h3>
-            <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              Add this script tag to your HTML, just before the closing{" "}
-              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                &lt;/body&gt;
-              </code>{" "}
-              tag:
-            </p>
-            <CodeBlock>
-              {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
-            </CodeBlock>
+              <h1>Documentation</h1>
+              <p className="lead text-lg text-zinc-600 dark:text-zinc-400">
+                Learn how to add GDPR-compliant cookie consent to your site in minutes.
+              </p>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              NPM
-            </h3>
-            <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              For build-tool workflows:
-            </p>
-            <CodeBlock language="bash">{`npm install @safebanner/script`}</CodeBlock>
-            <CodeBlock>
-              {`import '@safebanner/script';
+              {/* Installation */}
+              <h2 id="installation">Installation</h2>
 
-// or with configuration
+              <h3>Script Tag (Recommended)</h3>
+              <p>Add this single line before your closing <code>&lt;/body&gt;</code> tag:</p>
+              <CodeBlock language="html" copyable>
+{`<script src="https://www.safebanner.com/safebanner.js"></script>`}
+              </CodeBlock>
+              <p>That&apos;s it. No build step, no config files, no npm packages.</p>
+
+              <h3>NPM Package</h3>
+              <p>For projects using a bundler:</p>
+              <CodeBlock language="bash" copyable>
+{`npm install @safebanner/script`}
+              </CodeBlock>
+              <CodeBlock language="javascript" copyable>
+{`import '@safebanner/script';
+
+// Or with custom configuration
 import { SafeBanner } from '@safebanner/script';
 
-const manager = new SafeBanner({
+const banner = new SafeBanner({
   position: 'bottom-right',
   theme: 'dark',
 });
-manager.init();`}
-            </CodeBlock>
+banner.init();`}
+              </CodeBlock>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Self-Hosted
-            </h3>
-            <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              Download the script and host it yourself:
-            </p>
-            <CodeBlock language="bash">
-              {`curl -o safebanner.js https://www.safebanner.com/safebanner.js`}
-            </CodeBlock>
-          </Section>
+              {/* Quick Start */}
+              <h2 id="quick-start">Quick Start</h2>
+              <p>Get GDPR-compliant in 2 minutes:</p>
 
-          {/* Quick Start */}
-          <Section id="quick-start" title="Quick Start">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Get compliant in under 2 minutes:
-            </p>
-            <ol className="mt-4 list-inside list-decimal space-y-4 text-zinc-600 dark:text-zinc-400">
-              <li>
-                <strong className="text-zinc-900 dark:text-white">
-                  Add the script
-                </strong>
-                <CodeBlock>
-                  {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
-                </CodeBlock>
-              </li>
-              <li>
-                <strong className="text-zinc-900 dark:text-white">
-                  That&apos;s it
-                </strong>
-                <p className="mt-2">
-                  The banner appears automatically for new visitors. Consent is
-                  stored locally and cookies are blocked until approved.
+              <div className="not-prose my-6 rounded-lg border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
+                <ol className="space-y-4">
+                  <li className="flex gap-4">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">1</span>
+                    <div>
+                      <p className="font-medium text-zinc-900 dark:text-white">Add the script</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">One line, right before &lt;/body&gt;</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">2</span>
+                    <div>
+                      <p className="font-medium text-zinc-900 dark:text-white">Done</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">Banner shows automatically. Consent is stored. Cookies are blocked until approved.</p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="not-prose my-6 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-950/50">
+                <p className="font-medium text-blue-900 dark:text-blue-200">GDPR Mode (Default)</p>
+                <p className="mt-1 text-sm text-blue-800 dark:text-blue-300">
+                  Non-essential cookies are blocked until the user explicitly consents. This is the safest default for EU compliance.
                 </p>
-              </li>
-            </ol>
+              </div>
 
-            <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
-                <strong>GDPR Mode (Default):</strong> Non-essential cookies are
-                blocked until the user explicitly consents. This is the safest
-                default for EU compliance.
-              </p>
-            </div>
-          </Section>
-
-          {/* Configuration */}
-          <Section id="configuration" title="Configuration">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Configure via data attributes on the script tag:
-            </p>
-            <CodeBlock>
-              {`<script
+              {/* Options */}
+              <h2 id="options">Options</h2>
+              <p>Configure via data attributes on the script tag:</p>
+              <CodeBlock language="html" copyable>
+{`<script
   src="https://www.safebanner.com/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
   data-company="Acme Inc"
   data-privacy="https://acme.com/privacy"
+  data-lang="en"
+  data-google-consent="advanced"
 ></script>`}
-            </CodeBlock>
+              </CodeBlock>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Options Reference
-            </h3>
-            <div className="mt-4 overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Attribute
-                    </th>
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Values
-                    </th>
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Default
-                    </th>
-                    <th className="py-3 font-semibold text-zinc-900 dark:text-white">
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-zinc-600 dark:text-zinc-400">
-                  <ConfigRow
-                    attr="data-position"
-                    values="bottom, top, bottom-left, bottom-right"
-                    defaultVal="bottom"
-                    desc="Banner position on screen"
-                  />
-                  <ConfigRow
-                    attr="data-theme"
-                    values="light, dark"
-                    defaultVal="light"
-                    desc="Color scheme"
-                  />
-                  <ConfigRow
-                    attr="data-color"
-                    values="Any hex color"
-                    defaultVal="#2563eb"
-                    desc="Primary button color"
-                  />
-                  <ConfigRow
-                    attr="data-company"
-                    values="String"
-                    defaultVal="We"
-                    desc="Your company name in banner text"
-                  />
-                  <ConfigRow
-                    attr="data-privacy"
-                    values="URL"
-                    defaultVal="—"
-                    desc="Link to your privacy policy"
-                  />
-                </tbody>
-              </table>
-            </div>
+              <div className="not-prose my-6 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-200 dark:border-zinc-800">
+                      <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">Option</th>
+                      <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">Values</th>
+                      <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">Default</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-zinc-600 dark:text-zinc-400">
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-position</code></td>
+                      <td className="py-3 pr-4">bottom, top, bottom-left, bottom-right</td>
+                      <td className="py-3 pr-4"><code className="text-xs">bottom</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-theme</code></td>
+                      <td className="py-3 pr-4">light, dark</td>
+                      <td className="py-3 pr-4"><code className="text-xs">light</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-color</code></td>
+                      <td className="py-3 pr-4">Any hex color</td>
+                      <td className="py-3 pr-4"><code className="text-xs">#2563eb</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-company</code></td>
+                      <td className="py-3 pr-4">Your company name</td>
+                      <td className="py-3 pr-4"><code className="text-xs">We</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-privacy</code></td>
+                      <td className="py-3 pr-4">URL to privacy policy</td>
+                      <td className="py-3 pr-4">—</td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4"><code className="text-xs">data-lang</code></td>
+                      <td className="py-3 pr-4">en, fr, de</td>
+                      <td className="py-3 pr-4"><code className="text-xs">en</code></td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 pr-4"><code className="text-xs">data-google-consent</code></td>
+                      <td className="py-3 pr-4">advanced, basic, off</td>
+                      <td className="py-3 pr-4"><code className="text-xs">advanced</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Cookie Categories
-            </h3>
-            <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              We automatically categorize cookies into three groups:
-            </p>
-            <div className="mt-4 space-y-4">
-              <CategoryCard
-                name="Necessary"
-                description="Essential cookies required for the site to function. Always enabled."
-                examples="Session IDs, CSRF tokens, auth cookies"
-              />
-              <CategoryCard
-                name="Analytics"
-                description="Cookies used to understand how visitors interact with your site."
-                examples="Google Analytics (_ga, _gid), Mixpanel, Amplitude"
-              />
-              <CategoryCard
-                name="Marketing"
-                description="Cookies used for advertising and retargeting."
-                examples="Facebook Pixel (_fbp), Google Ads (_gcl), LinkedIn (li_)"
-              />
-            </div>
-          </Section>
+              {/* Cookie Categories */}
+              <h2 id="categories">Cookie Categories</h2>
+              <p>SafeBanner automatically categorizes cookies into three groups:</p>
 
-          {/* JavaScript API */}
-          <Section id="javascript-api" title="JavaScript API">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Access the consent manager programmatically via{" "}
-              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                window.safeBanner
-              </code>
-              .
-            </p>
+              <div className="not-prose my-6 grid gap-4 sm:grid-cols-3">
+                <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400">✓</span>
+                    <h4 className="font-semibold text-zinc-900 dark:text-white">Necessary</h4>
+                  </div>
+                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Always enabled. Session IDs, CSRF tokens, auth cookies.</p>
+                </div>
+                <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400">📊</span>
+                    <h4 className="font-semibold text-zinc-900 dark:text-white">Analytics</h4>
+                  </div>
+                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Google Analytics, Mixpanel, Amplitude, Hotjar.</p>
+                </div>
+                <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400">📣</span>
+                    <h4 className="font-semibold text-zinc-900 dark:text-white">Marketing</h4>
+                  </div>
+                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Facebook Pixel, Google Ads, LinkedIn, TikTok.</p>
+                </div>
+              </div>
 
-            <ApiMethod
-              name="getConsent()"
-              description="Returns the current consent state, or null if not yet consented."
-              returns="ConsentState | null"
-              example={`const consent = window.safeBanner.getConsent();
+              {/* Google Consent Mode */}
+              <h2 id="google-consent">Google Consent Mode v2</h2>
+              <p>SafeBanner automatically integrates with Google Consent Mode v2. No extra configuration needed.</p>
+
+              <div className="not-prose my-6 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-zinc-200 dark:border-zinc-800">
+                      <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">SafeBanner</th>
+                      <th className="py-3 font-semibold text-zinc-900 dark:text-white">Google Signal</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-zinc-600 dark:text-zinc-400">
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4">analytics: true</td>
+                      <td className="py-3"><code className="text-xs">analytics_storage: granted</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4">marketing: true</td>
+                      <td className="py-3"><code className="text-xs">ad_storage: granted</code></td>
+                    </tr>
+                    <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                      <td className="py-3 pr-4">marketing: true</td>
+                      <td className="py-3"><code className="text-xs">ad_user_data: granted</code></td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 pr-4">marketing: true</td>
+                      <td className="py-3"><code className="text-xs">ad_personalization: granted</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="not-prose my-6 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4 dark:bg-amber-950/50">
+                <p className="font-medium text-amber-900 dark:text-amber-200">Important: Load Order</p>
+                <p className="mt-1 text-sm text-amber-800 dark:text-amber-300">
+                  SafeBanner must load <strong>before</strong> any Google tags for consent signals to work correctly.
+                </p>
+              </div>
+
+              {/* JavaScript API */}
+              <h2 id="javascript-api">JavaScript API</h2>
+              <p>Access the consent manager programmatically via <code>window.safeBanner</code>:</p>
+
+              <h3>getConsent()</h3>
+              <p>Returns the current consent state, or null if not yet consented.</p>
+              <CodeBlock language="javascript" copyable>
+{`const consent = window.safeBanner.getConsent();
 // { necessary: true, analytics: true, marketing: false, timestamp: 1704067200000 }`}
-            />
+              </CodeBlock>
 
-            <ApiMethod
-              name="hasConsented()"
-              description="Check if the user has made a consent choice."
-              returns="boolean"
-              example={`if (window.safeBanner.hasConsented()) {
-  // User has already chosen
-}`}
-            />
-
-            <ApiMethod
-              name="hasConsentFor(category)"
-              description="Check if user has consented to a specific category."
-              returns="boolean"
-              example={`if (window.safeBanner.hasConsentFor('analytics')) {
+              <h3>hasConsentFor(category)</h3>
+              <p>Check if user has consented to a specific category.</p>
+              <CodeBlock language="javascript" copyable>
+{`if (window.safeBanner.hasConsentFor('analytics')) {
   // Safe to load Google Analytics
   loadGoogleAnalytics();
 }`}
-            />
+              </CodeBlock>
 
-            <ApiMethod
-              name="updateConsent(updates)"
-              description="Programmatically update consent preferences."
-              returns="void"
-              example={`window.safeBanner.updateConsent({
+              <h3>updateConsent(updates)</h3>
+              <p>Programmatically update consent preferences.</p>
+              <CodeBlock language="javascript" copyable>
+{`window.safeBanner.updateConsent({
   analytics: true,
   marketing: false
 });`}
-            />
+              </CodeBlock>
 
-            <ApiMethod
-              name="reset()"
-              description="Clear stored consent and show the banner again."
-              returns="void"
-              example={`// Add a 'Manage Cookies' link in your footer
-document.getElementById('manage-cookies').addEventListener('click', () => {
+              <h3>reset()</h3>
+              <p>Clear stored consent and show the banner again. Perfect for a &quot;Manage Cookies&quot; link.</p>
+              <CodeBlock language="javascript" copyable>
+{`document.getElementById('manage-cookies').addEventListener('click', () => {
   window.safeBanner.reset();
 });`}
-            />
+              </CodeBlock>
 
-            <ApiMethod
-              name="show()"
-              description="Manually show the consent banner."
-              returns="void"
-              example={`window.safeBanner.show();`}
-            />
-
-            <ApiMethod
-              name="hide()"
-              description="Manually hide the consent banner."
-              returns="void"
-              example={`window.safeBanner.hide();`}
-            />
-
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              TypeScript Types
-            </h3>
-            <CodeBlock>
-              {`interface ConsentState {
+              <h3>TypeScript Types</h3>
+              <CodeBlock language="typescript" copyable>
+{`interface ConsentState {
   necessary: boolean;  // Always true
   analytics: boolean;
   marketing: boolean;
-  timestamp: number;   // Unix timestamp of consent
+  timestamp: number;   // Unix timestamp
 }
 
 type ConsentCategory = 'necessary' | 'analytics' | 'marketing';`}
-            </CodeBlock>
-          </Section>
+              </CodeBlock>
 
-          {/* Examples */}
-          <Section id="examples" title="Examples">
-            <h3 className="mt-6 text-lg font-semibold text-zinc-900 dark:text-white">
-              React / Next.js
-            </h3>
-            <CodeBlock language="tsx">
-              {`// components/SafeBanner.tsx
+              {/* Examples */}
+              <h2 id="examples">Framework Examples</h2>
+
+              <h3>React / Next.js</h3>
+              <CodeBlock language="tsx" copyable>
+{`// components/CookieConsent.tsx
 'use client';
 
 import Script from 'next/script';
 
-export function SafeBanner() {
+export function CookieConsent() {
   return (
     <Script
       src="https://www.safebanner.com/safebanner.js"
       data-position="bottom-right"
-      data-theme="light"
       strategy="afterInteractive"
     />
   );
 }
 
 // app/layout.tsx
-import { SafeBanner } from '@/components/SafeBanner';
+import { CookieConsent } from '@/components/CookieConsent';
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
         {children}
-        <SafeBanner />
+        <CookieConsent />
       </body>
     </html>
   );
 }`}
-            </CodeBlock>
+              </CodeBlock>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Conditional Analytics Loading
-            </h3>
-            <CodeBlock>
-              {`// Only load Google Analytics if user consented
-function loadAnalytics() {
-  if (window.safeBanner?.hasConsentFor('analytics')) {
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_ID';
-    document.head.appendChild(script);
+              <h3>Vue.js</h3>
+              <CodeBlock language="vue" copyable>
+{`<script setup>
+import { onMounted } from 'vue';
 
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'GA_ID');
-  }
-}
-
-// Run on page load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadAnalytics);
-} else {
-  loadAnalytics();
-}`}
-            </CodeBlock>
-
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              WordPress
-            </h3>
-            <CodeBlock language="php">
-              {`// Add to your theme's functions.php
-function add_consent_manager() {
-  echo '<script src="https://www.safebanner.com/safebanner.js" data-company="' . get_bloginfo('name') . '"></script>';
-}
-add_action('wp_footer', 'add_consent_manager');`}
-            </CodeBlock>
-
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Vue.js
-            </h3>
-            <CodeBlock language="vue">
-              {`<!-- App.vue -->
-<template>
-  <div id="app">
-    <router-view />
-  </div>
-</template>
-
-<script>
-export default {
-  mounted() {
-    const script = document.createElement('script');
-    script.src = 'https://www.safebanner.com/safebanner.js';
-    script.dataset.position = 'bottom-right';
-    document.body.appendChild(script);
-  }
-}
+onMounted(() => {
+  const script = document.createElement('script');
+  script.src = 'https://www.safebanner.com/safebanner.js';
+  script.dataset.position = 'bottom-right';
+  document.body.appendChild(script);
+});
 </script>`}
-            </CodeBlock>
+              </CodeBlock>
 
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Footer &quot;Manage Cookies&quot; Link
-            </h3>
-            <CodeBlock>
-              {`<footer>
-  <a href="#" id="manage-cookies">Manage Cookie Preferences</a>
-</footer>
+              <h3>WordPress</h3>
+              <CodeBlock language="php" copyable>
+{`// Add to your theme's functions.php
+function add_safebanner() {
+  echo '<script src="https://www.safebanner.com/safebanner.js" data-company="' . esc_attr(get_bloginfo('name')) . '"></script>';
+}
+add_action('wp_footer', 'add_safebanner');`}
+              </CodeBlock>
 
-<script>
-  document.getElementById('manage-cookies').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.safeBanner.reset();
-  });
-</script>`}
-            </CodeBlock>
-          </Section>
+              {/* Self-Hosting */}
+              <h2 id="self-hosting">Self-Hosting</h2>
+              <p>Want full control? Download and host the script yourself:</p>
 
-          {/* Self-Hosting */}
-          <Section id="self-hosting" title="Self-Hosting">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Want full control? Self-host the script on your own
-              infrastructure.
-            </p>
-
-            <h3 className="mt-6 text-lg font-semibold text-zinc-900 dark:text-white">
-              Option 1: Download the Script
-            </h3>
-            <CodeBlock language="bash">
-              {`# Download the latest version
+              <CodeBlock language="bash" copyable>
+{`# Download latest version
 curl -o safebanner.js https://www.safebanner.com/safebanner.js
 
-# Host it on your server
-cp safebanner.js /var/www/html/js/`}
-            </CodeBlock>
-
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Option 2: Build from Source
-            </h3>
-            <CodeBlock language="bash">
-              {`# Clone the repo
+# Or clone and build from source
 git clone https://github.com/hellokariburt/SafeBanner.git
-cd safebanner
+cd SafeBanner/packages/consent-script
+npm install && npm run build`}
+              </CodeBlock>
 
-# Install dependencies
-pnpm install
+              <div className="not-prose my-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <strong className="text-zinc-900 dark:text-white">License:</strong> MIT — use it however you want, including commercial projects.
+                </p>
+              </div>
 
-# Build the script
-pnpm build
+              {/* Troubleshooting */}
+              <h2 id="troubleshooting">Troubleshooting</h2>
 
-# Output is in packages/consent-script/dist/safebanner.js`}
-            </CodeBlock>
-
-            <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-              Requirements
-            </h3>
-            <ul className="mt-4 list-inside list-disc space-y-2 text-zinc-600 dark:text-zinc-400">
-              <li>No backend required for free tier (client-side only)</li>
-              <li>Serve the JS file with proper CORS headers if cross-origin</li>
-              <li>
-                Recommended: serve via CDN for performance (Cloudflare, Vercel
-                Edge, etc.)
-              </li>
-            </ul>
-
-            <div className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                <strong className="text-zinc-900 dark:text-white">
-                  License:
-                </strong>{" "}
-                MIT. Use it however you want, including in commercial projects.
-              </p>
-            </div>
-          </Section>
-
-          {/* Paid Features */}
-          <Section id="paid-features" title="Paid Features">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              The free tier covers most use cases. Paid tiers add features for
-              teams that need audit trails and multi-site management.
-            </p>
-
-            <div className="mt-6 overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Feature
-                    </th>
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Free
-                    </th>
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Starter
-                    </th>
-                    <th className="py-3 pr-4 font-semibold text-zinc-900 dark:text-white">
-                      Pro
-                    </th>
-                    <th className="py-3 font-semibold text-zinc-900 dark:text-white">
-                      Enterprise
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-zinc-600 dark:text-zinc-400">
-                  <FeatureRow
-                    feature="Consent banner"
-                    free="✓"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Local consent storage"
-                    free="✓"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="GDPR mode"
-                    free="✓"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Self-host"
-                    free="✓"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Hosted consent logs"
-                    free="—"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Dashboard"
-                    free="—"
-                    starter="✓"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Multi-domain"
-                    free="—"
-                    starter="—"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Audit exports"
-                    free="—"
-                    starter="—"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Compliance alerts"
-                    free="—"
-                    starter="—"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="Geo-based rules"
-                    free="—"
-                    starter="—"
-                    pro="✓"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="SLA"
-                    free="—"
-                    starter="—"
-                    pro="—"
-                    enterprise="✓"
-                  />
-                  <FeatureRow
-                    feature="SSO"
-                    free="—"
-                    starter="—"
-                    pro="—"
-                    enterprise="✓"
-                  />
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-8">
-              <Link
-                href="/#pricing"
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </Section>
-
-          {/* FAQ */}
-          <Section id="faq" title="FAQ">
-            <FaqItem question="Is this really GDPR compliant?">
-              Yes. By default, we operate in opt-in mode: no non-essential
-              cookies are set until the user explicitly consents. We store
-              consent records with timestamps, which is what regulators require.
-            </FaqItem>
-
-            <FaqItem question="What about CCPA?">
-              CCPA has different requirements (opt-out vs opt-in). The free tier
-              works for basic CCPA compliance. Pro tier adds geo-based rules to
-              automatically show the right consent flow based on user location.
-            </FaqItem>
-
-            <FaqItem question="How do you detect cookies?">
-              We scan{" "}
-              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                document.cookie
-              </code>{" "}
-              and match against known patterns (Google Analytics, Facebook
-              Pixel, etc.). We categorize them as necessary, analytics, or
-              marketing. You can also manually configure categories.
-            </FaqItem>
-
-            <FaqItem question="Does this block cookies automatically?">
-              Yes. In GDPR mode (default), we prevent non-essential cookies from
-              being set until consent is given. This works by intercepting
-              cookie writes.
-            </FaqItem>
-
-            <FaqItem question="Can I customize the banner text?">
-              Yes. Use data attributes for company name and privacy policy URL.
-              For full text customization, use the JavaScript API or self-host
-              with modifications.
-            </FaqItem>
-
-            <FaqItem question="How do I add a 'Manage Cookies' link?">
-              Call{" "}
-              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                window.safeBanner.reset()
-              </code>{" "}
-              to clear consent and re-show the banner. See the Examples section
-              above.
-            </FaqItem>
-          </Section>
-
-          {/* Troubleshooting */}
-          <Section id="troubleshooting" title="Troubleshooting">
-            <TroubleshootItem title="Banner not appearing">
-              <ul className="list-inside list-disc space-y-1">
+              <h3>Banner not appearing</h3>
+              <ul>
                 <li>Check the browser console for errors</li>
-                <li>
-                  Ensure the script is loaded (Network tab → filter by
-                  &quot;consent&quot;)
-                </li>
-                <li>
-                  Clear localStorage (
-                  <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                    localStorage.removeItem(&apos;safebanner_consent&apos;)
-                  </code>
-                  )
-                </li>
-                <li>
-                  You may have already consented — try{" "}
-                  <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                    window.safeBanner.reset()
-                  </code>
-                </li>
+                <li>Clear localStorage: <code>localStorage.removeItem(&apos;safebanner_consent&apos;)</code></li>
+                <li>You may have already consented — try <code>window.safeBanner.reset()</code></li>
               </ul>
-            </TroubleshootItem>
 
-            <TroubleshootItem title="Cookies still being set before consent">
-              <ul className="list-inside list-disc space-y-1">
-                <li>
-                  Ensure our script loads <strong>before</strong> other scripts
-                  (analytics, ads, etc.)
-                </li>
-                <li>
-                  Some cookies are set server-side — we can only block
-                  client-side cookies
-                </li>
-                <li>Check if the cookie is categorized as &quot;necessary&quot;</li>
+              <h3>Cookies still being set before consent</h3>
+              <ul>
+                <li>Ensure SafeBanner loads <strong>before</strong> other scripts</li>
+                <li>Server-side cookies can&apos;t be blocked client-side</li>
               </ul>
-            </TroubleshootItem>
 
-            <TroubleshootItem title="Script not loading (CORS error)">
-              <ul className="list-inside list-disc space-y-1">
-                <li>
-                  If self-hosting, ensure your server sends proper CORS headers
-                </li>
-                <li>
-                  Use our CDN (
-                  <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                    www.safebanner.com
-                  </code>
-                  ) which handles CORS automatically
-                </li>
+              <h3>Style conflicts</h3>
+              <ul>
+                <li>Our styles use <code>.cm-</code> prefix to avoid conflicts</li>
+                <li>Check for aggressive CSS resets in your app</li>
               </ul>
-            </TroubleshootItem>
 
-            <TroubleshootItem title="Banner style conflicts">
-              <ul className="list-inside list-disc space-y-1">
-                <li>
-                  Our styles are scoped with{" "}
-                  <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                    .cm-
-                  </code>{" "}
-                  prefix to avoid conflicts
-                </li>
-                <li>
-                  Check for CSS resets or aggressive global styles in your app
-                </li>
-                <li>
-                  Use browser dev tools to inspect the banner element
-                </li>
-              </ul>
-            </TroubleshootItem>
+              <div className="not-prose my-8 rounded-lg border border-zinc-200 bg-zinc-50 p-6 text-center dark:border-zinc-800 dark:bg-zinc-900">
+                <p className="text-zinc-600 dark:text-zinc-400">
+                  Still stuck?{" "}
+                  <a
+                    href="https://github.com/hellokariburt/SafeBanner/issues"
+                    className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                  >
+                    Open an issue on GitHub
+                  </a>
+                </p>
+              </div>
 
-            <div className="mt-8 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Still stuck?{" "}
-                <a
-                  href="https://github.com/hellokariburt/SafeBanner/issues"
-                  className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
-                >
-                  Open an issue on GitHub
-                </a>{" "}
-                and we&apos;ll help.
-              </p>
+              {/* Footer */}
+              <div className="mt-12 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+                <Link href="/" className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400">
+                  ← Back to home
+                </Link>
+              </div>
             </div>
-          </Section>
-
-          {/* Footer */}
-          <div className="mt-16 border-t border-zinc-200 pt-8 dark:border-zinc-800">
-            <Link
-              href="/"
-              className="text-blue-600 hover:text-blue-500 dark:text-blue-400"
-            >
-              &larr; Back to home
-            </Link>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );
 }
 
-// Components
-
-function SidebarLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      className="block rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
-    >
-      {children}
-    </a>
-  );
-}
-
-function Section({
-  id,
-  title,
-  children,
-}: {
-  id: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="mt-16 scroll-mt-24 first:mt-12">
-      <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
-
+// Code block with copy button
 function CodeBlock({
   children,
   language,
+  copyable = false,
 }: {
   children: string;
   language?: string;
+  copyable?: boolean;
 }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(children.trim());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="mt-4 overflow-x-auto rounded-lg bg-zinc-900 p-4">
-      <pre className="text-sm text-green-400">
+    <div className="not-prose group relative my-4">
+      {language && (
+        <div className="absolute right-3 top-0 flex items-center gap-2">
+          <span className="rounded-b bg-zinc-700 px-2 py-0.5 text-xs text-zinc-400">
+            {language}
+          </span>
+        </div>
+      )}
+      {copyable && (
+        <button
+          onClick={handleCopy}
+          className="absolute right-3 top-3 rounded bg-zinc-700 px-2 py-1 text-xs text-zinc-400 opacity-0 transition hover:bg-zinc-600 hover:text-zinc-200 group-hover:opacity-100"
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
+      )}
+      <pre className="overflow-x-auto rounded-lg bg-zinc-900 p-4 text-sm leading-relaxed text-zinc-100">
         <code>{children}</code>
       </pre>
-    </div>
-  );
-}
-
-function ConfigRow({
-  attr,
-  values,
-  defaultVal,
-  desc,
-}: {
-  attr: string;
-  values: string;
-  defaultVal: string;
-  desc: string;
-}) {
-  return (
-    <tr className="border-b border-zinc-200 dark:border-zinc-800">
-      <td className="py-3 pr-4">
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-          {attr}
-        </code>
-      </td>
-      <td className="py-3 pr-4">{values}</td>
-      <td className="py-3 pr-4">
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-          {defaultVal}
-        </code>
-      </td>
-      <td className="py-3">{desc}</td>
-    </tr>
-  );
-}
-
-function CategoryCard({
-  name,
-  description,
-  examples,
-}: {
-  name: string;
-  description: string;
-  examples: string;
-}) {
-  return (
-    <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <h4 className="font-semibold text-zinc-900 dark:text-white">{name}</h4>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        {description}
-      </p>
-      <p className="mt-2 text-sm text-zinc-500">
-        <strong>Examples:</strong> {examples}
-      </p>
-    </div>
-  );
-}
-
-function ApiMethod({
-  name,
-  description,
-  returns,
-  example,
-}: {
-  name: string;
-  description: string;
-  returns: string;
-  example: string;
-}) {
-  return (
-    <div className="mt-8 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <h4 className="font-mono text-lg font-semibold text-zinc-900 dark:text-white">
-        {name}
-      </h4>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">{description}</p>
-      <p className="mt-2 text-sm text-zinc-500">
-        <strong>Returns:</strong>{" "}
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 dark:bg-zinc-800">
-          {returns}
-        </code>
-      </p>
-      <CodeBlock>{example}</CodeBlock>
-    </div>
-  );
-}
-
-function FeatureRow({
-  feature,
-  free,
-  starter,
-  pro,
-  enterprise,
-}: {
-  feature: string;
-  free: string;
-  starter: string;
-  pro: string;
-  enterprise: string;
-}) {
-  return (
-    <tr className="border-b border-zinc-200 dark:border-zinc-800">
-      <td className="py-3 pr-4 font-medium text-zinc-900 dark:text-white">
-        {feature}
-      </td>
-      <td className="py-3 pr-4">{free}</td>
-      <td className="py-3 pr-4">{starter}</td>
-      <td className="py-3 pr-4">{pro}</td>
-      <td className="py-3">{enterprise}</td>
-    </tr>
-  );
-}
-
-function FaqItem({
-  question,
-  children,
-}: {
-  question: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mt-6 first:mt-4">
-      <h3 className="font-semibold text-zinc-900 dark:text-white">
-        {question}
-      </h3>
-      <div className="mt-2 text-zinc-600 dark:text-zinc-400">{children}</div>
-    </div>
-  );
-}
-
-function TroubleshootItem({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mt-6 first:mt-4">
-      <h3 className="font-semibold text-zinc-900 dark:text-white">{title}</h3>
-      <div className="mt-2 text-zinc-600 dark:text-zinc-400">{children}</div>
     </div>
   );
 }
