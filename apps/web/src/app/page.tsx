@@ -41,21 +41,25 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          Pass audits without OneTrust.
+          The Developer-First Google Consent Mode v2 Banner
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          A lightweight, dev-friendly cookie consent banner for modern sites.
+          Pass audits, respect user privacy, and keep your analytics data.
+          SafeBanner is a lightweight, open source consent banner for modern
+          sites.
         </p>
 
         {/* Trust signals */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-zinc-500">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-400">
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
-            ~4kb gzipped
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            </span>
+            Google Consent Mode v2 Ready
           </span>
-          <span>MIT licensed</span>
-          <span>No cookies before consent</span>
-          <span>Google Consent Mode v2</span>
+          <span className="flex items-center gap-1.5">~4kb gzipped</span>
+          <span>MIT Licensed</span>
         </div>
 
         {/* Honest social proof */}
