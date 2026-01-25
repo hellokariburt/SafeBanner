@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ConsentState {
   necessary: boolean;
@@ -184,7 +185,8 @@ export default function DemoPage() {
       {/* Minimal Header */}
       <header className="fixed left-0 right-0 top-0 z-20 bg-zinc-100/80 backdrop-blur-sm dark:bg-zinc-950/80">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+            <Image src="/logo.png" alt="SafeBanner" width={24} height={24} />
             SafeBanner
           </Link>
           <Link href="/docs" className="text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300">
