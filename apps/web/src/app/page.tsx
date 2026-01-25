@@ -22,7 +22,7 @@ export default function Home() {
               Demo
             </Link>
             <a
-              href="https://github.com/yourusername/safebanner"
+              href="https://github.com/hellokariburt/SafeBanner"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-zinc-400 hover:text-white"
