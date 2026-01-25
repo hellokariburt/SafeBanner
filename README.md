@@ -17,7 +17,7 @@ Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and 
 Add one script tag:
 
 ```html
-<script src="https://cdn.safebanner.com/safebanner.js"></script>
+<script src="https://www.safebanner.com/safebanner.js"></script>
 ```
 
 That's it. A GDPR-compliant consent banner appears for new visitors.
@@ -26,7 +26,7 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
 
 ```html
 <script
-  src="https://cdn.safebanner.com/safebanner.js"
+  src="https://www.safebanner.com/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
@@ -90,7 +90,7 @@ import Script from 'next/script';
 export function SafeBanner() {
   return (
     <Script
-      src="https://cdn.safebanner.com/safebanner.js"
+      src="https://www.safebanner.com/safebanner.js"
       data-position="bottom-right"
       strategy="afterInteractive"
     />

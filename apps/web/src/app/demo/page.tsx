@@ -74,38 +74,15 @@ export default function DemoPage() {
     }
   }, []);
 
-  // Load script on mount
+  // Cleanup function for banner elements
   useEffect(() => {
-    // Clear consent so banner shows
-    localStorage.removeItem("safebanner_consent");
-
-    // Load the script
-    const script = document.createElement('script');
-    script.src = '/safebanner.js';
-    script.dataset.position = config.position;
-    script.dataset.theme = config.theme;
-    script.dataset.color = config.color;
-    script.dataset.lang = config.lang;
-    script.dataset.googleConsent = config.googleConsent;
-    script.dataset.company = 'Demo Site';
-    script.dataset.privacy = '/privacy';
-    script.onload = () => {
-      setScriptLoaded(true);
-      addLog("Script Loaded", "SafeBanner initialized", "info");
-      if (config.googleConsent !== "off") {
-        addLog("Google Consent Default", "All signals denied, wait_for_update: 500ms", "google");
-      }
-    };
-    document.body.appendChild(script);
-
     return () => {
       // Cleanup on unmount
-      script.remove();
+      document.querySelectorAll('script[src^="/safebanner.js"]').forEach(el => el.remove());
       document.querySelector('.cm-banner')?.remove();
       document.querySelector('.cm-overlay')?.remove();
       document.getElementById('consent-manager-styles')?.remove();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Poll for consent changes
@@ -182,7 +159,7 @@ export default function DemoPage() {
   };
 
   const generateScriptTag = () => {
-    const attrs = [`src="https://cdn.safebanner.com/safebanner.js"`];
+    const attrs = [`src="https://www.safebanner.com/safebanner.js"`];
     if (config.position !== "bottom") attrs.push(`data-position="${config.position}"`);
     if (config.theme !== "light") attrs.push(`data-theme="${config.theme}"`);
     if (config.color !== "#2563eb") attrs.push(`data-color="${config.color}"`);
@@ -298,7 +275,7 @@ export default function DemoPage() {
               </div>
               <div className="mt-2 overflow-hidden rounded-lg bg-zinc-900 dark:bg-zinc-950">
                 <pre className="overflow-x-auto p-3 text-xs text-emerald-400 sm:p-4 sm:text-sm">
-                  <code>{`<script src="https://cdn.safebanner.com/safebanner.js"></script>`}</code>
+                  <code>{`<script src="https://www.safebanner.com/safebanner.js"></script>`}</code>
                 </pre>
               </div>
               <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-400 sm:gap-x-4">
@@ -314,6 +291,21 @@ export default function DemoPage() {
               <span>No tracking</span>
               <span>GDPR-ready</span>
               <span>Google Consent v2</span>
+            </div>
+
+            {/* Preview button - always visible */}
+            <div className="mt-5 border-t border-zinc-100 pt-5 sm:mt-6 sm:pt-6 dark:border-zinc-800">
+              <button
+                onClick={applyConfig}
+                className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+              >
+                {scriptLoaded ? "Preview Again" : "Preview Banner"}
+              </button>
+              {!scriptLoaded && (
+                <p className="mt-2 text-center text-xs text-zinc-400">
+                  See how the banner looks on your site
+                </p>
+              )}
             </div>
 
             {/* Layer 2: Customize (collapsed) */}
@@ -435,13 +427,6 @@ export default function DemoPage() {
                       ))}
                     </div>
                   </div>
-
-                  <button
-                    onClick={applyConfig}
-                    className="w-full rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                  >
-                    Preview
-                  </button>
 
                   {/* Show customized code if non-default */}
                   {(config.position !== "bottom" || config.theme !== "light" || config.color !== "#2563eb" || config.lang !== "en" || config.googleConsent !== "advanced") && (
