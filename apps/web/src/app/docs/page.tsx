@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function DocsPage() {
   return (
@@ -8,8 +9,9 @@ export default function DocsPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link
             href="/"
-            className="text-lg font-semibold text-zinc-900 dark:text-white"
+            className="flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-white"
           >
+            <Image src="/logo.png" alt="SafeBanner" width={28} height={28} />
             SafeBanner
           </Link>
           <nav className="flex items-center gap-6">

@@ -24,11 +24,20 @@ export const metadata: Metadata = {
     siteName: "SafeBanner",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "https://www.safebanner.com/logo.png",
+        width: 512,
+        height: 512,
+        alt: "SafeBanner Logo",
+      },
+    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "SafeBanner — Cookie Consent That Passes Audits",
     description: "Open source cookie consent banner. GDPR compliant, lightweight (<4kb), 5-minute setup.",
+    images: ["https://www.safebanner.com/logo.png"],
   },
   robots: {
     index: true,
