@@ -13,7 +13,7 @@ export interface ConsentConfig {
   primaryColor?: string;
   companyName?: string;
   privacyPolicyUrl?: string;
-  /** Language code: free = 'en', 'fr', 'de'; pro = 'es', 'it', 'nl', 'pt' */
+  /** Language code: free includes en/fr/de; Pro unlocks additional built-in languages */
   lang?: string;
   /** Google Consent Mode v2: 'advanced' (default) sends pings for modeling, 'basic' blocks completely */
   googleConsentMode?: 'advanced' | 'basic' | 'off';
