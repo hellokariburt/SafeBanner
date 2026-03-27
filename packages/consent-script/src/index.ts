@@ -3,7 +3,7 @@ import { getStoredConsent, storeConsent, clearConsent, hasConsented } from './st
 import { detectCookies, deleteCookiesByCategory } from './detector';
 import { showBanner, hideBanner, isBannerVisible } from './banner';
 import { initGoogleConsent, updateGoogleConsent, type GoogleConsentMode } from './google-consent';
-import { isProLanguage, resolveLanguage } from './translations';
+import { hasTranslations, isProLanguage, registerTranslations, resolveLanguage, type ProLanguage, type Translations } from './translations';
 
 // Export types for consumers
 export type { ConsentConfig, ConsentState, ConsentCategory };
@@ -51,6 +51,17 @@ function getValidationEndpoint(): string | null {
   }
 }
 
+function getProTranslationsEndpoint(): string | null {
+  const script = getScriptElement();
+  if (!script?.src) return null;
+
+  try {
+    return new URL('/safebanner-pro-translations.json', script.src).toString();
+  } catch {
+    return null;
+  }
+}
+
 function getLicenseCache(projectKey: string): boolean | null {
   try {
     const cached = localStorage.getItem(`${LICENSE_CACHE_PREFIX}${projectKey}`);
@@ -90,6 +101,7 @@ class SafeBanner {
   private requestedLanguage: string | undefined;
   private hasProLicense = false;
   private validationStarted = false;
+  private proTranslationsPromise: Promise<void> | null = null;
 
   constructor(config: ConsentConfig = {}) {
     this.config = { ...getConfigFromScript(), ...config };
@@ -121,7 +133,7 @@ class SafeBanner {
     }
   }
 
-  init(): void {
+  async init(): Promise<void> {
     if (this.initialized) return;
     this.initialized = true;
 
@@ -130,6 +142,8 @@ class SafeBanner {
       this.enforceConsent();
       return;
     }
+
+    await this.ensureRequestedLanguageLoaded();
 
     // Show banner for new visitors
     showBanner(this.getBannerConfig());
@@ -152,6 +166,31 @@ class SafeBanner {
     this.hasProLicense = valid;
     this.config.lang = resolveLanguage(this.requestedLanguage, valid);
     this.config.showBranding = !valid;
+  }
+
+  private async ensureRequestedLanguageLoaded(): Promise<void> {
+    if (!this.hasProLicense || !isProLanguage(this.requestedLanguage)) return;
+    if (hasTranslations(this.requestedLanguage)) return;
+    if (this.proTranslationsPromise) return this.proTranslationsPromise;
+
+    const endpoint = getProTranslationsEndpoint();
+    if (!endpoint) return;
+
+    this.proTranslationsPromise = (async () => {
+      try {
+        const response = await fetch(endpoint, { mode: 'cors' });
+        if (!response.ok) return;
+
+        const data = (await response.json()) as Partial<Record<ProLanguage, Translations>>;
+        registerTranslations(data);
+      } catch {
+        // Keep the English fallback if translation loading fails.
+      } finally {
+        this.proTranslationsPromise = null;
+      }
+    })();
+
+    return this.proTranslationsPromise;
   }
 
   private async validateProjectKey(): Promise<void> {
@@ -181,16 +220,17 @@ class SafeBanner {
       const data = (await response.json()) as { valid?: boolean };
       const valid = data.valid === true;
       setLicenseCache(this.config.projectKey, valid);
-      this.upgradeLicenseState(valid);
+      await this.upgradeLicenseState(valid);
     } catch {
       // Validation is best-effort. Free behavior remains the safe default.
     }
   }
 
-  private upgradeLicenseState(valid: boolean): void {
+  private async upgradeLicenseState(valid: boolean): Promise<void> {
     const previousLanguage = this.config.lang;
     const previousBranding = this.config.showBranding;
     this.applyLicenseState(valid);
+    await this.ensureRequestedLanguageLoaded();
 
     if (!isBannerVisible()) {
       return;
