@@ -1,8 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const FROM = "SafeBanner <noreply@safebanner.com>";
+
+function getResendClient(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return null;
+  }
+
+  return new Resend(apiKey);
+}
 
 export async function sendLicenseEmail({
   to,
@@ -13,6 +20,12 @@ export async function sendLicenseEmail({
   plan: "pro" | "agency";
   licenseKey: string;
 }): Promise<void> {
+  const resend = getResendClient();
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not configured; skipping license email");
+    return;
+  }
+
   const isPro = plan === "pro";
   const planLabel = isPro ? "Pro" : "Agency";
 
