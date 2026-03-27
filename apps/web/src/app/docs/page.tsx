@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { DocsContent } from "./DocsContent";
+import SiteFooter from "../components/SiteFooter";
 
 export default function DocsPage() {
   return (
@@ -35,6 +36,7 @@ export default function DocsPage() {
       </header>
 
       <DocsContent />
+      <SiteFooter theme="light" />
     </div>
   );
 }

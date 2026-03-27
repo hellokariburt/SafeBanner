@@ -13,10 +13,14 @@ export interface ConsentConfig {
   primaryColor?: string;
   companyName?: string;
   privacyPolicyUrl?: string;
-  /** Language code: 'en' (default), 'fr', 'de' */
+  /** Language code: free = 'en', 'fr', 'de'; pro = 'es', 'it', 'nl', 'pt' */
   lang?: string;
   /** Google Consent Mode v2: 'advanced' (default) sends pings for modeling, 'basic' blocks completely */
   googleConsentMode?: 'advanced' | 'basic' | 'off';
+  /** Pro license key */
+  projectKey?: string;
+  /** Internal: hide "Powered by SafeBanner" when a valid Pro license is active */
+  showBranding?: boolean;
   onAccept?: (consent: ConsentState) => void;
   onDecline?: () => void;
   onUpdate?: (consent: ConsentState) => void;

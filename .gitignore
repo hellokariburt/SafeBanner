@@ -5,8 +5,10 @@ dist
 *.log
 .DS_Store
 .env
-.env.local
-.env.example
+.env.*
+**/.env
+**/.env.*
+!.env.example
 
 # Internal docs
 CLAUDE.md
