@@ -3,12 +3,12 @@
 Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~4kb-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-~5kb-green.svg)]()
 
 ## Why SafeBanner?
 
 - **Open source** — Audit the code yourself. No black boxes.
-- **Lightweight** — ~4kb gzipped. Won't slow your site.
+- **Lightweight** — ~5kb gzipped. Won't slow your site.
 - **Actually works** — Consent persists locally and Google Consent Mode is supported.
 - **No account required** — Free tier runs entirely client-side.
 
@@ -154,7 +154,7 @@ cd apps/web && pnpm dev
 ```
 safebanner/
 ├── packages/
-│   └── consent-script/       # The embeddable script (~4kb gzipped)
+│   └── consent-script/       # The embeddable script (~5kb gzipped)
 │       ├── src/
 │       │   ├── index.ts      # Entry point + SafeBanner class
 │       │   ├── banner.ts     # UI component

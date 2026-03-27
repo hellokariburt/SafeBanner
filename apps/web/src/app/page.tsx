@@ -59,7 +59,7 @@ export default function Home() {
             </span>
             Google Consent Mode v2 Ready
           </span>
-          <span className="flex items-center gap-1.5">~4kb gzipped</span>
+          <span className="flex items-center gap-1.5">~5kb gzipped</span>
           <span>MIT Licensed</span>
         </div>
 
@@ -277,7 +277,7 @@ export default function Home() {
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">Lightweight</h3>
               <p className="mt-2 text-zinc-400">
-                ~4kb gzipped. Won&apos;t slow your site.
+                ~5kb gzipped. Won&apos;t slow your site.
               </p>
             </div>
             <div className="rounded-lg border border-zinc-800 p-6">
