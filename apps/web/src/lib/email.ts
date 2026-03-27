@@ -1,0 +1,50 @@
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const FROM = "SafeBanner <noreply@safebanner.com>";
+
+export async function sendLicenseEmail({
+  to,
+  plan,
+  licenseKey,
+}: {
+  to: string;
+  plan: "pro" | "agency";
+  licenseKey: string;
+}): Promise<void> {
+  const isPro = plan === "pro";
+  const planLabel = isPro ? "Pro" : "Agency";
+
+  const scriptTag = `<script
+  src="https://www.safebanner.com/safebanner.js"
+  data-project-key="${licenseKey}">
+</script>`;
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: `Your SafeBanner ${planLabel} license key`,
+    text: [
+      `Thanks for subscribing to SafeBanner ${planLabel}.`,
+      "",
+      "Your license key:",
+      licenseKey,
+      "",
+      "Add it to your script tag:",
+      scriptTag,
+      "",
+      isPro
+        ? "Your key removes SafeBanner branding and unlocks all Pro languages."
+        : "Your key removes SafeBanner branding and unlocks all Pro languages.\n\nReply to this email with the domains you want added to your allowlist (up to 25).",
+      "",
+      "Docs: https://www.safebanner.com/docs",
+      "",
+      "Questions? Reply to this email or reach us at admin@safebanner.com",
+    ].join("\n"),
+  });
+
+  if (error) {
+    throw new Error(`Failed to send license email: ${error.message}`);
+  }
+}

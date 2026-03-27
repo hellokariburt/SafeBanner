@@ -145,7 +145,9 @@ function buildSimpleBanner(config: ConsentConfig, t: Translations): DocumentFrag
   buttons.appendChild(createButton(t.customize, 'customize', 'cm-btn cm-btn-link'));
   fragment.appendChild(buttons);
 
-  fragment.appendChild(createPoweredBy());
+  if (config.showBranding !== false) {
+    fragment.appendChild(createPoweredBy());
+  }
 
   return fragment;
 }
@@ -189,7 +191,9 @@ function buildDetailsBanner(config: ConsentConfig, t: Translations): DocumentFra
   buttons.appendChild(createButton(t.acceptAll, 'accept-all', 'cm-btn cm-btn-secondary'));
   fragment.appendChild(buttons);
 
-  fragment.appendChild(createPoweredBy());
+  if (config.showBranding !== false) {
+    fragment.appendChild(createPoweredBy());
+  }
 
   return fragment;
 }
