@@ -206,9 +206,9 @@ export function DocsContent() {
                 />
                 <ConfigRow
                   attr="data-lang"
-                  values="en, fr, de, es, it, nl, pt"
+                  values="en, fr, de, plus additional Pro languages"
                   defaultVal="en"
-                  desc="Banner language. es/it/nl/pt require a Pro or Agency key"
+                  desc="Banner language. Free includes en/fr/de. Additional built-in languages require a Pro or Agency key"
                 />
                 <ConfigRow
                   attr="data-google-consent"
@@ -230,13 +230,14 @@ export function DocsContent() {
             Languages
           </h3>
           <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            Free includes English, French, and German. Pro and Agency unlock
-            Spanish, Italian, Dutch, and Portuguese with a valid{" "}
+            Free includes English, French, and German in the core bundle. Pro
+            and Agency unlock additional built-in languages with a valid{" "}
             <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
               data-project-key
             </code>
-            . If a Pro-only language is requested without a valid key,
-            SafeBanner falls back to English.
+            . Those Pro translations load on demand, so the free core bundle
+            stays small. If a Pro-only language is requested without a valid
+            key, SafeBanner falls back to English.
           </p>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
@@ -602,9 +603,10 @@ cd packages/consent-script && pnpm build
           </FaqItem>
 
           <FaqItem question="What does Pro unlock?">
-            Pro removes the Powered by SafeBanner footer and unlocks Spanish,
-            Italian, Dutch, and Portuguese. Agency includes the same script
-            features plus manual domain onboarding for client sites.
+            Pro removes the Powered by SafeBanner footer and unlocks additional
+            built-in languages. Those translations load on demand, so the core
+            banner stays small. Agency includes the same script features plus
+            manual domain onboarding for client sites.
           </FaqItem>
 
           <FaqItem question="Can I customize the banner text?">

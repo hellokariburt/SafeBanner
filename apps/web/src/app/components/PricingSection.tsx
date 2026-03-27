@@ -9,7 +9,9 @@ export default function PricingSection() {
         <h2 className="text-3xl font-bold text-white">Simple pricing.</h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
           SafeBanner keeps the core banner free. Paid plans unlock branding,
-          language coverage, and licensing for teams shipping commercial sites.
+          additional built-in languages, and licensing for teams shipping
+          commercial sites. Pro languages load on demand and do not bloat the
+          free bundle.
         </p>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -37,7 +39,7 @@ export default function PricingSection() {
             highlighted
             features={[
               "Remove Powered by SafeBanner",
-              "Spanish, Italian, Dutch, Portuguese",
+              "Additional built-in languages",
               "Commercial-use license key",
               "1 active paid subscription",
             ]}

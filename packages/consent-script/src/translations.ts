@@ -1,10 +1,20 @@
 /**
  * Static translations - no runtime loading, no interpolation.
- * Add languages here. Missing language → fallback to 'en'.
+ * Free languages stay in the core bundle.
+ * Pro languages are loaded lazily from a static JSON asset.
  */
 
-export type FreeLanguage = 'en' | 'fr' | 'de';
-export type ProLanguage = 'es' | 'it' | 'nl' | 'pt';
+export const FREE_LANGUAGE_CODES = ['en', 'fr', 'de'] as const;
+export const PRO_LANGUAGE_CODES = [
+  'es', 'it', 'nl', 'pt', 'pl', 'sv', 'da', 'fi', 'cs', 'no',
+  'ro', 'hu', 'el', 'tr', 'uk', 'bg', 'hr', 'sk', 'sl', 'lt',
+  'lv', 'et', 'mt', 'ga', 'ca', 'eu', 'gl', 'is', 'sq', 'sr',
+  'bs', 'mk', 'ru', 'ar', 'he', 'ja', 'ko', 'zh', 'hi', 'id',
+  'ms', 'th', 'vi', 'fa',
+] as const;
+
+export type FreeLanguage = typeof FREE_LANGUAGE_CODES[number];
+export type ProLanguage = typeof PRO_LANGUAGE_CODES[number];
 export type SupportedLanguage = FreeLanguage | ProLanguage;
 
 export interface Translations {
@@ -23,7 +33,7 @@ export interface Translations {
   privacyPolicy: string;
 }
 
-const TRANSLATIONS: Record<SupportedLanguage, Translations> = {
+const FREE_TRANSLATIONS: Record<FreeLanguage, Translations> = {
   en: {
     title: 'Cookie Consent',
     description: 'We use cookies to improve your experience and analyze site traffic.',
@@ -69,83 +79,43 @@ const TRANSLATIONS: Record<SupportedLanguage, Translations> = {
     required: '(Erforderlich)',
     privacyPolicy: 'Datenschutzrichtlinie',
   },
-  es: {
-    title: 'Consentimiento de cookies',
-    description: 'Utilizamos cookies para mejorar tu experiencia y analizar el tráfico del sitio.',
-    preferencesTitle: 'Preferencias de cookies',
-    preferencesDescription: 'Elige qué cookies deseas aceptar.',
-    acceptAll: 'Aceptar todo',
-    rejectAll: 'Rechazar todo',
-    customize: 'Personalizar',
-    save: 'Guardar preferencias',
-    necessary: 'Necesarias',
-    analytics: 'Analítica',
-    marketing: 'Marketing',
-    required: '(Obligatorio)',
-    privacyPolicy: 'Política de privacidad',
-  },
-  it: {
-    title: 'Consenso ai cookie',
-    description: 'Utilizziamo i cookie per migliorare la tua esperienza e analizzare il traffico del sito.',
-    preferencesTitle: 'Preferenze cookie',
-    preferencesDescription: 'Scegli quali cookie desideri accettare.',
-    acceptAll: 'Accetta tutto',
-    rejectAll: 'Rifiuta tutto',
-    customize: 'Personalizza',
-    save: 'Salva preferenze',
-    necessary: 'Necessari',
-    analytics: 'Analitici',
-    marketing: 'Marketing',
-    required: '(Obbligatorio)',
-    privacyPolicy: 'Informativa sulla privacy',
-  },
-  nl: {
-    title: 'Cookie-toestemming',
-    description: 'We gebruiken cookies om je ervaring te verbeteren en het siteverkeer te analyseren.',
-    preferencesTitle: 'Cookievoorkeuren',
-    preferencesDescription: 'Kies welke cookies je wilt accepteren.',
-    acceptAll: 'Alles accepteren',
-    rejectAll: 'Alles weigeren',
-    customize: 'Aanpassen',
-    save: 'Voorkeuren opslaan',
-    necessary: 'Noodzakelijk',
-    analytics: 'Analyse',
-    marketing: 'Marketing',
-    required: '(Vereist)',
-    privacyPolicy: 'Privacybeleid',
-  },
-  pt: {
-    title: 'Consentimento de cookies',
-    description: 'Usamos cookies para melhorar sua experiência e analisar o tráfego do site.',
-    preferencesTitle: 'Preferências de cookies',
-    preferencesDescription: 'Escolha quais cookies deseja aceitar.',
-    acceptAll: 'Aceitar tudo',
-    rejectAll: 'Recusar tudo',
-    customize: 'Personalizar',
-    save: 'Salvar preferências',
-    necessary: 'Necessários',
-    analytics: 'Análises',
-    marketing: 'Marketing',
-    required: '(Obrigatório)',
-    privacyPolicy: 'Política de privacidade',
-  },
 };
 
-const FREE_LANGUAGES: FreeLanguage[] = ['en', 'fr', 'de'];
-const PRO_LANGUAGES: ProLanguage[] = ['es', 'it', 'nl', 'pt'];
+const translations: Partial<Record<SupportedLanguage, Translations>> = {
+  ...FREE_TRANSLATIONS,
+};
 
 function normalizeLanguage(lang: string | undefined): SupportedLanguage | null {
   if (!lang) return null;
 
   const normalized = lang.toLowerCase().slice(0, 2) as SupportedLanguage;
-  return normalized in TRANSLATIONS ? normalized : null;
+  return isSupportedLanguageCode(normalized) ? normalized : null;
+}
+
+function isSupportedLanguageCode(lang: SupportedLanguage): boolean {
+  return (
+    FREE_LANGUAGE_CODES.includes(lang as FreeLanguage) ||
+    PRO_LANGUAGE_CODES.includes(lang as ProLanguage)
+  );
+}
+
+export function registerTranslations(
+  nextTranslations: Partial<Record<ProLanguage, Translations>>
+): void {
+  Object.assign(translations, nextTranslations);
+}
+
+export function hasTranslations(lang: string | undefined): boolean {
+  const normalized = normalizeLanguage(lang);
+  return normalized ? Boolean(translations[normalized]) : false;
 }
 
 /**
  * Get translations for a language. Falls back to English if not found.
  */
 export function getTranslations(lang: string | undefined): Translations {
-  return TRANSLATIONS[normalizeLanguage(lang) || 'en'];
+  const normalized = normalizeLanguage(lang);
+  return (normalized && translations[normalized]) || FREE_TRANSLATIONS.en;
 }
 
 /**
@@ -157,7 +127,7 @@ export function isSupported(lang: string): lang is SupportedLanguage {
 
 export function isProLanguage(lang: string | undefined): boolean {
   const normalized = normalizeLanguage(lang);
-  return normalized ? PRO_LANGUAGES.includes(normalized as ProLanguage) : false;
+  return normalized ? PRO_LANGUAGE_CODES.includes(normalized as ProLanguage) : false;
 }
 
 export function resolveLanguage(
@@ -166,6 +136,6 @@ export function resolveLanguage(
 ): SupportedLanguage {
   const normalized = normalizeLanguage(requestedLanguage);
   if (!normalized) return 'en';
-  if (FREE_LANGUAGES.includes(normalized as FreeLanguage)) return normalized;
+  if (FREE_LANGUAGE_CODES.includes(normalized as FreeLanguage)) return normalized;
   return hasProLicense ? normalized : 'en';
 }

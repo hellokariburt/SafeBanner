@@ -3,12 +3,12 @@
 Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~5kb-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-~5kb%20core-green.svg)]()
 
 ## Why SafeBanner?
 
 - **Open source** — Audit the code yourself. No black boxes.
-- **Lightweight** — ~5kb gzipped. Won't slow your site.
+- **Lightweight** — ~5kb gzipped core bundle. Pro languages load on demand.
 - **Actually works** — Consent persists locally and Google Consent Mode is supported.
 - **No account required** — Free tier runs entirely client-side.
 
@@ -49,7 +49,8 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
 
 Free languages: `en`, `fr`, `de`
 
-Pro / Agency languages: `es`, `it`, `nl`, `pt`
+Pro / Agency unlock additional built-in languages via `data-project-key`.
+Those translations load on demand and do not bloat the free core bundle.
 
 ## JavaScript API
 
@@ -165,7 +166,7 @@ If Vercel points at the repo root, deployment will fail with `No Next.js version
 ```
 safebanner/
 ├── packages/
-│   └── consent-script/       # The embeddable script (~5kb gzipped)
+│   └── consent-script/       # The embeddable script (~5kb gzipped core)
 │       ├── src/
 │       │   ├── index.ts      # Entry point + SafeBanner class
 │       │   ├── banner.ts     # UI component
@@ -191,7 +192,7 @@ safebanner/
 | Tier | Price | What you get |
 |------|-------|--------------|
 | **Free** | $0 | Full consent banner, local storage, GDPR mode, self-host |
-| **Pro** | $9/mo | Remove branding, unlock ES/IT/NL/PT, commercial license key |
+| **Pro** | $9/mo | Remove branding, unlock additional built-in languages, commercial license key |
 | **Agency** | $29/mo | Everything in Pro plus manual client-domain onboarding |
 
 Free tier is fully functional. Paid plans keep the product simple and do not include hosted consent records.
