@@ -149,6 +149,17 @@ cd packages/consent-script && pnpm build
 cd apps/web && pnpm dev
 ```
 
+## Vercel Deployment
+
+The Next.js app is in `apps/web`, not the repository root.
+
+If you deploy on Vercel, set:
+
+- `Root Directory`: `apps/web`
+- `Framework Preset`: `Next.js`
+
+If Vercel points at the repo root, deployment will fail with `No Next.js version detected`.
+
 ## Project Structure
 
 ```
