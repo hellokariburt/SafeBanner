@@ -30,6 +30,21 @@ function createText(text: string): Text {
 }
 
 /**
+ * Creates the "Powered by SafeBanner" attribution footer.
+ */
+function createPoweredBy(): HTMLDivElement {
+  const div = document.createElement('div');
+  div.className = 'cm-powered-by';
+  const link = document.createElement('a');
+  link.href = 'https://www.safebanner.com';
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = 'Powered by SafeBanner';
+  div.appendChild(link);
+  return div;
+}
+
+/**
  * Creates the privacy policy link element (or null if no valid URL).
  */
 function createPrivacyLink(url: string | undefined, text: string): HTMLAnchorElement | null {
@@ -130,6 +145,8 @@ function buildSimpleBanner(config: ConsentConfig, t: Translations): DocumentFrag
   buttons.appendChild(createButton(t.customize, 'customize', 'cm-btn cm-btn-link'));
   fragment.appendChild(buttons);
 
+  fragment.appendChild(createPoweredBy());
+
   return fragment;
 }
 
@@ -171,6 +188,8 @@ function buildDetailsBanner(config: ConsentConfig, t: Translations): DocumentFra
   buttons.appendChild(createButton(t.save, 'save', 'cm-btn cm-btn-primary'));
   buttons.appendChild(createButton(t.acceptAll, 'accept-all', 'cm-btn cm-btn-secondary'));
   fragment.appendChild(buttons);
+
+  fragment.appendChild(createPoweredBy());
 
   return fragment;
 }

@@ -133,6 +133,21 @@ export function getStyles(config: ConsentConfig): string {
       font-size: 12px;
       color: ${config.theme === 'dark' ? '#9ca3af' : '#9ca3af'};
     }
+
+    .cm-powered-by {
+      margin-top: 12px;
+      font-size: 11px;
+      color: ${config.theme === 'dark' ? '#6b7280' : '#9ca3af'};
+    }
+
+    .cm-powered-by a {
+      color: ${config.theme === 'dark' ? '#6b7280' : '#9ca3af'};
+      text-decoration: none;
+    }
+
+    .cm-powered-by a:hover {
+      text-decoration: underline;
+    }
   `;
 }
 
