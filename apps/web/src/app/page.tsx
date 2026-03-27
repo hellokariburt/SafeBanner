@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import PricingSection from "./components/PricingSection";
 import { CopyButton } from "./components/CopyButton";
+import SiteFooter from "./components/SiteFooter";
 
 export default function Home() {
   return (
@@ -433,12 +434,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800">
-        <div className="mx-auto max-w-5xl px-6 py-12 text-center text-sm text-zinc-500">
-          <p>SafeBanner — Open source cookie consent done right.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
