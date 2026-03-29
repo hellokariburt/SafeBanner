@@ -14,6 +14,9 @@ export default function PricingSection() {
         <p className="mt-3 max-w-2xl text-zinc-400">
           Free gets you a fully working consent banner. Pro makes it match your product.
         </p>
+        <p className="mt-2 text-sm text-zinc-500">
+          No hosted consent records. No enterprise bloat. Just a clean banner that works.
+        </p>
         <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
           <button
             type="button"
@@ -67,17 +70,16 @@ export default function PricingSection() {
             highlighted
             features={[
               "Everything in Free, plus:",
-              "Remove SafeBanner branding",
+              "No SafeBanner branding",
               "Logo support",
               "Auto dark/light theme",
               "Compact bar and floating card layouts",
-              "Custom text, labels, and button style",
-              "Border radius, max-width, offset controls",
-              "Spanish, Italian, Dutch, Portuguese",
-              "Commercial use",
+              "Custom text and button labels",
+              "More languages (ES, IT, NL, PT + 40 more)",
+              "Commercial use license",
             ]}
             ctaHref={`/upgrade?interval=${interval}`}
-            ctaLabel={`Upgrade to Pro${isAnnual ? " Annual" : ""}`}
+            ctaLabel={`Upgrade to Pro${isAnnual ? " — Annual" : ""}`}
             ctaClass="bg-blue-600 text-white hover:bg-blue-500"
           />
         </div>

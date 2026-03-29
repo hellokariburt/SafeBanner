@@ -29,10 +29,16 @@ declare global {
 
 interface BannerConfig {
   position: "bottom" | "top" | "bottom-left" | "bottom-right";
-  theme: "light" | "dark";
+  theme: "light" | "dark" | "auto";
   color: string;
   lang: "en" | "fr" | "de";
   googleConsent: "advanced" | "basic" | "off";
+  // Pro fields
+  layout: "banner" | "bar" | "card";
+  buttonStyle: "default" | "pill" | "square";
+  logoUrl: string;
+  bannerTitle: string;
+  bannerDescription: string;
 }
 
 interface LogEntry {
@@ -52,7 +58,20 @@ export default function DemoPage() {
     color: "#2563eb",
     lang: "en",
     googleConsent: "advanced",
+    layout: "banner",
+    buttonStyle: "default",
+    logoUrl: "",
+    bannerTitle: "",
+    bannerDescription: "",
   });
+
+  const hasProOptions =
+    config.layout !== "banner" ||
+    config.theme === "auto" ||
+    config.buttonStyle !== "default" ||
+    config.logoUrl.trim() !== "" ||
+    config.bannerTitle.trim() !== "" ||
+    config.bannerDescription.trim() !== "";
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const logIdRef = useRef(0);
   const [customizeOpen, setCustomizeOpen] = useState(false);
@@ -162,9 +181,15 @@ export default function DemoPage() {
     script.dataset.googleConsent = config.googleConsent;
     script.dataset.company = 'Demo Site';
     script.dataset.privacy = 'https://www.safebanner.com/docs';
+    // Pro fields
+    if (config.layout !== "banner") script.dataset.layout = config.layout;
+    if (config.buttonStyle !== "default") script.dataset.buttonStyle = config.buttonStyle;
+    if (config.logoUrl.trim()) script.dataset.logo = config.logoUrl.trim();
+    if (config.bannerTitle.trim()) script.dataset.bannerTitle = config.bannerTitle.trim();
+    if (config.bannerDescription.trim()) script.dataset.bannerDescription = config.bannerDescription.trim();
     script.onload = () => {
       setScriptLoaded(true);
-      addLog("Config Applied", `Position: ${config.position}, Theme: ${config.theme}, Lang: ${config.lang}`, "info");
+      addLog("Config Applied", `Layout: ${config.layout}, Theme: ${config.theme}, Lang: ${config.lang}`, "info");
     };
     document.body.appendChild(script);
   };
@@ -176,6 +201,11 @@ export default function DemoPage() {
     if (config.color !== "#2563eb") attrs.push(`data-color="${config.color}"`);
     if (config.lang !== "en") attrs.push(`data-lang="${config.lang}"`);
     if (config.googleConsent !== "advanced") attrs.push(`data-google-consent="${config.googleConsent}"`);
+    if (config.layout !== "banner") attrs.push(`data-layout="${config.layout}"`);
+    if (config.buttonStyle !== "default") attrs.push(`data-button-style="${config.buttonStyle}"`);
+    if (config.logoUrl.trim()) attrs.push(`data-logo="${config.logoUrl.trim()}"`);
+    if (config.bannerTitle.trim()) attrs.push(`data-banner-title="${config.bannerTitle.trim()}"`);
+    if (config.bannerDescription.trim()) attrs.push(`data-banner-description="${config.bannerDescription.trim()}"`);
 
     if (attrs.length === 1) {
       return `<script ${attrs[0]}></script>`;
@@ -445,11 +475,119 @@ export default function DemoPage() {
                     </div>
                   </div>
 
+                  {/* Pro controls separator */}
+                  <div className="flex items-center gap-3 pt-1">
+                    <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
+                    <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
+                      Pro
+                    </span>
+                    <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
+                  </div>
+
+                  {/* Layout */}
+                  <div>
+                    <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Layout</label>
+                    <div className="mt-2 grid grid-cols-3 gap-2">
+                      {(["banner", "bar", "card"] as const).map((layout) => (
+                        <button
+                          key={layout}
+                          onClick={() => setConfig((c) => ({ ...c, layout }))}
+                          className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                            config.layout === layout
+                              ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                              : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                          }`}
+                        >
+                          {layout.charAt(0).toUpperCase() + layout.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-1.5 text-xs text-zinc-400">Bar = slim footer strip. Card = floating centered.</p>
+                  </div>
+
+                  {/* Auto theme + Button style row */}
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Auto Theme</label>
+                      <div className="mt-2 grid grid-cols-3 gap-2">
+                        {(["light", "dark", "auto"] as const).map((theme) => (
+                          <button
+                            key={theme}
+                            onClick={() => setConfig((c) => ({ ...c, theme }))}
+                            className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                              config.theme === theme
+                                ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                            }`}
+                          >
+                            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Button Style</label>
+                      <div className="mt-2 grid grid-cols-3 gap-2">
+                        {(["default", "pill", "square"] as const).map((style) => (
+                          <button
+                            key={style}
+                            onClick={() => setConfig((c) => ({ ...c, buttonStyle: style }))}
+                            className={`rounded-md border px-2 py-1.5 text-xs transition ${
+                              config.buttonStyle === style
+                                ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : "border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:text-zinc-400"
+                            }`}
+                          >
+                            {style.charAt(0).toUpperCase() + style.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Logo URL */}
+                  <div>
+                    <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Logo URL</label>
+                    <input
+                      type="url"
+                      placeholder="https://example.com/logo.png"
+                      value={config.logoUrl}
+                      onChange={(e) => setConfig((c) => ({ ...c, logoUrl: e.target.value }))}
+                      className="mt-2 w-full rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-white placeholder:text-zinc-400"
+                    />
+                  </div>
+
+                  {/* Custom text */}
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Banner Title</label>
+                      <input
+                        type="text"
+                        placeholder="Cookie Consent"
+                        value={config.bannerTitle}
+                        onChange={(e) => setConfig((c) => ({ ...c, bannerTitle: e.target.value }))}
+                        className="mt-2 w-full rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-white placeholder:text-zinc-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Banner Description</label>
+                      <input
+                        type="text"
+                        placeholder="We use cookies to..."
+                        value={config.bannerDescription}
+                        onChange={(e) => setConfig((c) => ({ ...c, bannerDescription: e.target.value }))}
+                        className="mt-2 w-full rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-white placeholder:text-zinc-400"
+                      />
+                    </div>
+                  </div>
+
                   {/* Show customized code if non-default */}
-                  {(config.position !== "bottom" || config.theme !== "light" || config.color !== "#2563eb" || config.lang !== "en" || config.googleConsent !== "advanced") && (
+                  {(config.position !== "bottom" || config.theme !== "light" || config.color !== "#2563eb" || config.lang !== "en" || config.googleConsent !== "advanced" || hasProOptions) && (
                     <div className="mt-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Your customized code</span>
+                        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                          {hasProOptions ? "Your Pro embed code" : "Your customized code"}
+                        </span>
                         <button
                           onClick={handleCopy}
                           className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -460,6 +598,14 @@ export default function DemoPage() {
                       <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-zinc-900 p-3 text-xs text-emerald-400 dark:bg-zinc-950">
                         {generateScriptTag()}
                       </pre>
+                      {hasProOptions && (
+                        <p className="mt-2 text-xs text-zinc-400">
+                          Pro features require a license key.{" "}
+                          <Link href="/upgrade" className="text-blue-500 hover:underline">
+                            Upgrade to Pro
+                          </Link>
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
