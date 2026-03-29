@@ -190,13 +190,36 @@ export default function Home() {
                 </div>
               </div>
 
+              {/* Pro hint */}
+              <div className="mt-6 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-blue-400">Pro unlocks</span>
+                  <Link href="/upgrade" className="text-xs text-blue-400 hover:text-blue-300">
+                    $15/mo →
+                  </Link>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-400">
+                  <span>Logo support</span>
+                  <span>Auto theme</span>
+                  <span>Bar / card layouts</span>
+                  <span>No branding</span>
+                  <span>40+ languages</span>
+                </div>
+              </div>
+
               {/* CTA */}
-              <div className="mt-6">
+              <div className="mt-4 grid grid-cols-2 gap-3">
                 <Link
                   href="/demo"
-                  className="block w-full rounded-lg bg-blue-600 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-500"
+                  className="block rounded-lg border border-zinc-700 py-2.5 text-center text-sm font-medium text-zinc-200 hover:bg-zinc-800"
                 >
                   Try the Demo
+                </Link>
+                <Link
+                  href="/upgrade"
+                  className="block rounded-lg bg-blue-600 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-500"
+                >
+                  Upgrade to Pro
                 </Link>
               </div>
             </div>
@@ -426,12 +449,18 @@ export default function Home() {
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
             One script tag. Works with any stack. No account, no dashboard, no bloat.
           </p>
-          <div className="mt-10">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/demo"
               className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-zinc-900 shadow-sm hover:bg-zinc-100"
             >
               Try the Demo
+            </Link>
+            <Link
+              href="/upgrade"
+              className="rounded-lg border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-200 hover:bg-zinc-800"
+            >
+              Upgrade to Pro
             </Link>
           </div>
         </div>
