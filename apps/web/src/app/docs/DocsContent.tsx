@@ -69,7 +69,7 @@ export function DocsContent() {
           Documentation
         </h1>
         <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-          Everything you need to add compliant cookie consent to your site.
+          Everything you need to add a lightweight consent banner to your site.
         </p>
 
         {/* Installation */}
@@ -86,26 +86,6 @@ export function DocsContent() {
           </p>
           <CodeBlock>
             {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
-          </CodeBlock>
-
-          <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-            NPM
-          </h3>
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            For build-tool workflows:
-          </p>
-          <CodeBlock>{`npm install @safebanner/script`}</CodeBlock>
-          <CodeBlock>
-            {`import '@safebanner/script';
-
-// or with configuration
-import { SafeBanner } from '@safebanner/script';
-
-const manager = new SafeBanner({
-  position: 'bottom-right',
-  theme: 'dark',
-});
-manager.init();`}
           </CodeBlock>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
@@ -139,16 +119,18 @@ manager.init();`}
               </strong>
               <p className="mt-2">
                 The banner appears automatically for new visitors. Consent is
-                stored locally and cookies are blocked until approved.
+                stored locally. Load analytics and ad scripts only after
+                checking consent if your setup requires opt-in behavior.
               </p>
             </li>
           </ol>
 
           <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950">
             <p className="text-sm text-blue-800 dark:text-blue-200">
-              <strong>GDPR Mode (Default):</strong> Non-essential cookies are
-              blocked until the user explicitly consents. This is the safest
-              default for EU compliance.
+              <strong>Default behavior:</strong> SafeBanner stores consent
+              choices locally and exposes them through the JavaScript API. For
+              the safest setup, only load non-essential scripts after checking
+              consent.
             </p>
           </div>
         </Section>
@@ -159,13 +141,14 @@ manager.init();`}
             Configure via data attributes on the script tag:
           </p>
           <CodeBlock>
-            {`<script
+{`<script
   src="https://www.safebanner.com/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
   data-company="Acme Inc"
   data-privacy="https://acme.com/privacy"
+  data-project-key="your-pro-key"
 ></script>`}
           </CodeBlock>
 
@@ -221,9 +204,41 @@ manager.init();`}
                   defaultVal="—"
                   desc="Link to your privacy policy"
                 />
+                <ConfigRow
+                  attr="data-lang"
+                  values="en, fr, de, plus additional Pro languages"
+                  defaultVal="en"
+                  desc="Banner language. Free includes en/fr/de. Additional built-in languages require a Pro key"
+                />
+                <ConfigRow
+                  attr="data-google-consent"
+                  values="advanced, basic, off"
+                  defaultVal="advanced"
+                  desc="Google Consent Mode v2 behavior. advanced sends redacted pings, basic blocks all tags when denied"
+                />
+                <ConfigRow
+                  attr="data-project-key"
+                  values="String"
+                  defaultVal="—"
+                  desc="Pro license key — removes branding and unlocks additional languages"
+                />
               </tbody>
             </table>
           </div>
+
+          <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
+            Languages
+          </h3>
+          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+            Free includes English, French, and German in the core bundle. Pro
+            unlocks additional built-in languages with a valid{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              data-project-key
+            </code>
+            . Those Pro translations load on demand, so the free core bundle
+            stays small. If a Pro-only language is requested without a valid
+            key, SafeBanner falls back to English.
+          </p>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
             Cookie Categories
@@ -476,12 +491,12 @@ git clone https://github.com/hellokariburt/SafeBanner.git
 cd safebanner
 
 # Install dependencies
-npm install
+pnpm install
 
 # Build the script
-cd packages/consent-script && node build.js
+cd packages/consent-script && pnpm build
 
-# Output is in packages/consent-script/dist/safebanner.js`}
+# Output is in apps/web/public/safebanner.js`}
           </CodeBlock>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
@@ -509,8 +524,9 @@ cd packages/consent-script && node build.js
         {/* Paid Features */}
         <Section id="paid-features" title="Paid Features">
           <p className="text-zinc-600 dark:text-zinc-400">
-            The free tier covers most use cases. Paid tiers add features for
-            teams that need audit trails and multi-site management.
+            The free tier covers the core banner. Pro removes branding,
+            unlocks additional built-in languages, and adds customization
+            controls for teams that want the banner to match their product.
           </p>
 
           <div className="mt-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
@@ -524,29 +540,21 @@ cd packages/consent-script && node build.js
                     Free
                   </th>
                   <th className="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
-                    Starter
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
                     Pro
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
-                    Enterprise
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 text-zinc-600 dark:divide-zinc-800 dark:text-zinc-400">
-                <FeatureRow feature="Consent banner" free="✓" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Local consent storage" free="✓" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="GDPR mode" free="✓" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Self-host" free="✓" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Hosted consent logs" free="—" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Dashboard" free="—" starter="✓" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Multi-domain" free="—" starter="—" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Audit exports" free="—" starter="—" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Compliance alerts" free="—" starter="—" pro="✓" enterprise="✓" />
-                <FeatureRow feature="Geo-based rules" free="—" starter="—" pro="✓" enterprise="✓" />
-                <FeatureRow feature="SLA" free="—" starter="—" pro="—" enterprise="✓" />
-                <FeatureRow feature="SSO" free="—" starter="—" pro="—" enterprise="✓" />
+                <FeatureRow feature="Consent banner" free="✓" pro="✓" />
+                <FeatureRow feature="Local consent storage" free="✓" pro="✓" />
+                <FeatureRow feature="Google Consent Mode support" free="✓" pro="✓" />
+                <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" />
+                <FeatureRow feature="English, French, German" free="✓" pro="✓" />
+                <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" />
+                <FeatureRow feature="Custom banner title and description" free="—" pro="✓" />
+                <FeatureRow feature="Custom button labels" free="—" pro="✓" />
+                <FeatureRow feature="Powered by SafeBanner branding" free="✓" pro="—" />
+                <FeatureRow feature="Commercial license key" free="—" pro="✓" />
               </tbody>
             </table>
           </div>
@@ -564,15 +572,16 @@ cd packages/consent-script && node build.js
         {/* FAQ */}
         <Section id="faq" title="FAQ">
           <FaqItem question="Is this really GDPR compliant?">
-            Yes. By default, we operate in opt-in mode: no non-essential
-            cookies are set until the user explicitly consents. We store
-            consent records with timestamps, which is what regulators require.
+            SafeBanner helps you collect and store consent choices in the
+            browser. You are still responsible for configuring your site to
+            load analytics and advertising scripts only after consent when
+            required.
           </FaqItem>
 
           <FaqItem question="What about CCPA?">
-            CCPA has different requirements (opt-out vs opt-in). The free tier
-            works for basic CCPA compliance. Pro tier adds geo-based rules to
-            automatically show the right consent flow based on user location.
+            CCPA and GDPR have different requirements. SafeBanner provides the
+            banner and consent state management, but it does not provide hosted
+            audit logs, region routing, or legal advice.
           </FaqItem>
 
           <FaqItem question="How do you detect cookies?">
@@ -586,15 +595,22 @@ cd packages/consent-script && node build.js
           </FaqItem>
 
           <FaqItem question="Does this block cookies automatically?">
-            Yes. In GDPR mode (default), we prevent non-essential cookies from
-            being set until consent is given. This works by intercepting
-            cookie writes.
+            No. SafeBanner stores consent state and exposes it via the
+            JavaScript API. For opt-in behavior, load non-essential scripts
+            only after checking consent.
+          </FaqItem>
+
+          <FaqItem question="What does Pro unlock?">
+            Pro removes the Powered by SafeBanner footer, unlocks additional
+            built-in languages, and enables custom banner copy and button
+            labels. Those translations load on demand, so the core banner stays
+            small.
           </FaqItem>
 
           <FaqItem question="Can I customize the banner text?">
-            Yes. Use data attributes for company name and privacy policy URL.
-            For full text customization, use the JavaScript API or self-host
-            with modifications.
+            Yes. Pro supports custom banner title, description, and button
+            labels via data attributes. The free tier still supports company
+            name and privacy policy URL.
           </FaqItem>
 
           <FaqItem question="How do I add a 'Manage Cookies' link?">
@@ -639,8 +655,9 @@ cd packages/consent-script && node build.js
                 (analytics, ads, etc.)
               </li>
               <li>
-                Some cookies are set server-side — we can only block
-                client-side cookies
+                SafeBanner exposes consent state but does not block scripts or
+                cookies — ensure you only load non-essential scripts after
+                checking consent
               </li>
               <li>Check if the cookie is categorized as &quot;necessary&quot;</li>
             </ul>
@@ -866,15 +883,11 @@ function ApiMethod({
 function FeatureRow({
   feature,
   free,
-  starter,
   pro,
-  enterprise,
 }: {
   feature: string;
   free: string;
-  starter: string;
   pro: string;
-  enterprise: string;
 }) {
   return (
     <tr>
@@ -882,9 +895,7 @@ function FeatureRow({
         {feature}
       </td>
       <td className="px-4 py-3">{free}</td>
-      <td className="px-4 py-3">{starter}</td>
       <td className="px-4 py-3">{pro}</td>
-      <td className="px-4 py-3">{enterprise}</td>
     </tr>
   );
 }

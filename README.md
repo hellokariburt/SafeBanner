@@ -3,13 +3,13 @@
 Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~3kb-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-~5kb%20core-green.svg)]()
 
 ## Why SafeBanner?
 
 - **Open source** — Audit the code yourself. No black boxes.
-- **Lightweight** — ~3kb gzipped. Won't slow your site.
-- **Actually works** — GDPR opt-in by default. Consent persists. Cookies respect it.
+- **Lightweight** — ~5kb gzipped core bundle. Pro languages load on demand.
+- **Actually works** — Consent persists locally and Google Consent Mode is supported.
 - **No account required** — Free tier runs entirely client-side.
 
 ## Quick Start
@@ -32,6 +32,7 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
   data-color="#8b5cf6"
   data-company="Acme Inc"
   data-privacy="https://acme.com/privacy"
+  data-project-key="your-pro-key"
 ></script>
 ```
 
@@ -44,6 +45,12 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
 | `data-color` | Any hex color | `#2563eb` |
 | `data-company` | Your company name | `We` |
 | `data-privacy` | URL to privacy policy | — |
+| `data-project-key` | Pro license key | — |
+
+Free languages: `en`, `fr`, `de`
+
+Pro unlocks additional built-in languages via `data-project-key`.
+Those translations load on demand and do not bloat the free core bundle.
 
 ## JavaScript API
 
@@ -143,12 +150,23 @@ cd packages/consent-script && pnpm build
 cd apps/web && pnpm dev
 ```
 
+## Vercel Deployment
+
+The Next.js app is in `apps/web`, not the repository root.
+
+If you deploy on Vercel, set:
+
+- `Root Directory`: `apps/web`
+- `Framework Preset`: `Next.js`
+
+If Vercel points at the repo root, deployment will fail with `No Next.js version detected`.
+
 ## Project Structure
 
 ```
 safebanner/
 ├── packages/
-│   └── consent-script/       # The embeddable script (~3kb gzipped)
+│   └── consent-script/       # The embeddable script (~5kb gzipped core)
 │       ├── src/
 │       │   ├── index.ts      # Entry point + SafeBanner class
 │       │   ├── banner.ts     # UI component
@@ -174,11 +192,9 @@ safebanner/
 | Tier | Price | What you get |
 |------|-------|--------------|
 | **Free** | $0 | Full consent banner, local storage, GDPR mode, self-host |
-| **Starter** | $39/mo | Hosted consent logs, single domain, email support |
-| **Pro** | $99/mo | Multi-domain, audit exports, compliance alerts |
-| **Enterprise** | Custom | SLA, SSO, dedicated support |
+| **Pro** | $15/mo or $149/yr | Remove branding, unlock additional built-in languages, custom banner copy, custom button labels, commercial license key |
 
-Free tier is fully functional. Paid tiers add audit trails for legal teams.
+Free tier is fully functional. Pro keeps the product simple and does not include hosted consent records.
 
 ## License
 

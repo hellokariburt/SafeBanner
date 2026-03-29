@@ -30,6 +30,21 @@ function createText(text: string): Text {
 }
 
 /**
+ * Creates a logo img element if a valid URL is provided.
+ */
+function createLogo(url: string | undefined): HTMLImageElement | null {
+  if (!url) return null;
+  const safeHref = safeURL(url);
+  if (!safeHref) return null;
+  const img = document.createElement('img');
+  img.src = safeHref;
+  img.className = 'cm-logo';
+  img.alt = '';
+  img.setAttribute('aria-hidden', 'true');
+  return img;
+}
+
+/**
  * Creates the "Powered by SafeBanner" attribution footer.
  */
 function createPoweredBy(): HTMLDivElement {
@@ -120,16 +135,20 @@ function createCategoryRow(
 function buildSimpleBanner(config: ConsentConfig, t: Translations): DocumentFragment {
   const fragment = document.createDocumentFragment();
 
+  // Logo (Pro)
+  const logo = createLogo(config.logoUrl);
+  if (logo) fragment.appendChild(logo);
+
   // Title
   const title = document.createElement('div');
   title.className = 'cm-title';
-  title.textContent = t.title;
+  title.textContent = config.bannerTitle || t.title;
   fragment.appendChild(title);
 
   // Text paragraph
   const text = document.createElement('p');
   text.className = 'cm-text';
-  text.appendChild(createText(t.description + ' '));
+  text.appendChild(createText((config.bannerDescription || t.description) + ' '));
 
   const privacyLink = createPrivacyLink(config.privacyPolicyUrl, t.privacyPolicy);
   if (privacyLink) {
@@ -140,12 +159,14 @@ function buildSimpleBanner(config: ConsentConfig, t: Translations): DocumentFrag
   // Buttons
   const buttons = document.createElement('div');
   buttons.className = 'cm-buttons';
-  buttons.appendChild(createButton(t.acceptAll, 'accept-all', 'cm-btn cm-btn-primary'));
-  buttons.appendChild(createButton(t.rejectAll, 'reject-all', 'cm-btn cm-btn-secondary'));
-  buttons.appendChild(createButton(t.customize, 'customize', 'cm-btn cm-btn-link'));
+  buttons.appendChild(createButton(config.acceptLabel || t.acceptAll, 'accept-all', 'cm-btn cm-btn-primary'));
+  buttons.appendChild(createButton(config.rejectLabel || t.rejectAll, 'reject-all', 'cm-btn cm-btn-secondary'));
+  buttons.appendChild(createButton(config.customizeLabel || t.customize, 'customize', 'cm-btn cm-btn-link'));
   fragment.appendChild(buttons);
 
-  fragment.appendChild(createPoweredBy());
+  if (config.showBranding !== false) {
+    fragment.appendChild(createPoweredBy());
+  }
 
   return fragment;
 }
@@ -185,11 +206,13 @@ function buildDetailsBanner(config: ConsentConfig, t: Translations): DocumentFra
   // Buttons
   const buttons = document.createElement('div');
   buttons.className = 'cm-buttons';
-  buttons.appendChild(createButton(t.save, 'save', 'cm-btn cm-btn-primary'));
-  buttons.appendChild(createButton(t.acceptAll, 'accept-all', 'cm-btn cm-btn-secondary'));
+  buttons.appendChild(createButton(config.saveLabel || t.save, 'save', 'cm-btn cm-btn-primary'));
+  buttons.appendChild(createButton(config.acceptLabel || t.acceptAll, 'accept-all', 'cm-btn cm-btn-secondary'));
   fragment.appendChild(buttons);
 
-  fragment.appendChild(createPoweredBy());
+  if (config.showBranding !== false) {
+    fragment.appendChild(createPoweredBy());
+  }
 
   return fragment;
 }
@@ -206,10 +229,36 @@ function getConsentFromCheckboxes(): ConsentState {
   };
 }
 
+/**
+ * Builds the compact bar layout (Pro).
+ */
+function buildBarBanner(config: ConsentConfig, t: Translations): DocumentFragment {
+  const fragment = document.createDocumentFragment();
+
+  const msg = document.createElement('span');
+  msg.className = 'cm-bar-text';
+  msg.textContent = config.bannerDescription || t.description;
+  fragment.appendChild(msg);
+
+  const buttons = document.createElement('div');
+  buttons.className = 'cm-buttons';
+  buttons.appendChild(createButton(config.acceptLabel || t.acceptAll, 'accept-all', 'cm-btn cm-btn-primary'));
+  buttons.appendChild(createButton(config.rejectLabel || t.rejectAll, 'reject-all', 'cm-btn cm-btn-secondary'));
+  buttons.appendChild(createButton(config.customizeLabel || t.customize, 'customize', 'cm-btn cm-btn-link'));
+  fragment.appendChild(buttons);
+
+  if (config.showBranding !== false) {
+    fragment.appendChild(createPoweredBy());
+  }
+
+  return fragment;
+}
+
 export function showBanner(config: ConsentConfig): void {
   injectStyles(config);
 
   const t = getTranslations(config.lang);
+  const isBar = config.layout === 'bar';
 
   // Create overlay
   overlayElement = document.createElement('div');
@@ -220,8 +269,8 @@ export function showBanner(config: ConsentConfig): void {
   bannerElement = document.createElement('div');
   bannerElement.className = 'cm-banner';
   bannerElement.setAttribute('role', 'dialog');
-  bannerElement.setAttribute('aria-label', t.title);
-  bannerElement.appendChild(buildSimpleBanner(config, t));
+  bannerElement.setAttribute('aria-label', config.bannerTitle || t.title);
+  bannerElement.appendChild(isBar ? buildBarBanner(config, t) : buildSimpleBanner(config, t));
   document.body.appendChild(bannerElement);
 
   // Trigger animation

@@ -1,9 +1,21 @@
 /**
  * Static translations - no runtime loading, no interpolation.
- * Add languages here. Missing language → fallback to 'en'.
+ * Free languages stay in the core bundle.
+ * Pro languages are loaded lazily from a static JSON asset.
  */
 
-export type SupportedLanguage = 'en' | 'fr' | 'de';
+export const FREE_LANGUAGE_CODES = ['en', 'fr', 'de'] as const;
+export const PRO_LANGUAGE_CODES = [
+  'es', 'it', 'nl', 'pt', 'pl', 'sv', 'da', 'fi', 'cs', 'no',
+  'ro', 'hu', 'el', 'tr', 'uk', 'bg', 'hr', 'sk', 'sl', 'lt',
+  'lv', 'et', 'mt', 'ga', 'ca', 'eu', 'gl', 'is', 'sq', 'sr',
+  'bs', 'mk', 'ru', 'ar', 'he', 'ja', 'ko', 'zh', 'hi', 'id',
+  'ms', 'th', 'vi', 'fa',
+] as const;
+
+export type FreeLanguage = typeof FREE_LANGUAGE_CODES[number];
+export type ProLanguage = typeof PRO_LANGUAGE_CODES[number];
+export type SupportedLanguage = FreeLanguage | ProLanguage;
 
 export interface Translations {
   title: string;
@@ -21,7 +33,7 @@ export interface Translations {
   privacyPolicy: string;
 }
 
-const TRANSLATIONS: Record<SupportedLanguage, Translations> = {
+const FREE_TRANSLATIONS: Record<FreeLanguage, Translations> = {
   en: {
     title: 'Cookie Consent',
     description: 'We use cookies to improve your experience and analyze site traffic.',
@@ -69,19 +81,61 @@ const TRANSLATIONS: Record<SupportedLanguage, Translations> = {
   },
 };
 
+const translations: Partial<Record<SupportedLanguage, Translations>> = {
+  ...FREE_TRANSLATIONS,
+};
+
+function normalizeLanguage(lang: string | undefined): SupportedLanguage | null {
+  if (!lang) return null;
+
+  const normalized = lang.toLowerCase().slice(0, 2) as SupportedLanguage;
+  return isSupportedLanguageCode(normalized) ? normalized : null;
+}
+
+function isSupportedLanguageCode(lang: SupportedLanguage): boolean {
+  return (
+    FREE_LANGUAGE_CODES.includes(lang as FreeLanguage) ||
+    PRO_LANGUAGE_CODES.includes(lang as ProLanguage)
+  );
+}
+
+export function registerTranslations(
+  nextTranslations: Partial<Record<ProLanguage, Translations>>
+): void {
+  Object.assign(translations, nextTranslations);
+}
+
+export function hasTranslations(lang: string | undefined): boolean {
+  const normalized = normalizeLanguage(lang);
+  return normalized ? Boolean(translations[normalized]) : false;
+}
+
 /**
  * Get translations for a language. Falls back to English if not found.
  */
 export function getTranslations(lang: string | undefined): Translations {
-  if (!lang) return TRANSLATIONS.en;
-
-  const normalized = lang.toLowerCase().slice(0, 2) as SupportedLanguage;
-  return TRANSLATIONS[normalized] || TRANSLATIONS.en;
+  const normalized = normalizeLanguage(lang);
+  return (normalized && translations[normalized]) || FREE_TRANSLATIONS.en;
 }
 
 /**
  * Check if a language is supported
  */
 export function isSupported(lang: string): lang is SupportedLanguage {
-  return ['en', 'fr', 'de'].includes(lang.toLowerCase().slice(0, 2));
+  return normalizeLanguage(lang) !== null;
+}
+
+export function isProLanguage(lang: string | undefined): boolean {
+  const normalized = normalizeLanguage(lang);
+  return normalized ? PRO_LANGUAGE_CODES.includes(normalized as ProLanguage) : false;
+}
+
+export function resolveLanguage(
+  requestedLanguage: string | undefined,
+  hasProLicense: boolean
+): SupportedLanguage {
+  const normalized = normalizeLanguage(requestedLanguage);
+  if (!normalized) return 'en';
+  if (FREE_LANGUAGE_CODES.includes(normalized as FreeLanguage)) return normalized;
+  return hasProLicense ? normalized : 'en';
 }

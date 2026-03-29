@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import PricingSection from "./components/PricingSection";
 import { CopyButton } from "./components/CopyButton";
+import SiteFooter from "./components/SiteFooter";
 
 export default function Home() {
   return (
@@ -41,12 +42,10 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          The Developer-First Google Consent Mode v2 Banner
+          The simplest cookie banner for developers.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          Pass audits, respect user privacy, and keep your analytics data.
-          SafeBanner is a lightweight, open source consent banner for modern
-          sites.
+          One script tag. No dashboard. No account. Google Consent Mode v2 out of the box.
         </p>
 
         {/* Trust signals */}
@@ -56,9 +55,10 @@ export default function Home() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            Google Consent Mode v2 Ready
+            Google Consent Mode v2
           </span>
-          <span className="flex items-center gap-1.5">~4kb gzipped</span>
+          <span>~5kb gzipped</span>
+          <span>No account needed</span>
           <span>MIT Licensed</span>
         </div>
 
@@ -208,12 +208,11 @@ export default function Home() {
       <section className="border-t border-zinc-800">
         <div className="mx-auto max-w-5xl px-6 py-20">
           <h2 className="text-3xl font-bold text-white">
-            Compliance shouldn&apos;t require a six-figure contract.
+            Cookie compliance shouldn&apos;t take a day.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-            OneTrust costs a fortune. Cookiebot breaks your site. You just need
-            a cookie banner that works, stores consent properly, and doesn&apos;t
-            embarrass you in an audit.
+            OneTrust is for enterprises. Cookiebot is slow and expensive. Most free scripts are abandoned.
+            SafeBanner is a maintained, open source banner that takes 2 minutes to install and never needs a dashboard.
           </p>
         </div>
       </section>
@@ -276,7 +275,7 @@ export default function Home() {
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">Lightweight</h3>
               <p className="mt-2 text-zinc-400">
-                ~4kb gzipped. Won&apos;t slow your site.
+                ~5kb gzipped core bundle. Pro languages load on demand.
               </p>
             </div>
             <div className="rounded-lg border border-zinc-800 p-6">
@@ -347,7 +346,8 @@ export default function Home() {
                 {[
                   "Block or rewrite scripts",
                   "Manage vendors or IAB TCF strings",
-                  "Act as a full CMP",
+                  "Store hosted consent records",
+                  "Act as your legal system of record",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-600"></span>
@@ -355,7 +355,12 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+              <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-800/50 p-4">
+                <p className="text-sm text-zinc-400">
+                  SafeBanner manages consent on the site itself. No hosted consent records, no data processor relationship, no subprocessor complexity.
+                </p>
+              </div>
+              <div className="mt-4 rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
                 <p className="text-sm text-zinc-300">
                   <span className="font-medium text-blue-400">
                     You stay in control.
@@ -382,8 +387,8 @@ export default function Home() {
             <div>
               <h3 className="font-semibold text-white">Is this really free?</h3>
               <p className="mt-2 text-zinc-400">
-                Yes. The open-source version is fully functional. Paid tiers add
-                audit logs and multi-domain support.
+                Yes. The open-source version is fully functional. Pro adds
+                branding removal, more languages, and banner customization.
               </p>
             </div>
             <div>
@@ -405,8 +410,7 @@ export default function Home() {
                 What if I&apos;m audited?
               </h3>
               <p className="mt-2 text-zinc-400">
-                Free tier stores consent locally. Paid tiers give you exportable
-                logs for legal.
+                Consent is stored in the user&apos;s browser. SafeBanner does not store hosted consent records or act as a compliance system of record — that keeps your setup simple and your liability low. If you need server-side audit trails, your own backend is the right place to capture and own that data.
               </p>
             </div>
           </div>
@@ -417,10 +421,10 @@ export default function Home() {
       <section className="border-t border-zinc-800 bg-zinc-900">
         <div className="mx-auto max-w-5xl px-6 py-20 text-center">
           <h2 className="text-3xl font-bold text-white">
-            Stop overpaying for cookie consent.
+            Install it in 2 minutes. Never think about it again.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-            Replace OneTrust in under 5 minutes. No sales call required.
+            One script tag. Works with any stack. No account, no dashboard, no bloat.
           </p>
           <div className="mt-10">
             <Link
@@ -433,12 +437,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800">
-        <div className="mx-auto max-w-5xl px-6 py-12 text-center text-sm text-zinc-500">
-          <p>SafeBanner — Open source cookie consent done right.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
