@@ -19,6 +19,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // plan
+
   const plan = body.plan;
   const interval = body.interval;
   if (plan !== "pro") {
