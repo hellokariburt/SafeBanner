@@ -48,11 +48,10 @@ export async function POST(request: Request) {
               ? session.customer
               : session.customer.id
           );
-          await sendLicenseEmail({
+          sendLicenseEmail({
             to: license.email,
-            plan: license.plan,
             licenseKey: license.license_key,
-          });
+          }).catch((err) => console.error("License email failed:", err));
         }
         break;
       }

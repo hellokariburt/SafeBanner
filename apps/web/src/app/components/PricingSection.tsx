@@ -1,20 +1,48 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 export default function PricingSection() {
+  const [interval, setInterval] = useState<"monthly" | "annual">("monthly");
+  const isAnnual = interval === "annual";
+
   return (
     <section id="pricing" className="border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-5xl px-6 py-20">
         <h2 className="text-3xl font-bold text-white">Simple pricing.</h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
-          SafeBanner keeps the core banner free. Paid plans unlock branding,
-          additional built-in languages, and licensing for teams shipping
-          commercial sites. Pro languages load on demand and do not bloat the
-          free bundle.
+          Free gets you a fully working consent banner. Pro makes it match your product.
         </p>
+        <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
+          <button
+            type="button"
+            onClick={() => setInterval("monthly")}
+            className={`rounded-full px-4 py-2 transition ${
+              interval === "monthly"
+                ? "bg-white text-zinc-950"
+                : "text-zinc-300 hover:text-white"
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            type="button"
+            onClick={() => setInterval("annual")}
+            className={`rounded-full px-4 py-2 transition ${
+              isAnnual
+                ? "bg-white text-zinc-950"
+                : "text-zinc-300 hover:text-white"
+            }`}
+          >
+            Annual
+          </button>
+        </div>
+        {isAnnual ? (
+          <p className="mt-3 text-sm text-emerald-400">Annual billing saves about two months.</p>
+        ) : null}
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
           <PlanCard
             name="Free"
             price="$0"
@@ -22,8 +50,8 @@ export default function PricingSection() {
             accent="text-zinc-300"
             features={[
               "Banner + consent UI",
-              "Local consent storage",
-              "Google Consent Mode support",
+              "Google Consent Mode v2",
+              "Custom color, position, and theme",
               "English, French, German",
               "Powered by SafeBanner",
             ]}
@@ -33,34 +61,24 @@ export default function PricingSection() {
           />
           <PlanCard
             name="Pro"
-            price="$9/mo"
-            badge="Most popular"
+            price={isAnnual ? "$149/yr" : "$15/mo"}
+            badge="Make it yours"
             accent="text-blue-400"
             highlighted
             features={[
-              "Remove Powered by SafeBanner",
-              "Additional built-in languages",
-              "Commercial-use license key",
-              "1 active paid subscription",
+              "Everything in Free, plus:",
+              "Remove SafeBanner branding",
+              "Logo support",
+              "Auto dark/light theme",
+              "Compact bar and floating card layouts",
+              "Custom text, labels, and button style",
+              "Border radius, max-width, offset controls",
+              "Spanish, Italian, Dutch, Portuguese",
+              "Commercial use",
             ]}
-            ctaHref="/upgrade"
-            ctaLabel="Upgrade to Pro"
+            ctaHref={`/upgrade?interval=${interval}`}
+            ctaLabel={`Upgrade to Pro${isAnnual ? " Annual" : ""}`}
             ctaClass="bg-blue-600 text-white hover:bg-blue-500"
-          />
-          <PlanCard
-            name="Agency"
-            price="$29/mo"
-            badge="Manual onboarding"
-            accent="text-emerald-400"
-            features={[
-              "Everything in Pro",
-              "Manual client domain allowlist",
-              "Multi-site licensing",
-              "White-glove setup via email",
-            ]}
-            ctaHref="/upgrade"
-            ctaLabel="Start Agency"
-            ctaClass="border border-zinc-700 text-zinc-200 hover:bg-zinc-800"
           />
         </div>
       </div>

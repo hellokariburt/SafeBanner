@@ -13,11 +13,9 @@ function getResendClient(): Resend | null {
 
 export async function sendLicenseEmail({
   to,
-  plan,
   licenseKey,
 }: {
   to: string;
-  plan: "pro" | "agency";
   licenseKey: string;
 }): Promise<void> {
   const resend = getResendClient();
@@ -25,9 +23,6 @@ export async function sendLicenseEmail({
     console.warn("RESEND_API_KEY is not configured; skipping license email");
     return;
   }
-
-  const isPro = plan === "pro";
-  const planLabel = isPro ? "Pro" : "Agency";
 
   const scriptTag = `<script
   src="https://www.safebanner.com/safebanner.js"
@@ -37,9 +32,9 @@ export async function sendLicenseEmail({
   const { error } = await resend.emails.send({
     from: FROM,
     to,
-    subject: `Your SafeBanner ${planLabel} license key`,
+    subject: "Your SafeBanner Pro license key",
     text: [
-      `Thanks for subscribing to SafeBanner ${planLabel}.`,
+      "Thanks for subscribing to SafeBanner Pro.",
       "",
       "Your license key:",
       licenseKey,
@@ -47,9 +42,7 @@ export async function sendLicenseEmail({
       "Add it to your script tag:",
       scriptTag,
       "",
-      isPro
-        ? "Your key removes SafeBanner branding and unlocks all Pro languages."
-        : "Your key removes SafeBanner branding and unlocks all Pro languages.\n\nReply to this email with the domains you want added to your allowlist (up to 25).",
+      "Your key removes SafeBanner branding and unlocks all Pro languages.",
       "",
       "Docs: https://www.safebanner.com/docs",
       "",

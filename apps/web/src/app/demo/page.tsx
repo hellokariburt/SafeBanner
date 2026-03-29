@@ -88,11 +88,17 @@ export default function DemoPage() {
 
   // Poll for consent changes
   useEffect(() => {
-    if (scriptLoaded) {
-      refreshConsent();
-      const interval = setInterval(refreshConsent, 300);
-      return () => clearInterval(interval);
+    if (!scriptLoaded) {
+      return;
     }
+
+    const initialRefresh = window.setTimeout(refreshConsent, 0);
+    const interval = window.setInterval(refreshConsent, 300);
+
+    return () => {
+      window.clearTimeout(initialRefresh);
+      window.clearInterval(interval);
+    };
   }, [scriptLoaded, refreshConsent]);
 
   // Listen for consent changes via storage event
@@ -155,7 +161,7 @@ export default function DemoPage() {
     script.dataset.lang = config.lang;
     script.dataset.googleConsent = config.googleConsent;
     script.dataset.company = 'Demo Site';
-    script.dataset.privacy = '/privacy';
+    script.dataset.privacy = 'https://www.safebanner.com/docs';
     script.onload = () => {
       setScriptLoaded(true);
       addLog("Config Applied", `Position: ${config.position}, Theme: ${config.theme}, Lang: ${config.lang}`, "info");

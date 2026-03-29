@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 
-export type Plan = "pro" | "agency";
+export type Plan = "pro";
+export type BillingInterval = "monthly" | "annual";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 
@@ -12,18 +13,17 @@ export const stripe = new Stripe(STRIPE_SECRET_KEY ?? "sk_test_placeholder", {
   apiVersion: "2026-03-25.dahlia",
 });
 
-export function getPriceIdForPlan(plan: Plan): string {
-  if (plan === "agency") {
-    const priceId = process.env.STRIPE_AGENCY_PRICE_ID;
-    if (!priceId) {
-      throw new Error("STRIPE_AGENCY_PRICE_ID is not configured");
-    }
-    return priceId;
-  }
-
-  const priceId = process.env.STRIPE_PRO_PRICE_ID;
+export function getPriceIdForPlan(plan: Plan, interval: BillingInterval): string {
+  const priceId =
+    interval === "annual"
+      ? process.env.STRIPE_PRO_ANNUAL_PRICE_ID
+      : process.env.STRIPE_PRO_PRICE_ID;
   if (!priceId) {
-    throw new Error("STRIPE_PRO_PRICE_ID is not configured");
+    throw new Error(
+      interval === "annual"
+        ? "STRIPE_PRO_ANNUAL_PRICE_ID is not configured"
+        : "STRIPE_PRO_PRICE_ID is not configured"
+    );
   }
   return priceId;
 }

@@ -68,7 +68,6 @@ export async function upsertLicenseFromCheckout(
   customerId: string
 ): Promise<LicenseRecord> {
   const supabase = getSupabaseAdmin();
-  const plan = session.metadata?.plan === "agency" ? "agency" : "pro";
   const email =
     session.customer_details?.email ||
     session.customer_email ||
@@ -81,9 +80,9 @@ export async function upsertLicenseFromCheckout(
   const existing = await findLicenseBySubscriptionId(subscriptionId);
   const payload: LicenseRecord = {
     license_key: existing?.license_key || generateLicenseKey(),
-    plan,
+    plan: "pro",
     email,
-    domains: plan === "agency" ? existing?.domains || [] : null,
+    domains: null,
     active: true,
     stripe_customer_id: customerId,
     stripe_subscription_id: subscriptionId,
