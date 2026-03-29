@@ -45,11 +45,11 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
 | `data-color` | Any hex color | `#2563eb` |
 | `data-company` | Your company name | `We` |
 | `data-privacy` | URL to privacy policy | — |
-| `data-project-key` | Pro or Agency license key | — |
+| `data-project-key` | Pro license key | — |
 
 Free languages: `en`, `fr`, `de`
 
-Pro / Agency unlock additional built-in languages via `data-project-key`.
+Pro unlocks additional built-in languages via `data-project-key`.
 Those translations load on demand and do not bloat the free core bundle.
 
 ## JavaScript API
@@ -192,10 +192,9 @@ safebanner/
 | Tier | Price | What you get |
 |------|-------|--------------|
 | **Free** | $0 | Full consent banner, local storage, GDPR mode, self-host |
-| **Pro** | $9/mo | Remove branding, unlock additional built-in languages, commercial license key |
-| **Agency** | $29/mo | Everything in Pro plus manual client-domain onboarding |
+| **Pro** | $15/mo or $149/yr | Remove branding, unlock additional built-in languages, custom banner copy, custom button labels, commercial license key |
 
-Free tier is fully functional. Paid plans keep the product simple and do not include hosted consent records.
+Free tier is fully functional. Pro keeps the product simple and does not include hosted consent records.
 
 ## License
 

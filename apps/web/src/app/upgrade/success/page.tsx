@@ -18,7 +18,7 @@ export default async function UpgradeSuccessPage({
     typeof session.subscription === "string"
       ? session.subscription
       : session.subscription?.id;
-  const plan = session.metadata?.plan === "agency" ? "Agency" : "Pro";
+  const interval = session.metadata?.interval === "annual" ? "annual" : "monthly";
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
@@ -30,7 +30,7 @@ export default async function UpgradeSuccessPage({
           Your SafeBanner license is ready.
         </h1>
         <p className="mt-4 text-lg text-zinc-400">
-          Your payment is complete and your {plan} subscription is active.
+          Your payment is complete and your Pro {interval} subscription is active.
         </p>
 
         <div className="mt-10 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
@@ -45,10 +45,7 @@ export default async function UpgradeSuccessPage({
               </span>
               .
             </p>
-            <p>
-              Agency customers should reply with the domains they want added to
-              their allowlist.
-            </p>
+            <p>Your Pro key removes SafeBanner branding and unlocks all Pro features.</p>
           </div>
         </div>
 

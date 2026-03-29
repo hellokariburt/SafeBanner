@@ -45,18 +45,9 @@ export async function POST(request: NextRequest) {
     const license = await findLicenseByKey(projectKey);
 
     if (license?.active) {
-      const hostname = body.hostname?.trim().toLowerCase();
-      const normalizedDomains = (license.domains ?? []).map((domain) =>
-        domain.trim().toLowerCase()
-      );
-      const validForDomain =
-        license.plan !== "agency" ||
-        !hostname ||
-        normalizedDomains.includes(hostname);
-
       return NextResponse.json(
         {
-          valid: validForDomain,
+          valid: true,
           plan: license.plan,
         },
         { status: 200, headers: corsHeaders }
