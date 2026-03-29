@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBaseUrl, getPriceIdForPlan, stripe, type Plan } from "@/lib/billing";
+import {
+  getBaseUrl,
+  getPriceIdForPlan,
+  stripe,
+  type BillingInterval,
+  type Plan,
+} from "@/lib/billing";
 
 export async function POST(request: NextRequest) {
-  let body: { plan?: Plan };
+  let body: { plan?: Plan; interval?: BillingInterval };
 
   try {
     body = await request.json();
@@ -14,8 +20,12 @@ export async function POST(request: NextRequest) {
   }
 
   const plan = body.plan;
-  if (plan !== "pro" && plan !== "agency") {
+  const interval = body.interval;
+  if (plan !== "pro") {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
+  }
+  if (interval !== "monthly" && interval !== "annual") {
+    return NextResponse.json({ error: "Invalid billing interval" }, { status: 400 });
   }
 
   try {
@@ -26,7 +36,7 @@ export async function POST(request: NextRequest) {
       allow_promotion_codes: true,
       line_items: [
         {
-          price: getPriceIdForPlan(plan),
+          price: getPriceIdForPlan(plan, interval),
           quantity: 1,
         },
       ],
@@ -34,6 +44,7 @@ export async function POST(request: NextRequest) {
       cancel_url: `${baseUrl}/upgrade?canceled=1`,
       metadata: {
         plan,
+        interval,
       },
     });
 

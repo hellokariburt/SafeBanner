@@ -33,6 +33,19 @@ function getConfigFromScript(): ConsentConfig {
     lang: script.dataset.lang,
     googleConsentMode,
     projectKey: script.dataset.projectKey,
+    // Pro customization attributes — only applied when license is valid
+    layout: (script.dataset.layout as ConsentConfig['layout']),
+    maxWidth: script.dataset.maxWidth != null ? parseInt(script.dataset.maxWidth, 10) : undefined,
+    offset: script.dataset.offset != null ? parseInt(script.dataset.offset, 10) : undefined,
+    logoUrl: script.dataset.logo,
+    borderRadius: script.dataset.radius != null ? parseInt(script.dataset.radius, 10) : undefined,
+    buttonStyle: (script.dataset.buttonStyle as ConsentConfig['buttonStyle']),
+    bannerTitle: script.dataset.bannerTitle,
+    bannerDescription: script.dataset.bannerDescription,
+    acceptLabel: script.dataset.acceptLabel,
+    rejectLabel: script.dataset.rejectLabel,
+    customizeLabel: script.dataset.customizeLabel,
+    saveLabel: script.dataset.saveLabel,
   };
 }
 
@@ -256,8 +269,41 @@ class SafeBanner {
   }
 
   private getBannerConfig(): ConsentConfig {
+    const proFields = this.hasProLicense
+      ? {
+          layout: this.config.layout,
+          theme: this.config.theme,
+          maxWidth: this.config.maxWidth,
+          offset: this.config.offset,
+          logoUrl: this.config.logoUrl,
+          borderRadius: this.config.borderRadius,
+          buttonStyle: this.config.buttonStyle,
+          bannerTitle: this.config.bannerTitle,
+          bannerDescription: this.config.bannerDescription,
+          acceptLabel: this.config.acceptLabel,
+          rejectLabel: this.config.rejectLabel,
+          customizeLabel: this.config.customizeLabel,
+          saveLabel: this.config.saveLabel,
+        }
+      : {
+          layout: undefined,
+          theme: this.config.theme === 'auto' ? ('light' as const) : this.config.theme,
+          maxWidth: undefined,
+          offset: undefined,
+          logoUrl: undefined,
+          borderRadius: undefined,
+          buttonStyle: undefined,
+          bannerTitle: undefined,
+          bannerDescription: undefined,
+          acceptLabel: undefined,
+          rejectLabel: undefined,
+          customizeLabel: undefined,
+          saveLabel: undefined,
+        };
+
     return {
       ...this.config,
+      ...proFields,
       onAccept: (consent) => {
         this.sendGoogleConsentUpdate(consent);
         this.enforceConsent();

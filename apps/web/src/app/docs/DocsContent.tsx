@@ -208,7 +208,7 @@ export function DocsContent() {
                   attr="data-lang"
                   values="en, fr, de, plus additional Pro languages"
                   defaultVal="en"
-                  desc="Banner language. Free includes en/fr/de. Additional built-in languages require a Pro or Agency key"
+                  desc="Banner language. Free includes en/fr/de. Additional built-in languages require a Pro key"
                 />
                 <ConfigRow
                   attr="data-google-consent"
@@ -220,7 +220,7 @@ export function DocsContent() {
                   attr="data-project-key"
                   values="String"
                   defaultVal="—"
-                  desc="Pro or Agency license key — removes branding and unlocks additional languages"
+                  desc="Pro license key — removes branding and unlocks additional languages"
                 />
               </tbody>
             </table>
@@ -231,7 +231,7 @@ export function DocsContent() {
           </h3>
           <p className="mt-2 text-zinc-600 dark:text-zinc-400">
             Free includes English, French, and German in the core bundle. Pro
-            and Agency unlock additional built-in languages with a valid{" "}
+            unlocks additional built-in languages with a valid{" "}
             <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
               data-project-key
             </code>
@@ -524,9 +524,9 @@ cd packages/consent-script && pnpm build
         {/* Paid Features */}
         <Section id="paid-features" title="Paid Features">
           <p className="text-zinc-600 dark:text-zinc-400">
-            The free tier covers the core banner. Pro removes branding and
-            unlocks additional built-in languages. Agency keeps the same script
-            features and adds manual domain onboarding for client work.
+            The free tier covers the core banner. Pro removes branding,
+            unlocks additional built-in languages, and adds customization
+            controls for teams that want the banner to match their product.
           </p>
 
           <div className="mt-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
@@ -542,21 +542,19 @@ cd packages/consent-script && pnpm build
                   <th className="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
                     Pro
                   </th>
-                  <th className="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
-                    Agency
-                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 text-zinc-600 dark:divide-zinc-800 dark:text-zinc-400">
-                <FeatureRow feature="Consent banner" free="✓" pro="✓" agency="✓" />
-                <FeatureRow feature="Local consent storage" free="✓" pro="✓" agency="✓" />
-                <FeatureRow feature="Google Consent Mode support" free="✓" pro="✓" agency="✓" />
-                <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" agency="✓" />
-                <FeatureRow feature="English, French, German" free="✓" pro="✓" agency="✓" />
-                <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" agency="✓" />
-                <FeatureRow feature="Powered by SafeBanner branding" free="✓" pro="—" agency="—" />
-                <FeatureRow feature="Commercial license key" free="—" pro="✓" agency="✓" />
-                <FeatureRow feature="Manual domain allowlist" free="—" pro="—" agency="✓" />
+                <FeatureRow feature="Consent banner" free="✓" pro="✓" />
+                <FeatureRow feature="Local consent storage" free="✓" pro="✓" />
+                <FeatureRow feature="Google Consent Mode support" free="✓" pro="✓" />
+                <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" />
+                <FeatureRow feature="English, French, German" free="✓" pro="✓" />
+                <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" />
+                <FeatureRow feature="Custom banner title and description" free="—" pro="✓" />
+                <FeatureRow feature="Custom button labels" free="—" pro="✓" />
+                <FeatureRow feature="Powered by SafeBanner branding" free="✓" pro="—" />
+                <FeatureRow feature="Commercial license key" free="—" pro="✓" />
               </tbody>
             </table>
           </div>
@@ -603,16 +601,16 @@ cd packages/consent-script && pnpm build
           </FaqItem>
 
           <FaqItem question="What does Pro unlock?">
-            Pro removes the Powered by SafeBanner footer and unlocks additional
-            built-in languages. Those translations load on demand, so the core
-            banner stays small. Agency includes the same script features plus
-            manual domain onboarding for client sites.
+            Pro removes the Powered by SafeBanner footer, unlocks additional
+            built-in languages, and enables custom banner copy and button
+            labels. Those translations load on demand, so the core banner stays
+            small.
           </FaqItem>
 
           <FaqItem question="Can I customize the banner text?">
-            Yes. Use data attributes for company name and privacy policy URL.
-            For full text customization, use the JavaScript API or self-host
-            with modifications.
+            Yes. Pro supports custom banner title, description, and button
+            labels via data attributes. The free tier still supports company
+            name and privacy policy URL.
           </FaqItem>
 
           <FaqItem question="How do I add a 'Manage Cookies' link?">
@@ -886,12 +884,10 @@ function FeatureRow({
   feature,
   free,
   pro,
-  agency,
 }: {
   feature: string;
   free: string;
   pro: string;
-  agency: string;
 }) {
   return (
     <tr>
@@ -900,7 +896,6 @@ function FeatureRow({
       </td>
       <td className="px-4 py-3">{free}</td>
       <td className="px-4 py-3">{pro}</td>
-      <td className="px-4 py-3">{agency}</td>
     </tr>
   );
 }
