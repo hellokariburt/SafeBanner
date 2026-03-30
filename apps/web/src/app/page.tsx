@@ -57,7 +57,7 @@ export default function Home() {
             </span>
             Google Consent Mode v2
           </span>
-          <span>~5kb gzipped</span>
+          <span>~4kb gzipped</span>
           <span>No account needed</span>
           <span>MIT Licensed</span>
         </div>
@@ -298,7 +298,7 @@ export default function Home() {
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">Lightweight</h3>
               <p className="mt-2 text-zinc-400">
-                ~5kb gzipped core bundle. Pro languages load on demand.
+                ~4kb gzipped. No external dependencies.
               </p>
             </div>
             <div className="rounded-lg border border-zinc-800 p-6">
