@@ -120,7 +120,7 @@ export default function UpgradePage() {
               "Compact bar and floating card layouts",
               "Custom text, labels, and button style",
               "Border radius, max-width, offset controls",
-              "Spanish, Italian, Dutch, Portuguese",
+              "40+ languages (ES, IT, NL, PT + more)",
               "Commercial use",
             ].map((feature) => (
               <li key={feature}>{feature}</li>
