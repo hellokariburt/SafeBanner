@@ -19,6 +19,10 @@ export default function UpgradePage() {
   }, []);
 
   async function startCheckout() {
+    if (pending) {
+      return;
+    }
+
     setPending(true);
     setError(null);
 
@@ -78,22 +82,24 @@ export default function UpgradePage() {
           <button
             type="button"
             onClick={() => setInterval("monthly")}
+            disabled={pending}
             className={`rounded-full px-4 py-2 transition ${
               interval === "monthly"
                 ? "bg-white text-zinc-950"
                 : "text-zinc-300 hover:text-white"
-            }`}
+            } disabled:cursor-not-allowed disabled:opacity-60`}
           >
             Monthly
           </button>
           <button
             type="button"
             onClick={() => setInterval("annual")}
+            disabled={pending}
             className={`rounded-full px-4 py-2 transition ${
               interval === "annual"
                 ? "bg-white text-zinc-950"
                 : "text-zinc-300 hover:text-white"
-            }`}
+            } disabled:cursor-not-allowed disabled:opacity-60`}
           >
             Annual
           </button>
