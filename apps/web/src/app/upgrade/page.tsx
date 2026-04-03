@@ -139,6 +139,12 @@ export default function UpgradePage() {
           >
             {pending ? "Redirecting..." : "Upgrade to Pro"}
           </button>
+          <p className="mt-3 text-center text-xs text-zinc-500">
+            Cancel anytime · No lock-in ·{" "}
+            <Link href="/legal" className="underline hover:text-zinc-300">
+              Terms &amp; Privacy
+            </Link>
+          </p>
         </div>
 
         {error && (
