@@ -484,6 +484,25 @@ export default function DemoPage() {
                     <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
                   </div>
 
+                  <div className="rounded-lg border border-blue-200 bg-blue-50/80 px-3 py-3 dark:border-blue-900/40 dark:bg-blue-950/30">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+                          Make the banner match your product
+                        </p>
+                        <p className="mt-1 text-xs text-blue-700 dark:text-blue-300">
+                          Pro unlocks layouts, logo support, custom labels, and commercial use.
+                        </p>
+                      </div>
+                      <Link
+                        href="/upgrade"
+                        className="shrink-0 rounded-md bg-blue-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-500"
+                      >
+                        Upgrade
+                      </Link>
+                    </div>
+                  </div>
+
                   {/* Layout */}
                   <div>
                     <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Layout</label>

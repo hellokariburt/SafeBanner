@@ -528,6 +528,29 @@ cd packages/consent-script && pnpm build
             unlocks additional built-in languages, and adds customization
             controls for teams that want the banner to match their product.
           </p>
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-4 dark:border-blue-900/40 dark:bg-blue-950/30">
+            <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+              Shipping client work or a real SaaS?
+            </p>
+            <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
+              Pro is the commercial upgrade: no SafeBanner branding, more languages,
+              and customization controls that make the banner feel native to your product.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Link
+                href="/upgrade"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+              >
+                Upgrade to Pro
+              </Link>
+              <Link
+                href="/demo"
+                className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-900/30"
+              >
+                Try the Demo
+              </Link>
+            </div>
+          </div>
 
           <div className="mt-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-left text-sm">
@@ -561,10 +584,10 @@ cd packages/consent-script && pnpm build
 
           <div className="mt-8">
             <Link
-              href="/#pricing"
+              href="/upgrade"
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
             >
-              View Pricing
+              Upgrade to Pro
             </Link>
           </div>
         </Section>
