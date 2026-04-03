@@ -22,6 +22,9 @@ export default function SiteFooter({
           <Link href="/#pricing" className={linkClass}>
             Pricing
           </Link>
+          <Link href="/legal" className={linkClass}>
+            Legal
+          </Link>
           <a
             href="https://github.com/hellokariburt/SafeBanner"
             target="_blank"
