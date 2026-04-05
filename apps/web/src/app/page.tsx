@@ -72,7 +72,7 @@ export default function Home() {
       <section className="border-t border-zinc-800">
         <div className="mx-auto max-w-5xl px-6 py-20">
           <h2 className="text-3xl font-bold text-white">
-            Cookie compliance shouldn&apos;t take a day.
+            What you need, without enterprise baggage.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
             OneTrust is for enterprises. Cookiebot is slow and expensive. Most free scripts are abandoned.
@@ -242,6 +242,35 @@ export default function Home() {
       </section>
 
       <PricingSection />
+
+      <section className="border-t border-zinc-800 bg-zinc-900">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <div className="max-w-3xl rounded-xl border border-zinc-800 bg-zinc-950 p-6">
+            <h2 className="text-2xl font-semibold text-white">
+              What if I&apos;m audited?
+            </h2>
+            <p className="mt-3 text-zinc-400">
+              SafeBanner helps you capture consent choices and send Google Consent Mode v2 signals,
+              but it is not legal advice and it does not act as your hosted system of record.
+              Consent stays on the site itself, not in a SafeBanner dashboard.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                href="/demo"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+              >
+                Try the Demo
+              </Link>
+              <Link
+                href="/legal"
+                className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-900"
+              >
+                Read Terms &amp; Privacy
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ */}
       <section className="border-t border-zinc-800">

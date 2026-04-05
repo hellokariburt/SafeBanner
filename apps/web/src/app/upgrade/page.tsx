@@ -117,17 +117,20 @@ export default function UpgradePage() {
               {interval === "annual" ? "$149/yr" : "$15/mo"}
             </p>
           </div>
+          <p className="mt-2 text-sm text-zinc-500">
+            Cancel anytime. No lock-in. Commercial license included.
+          </p>
           <ul className="mt-6 space-y-3 text-sm text-zinc-300">
             {[
               "Everything in Free, plus:",
-              "Remove SafeBanner branding",
+              "No SafeBanner branding",
               "Logo support",
               "Auto dark/light theme",
               "Compact bar and floating card layouts",
-              "Custom text, labels, and button style",
-              "Border radius, max-width, offset controls",
-              "40+ languages (ES, IT, NL, PT + more)",
-              "Commercial use",
+              "Custom text, labels, and button styling",
+              "More control over placement and styling",
+              "40+ languages for production sites",
+              "Commercial use license",
             ].map((feature) => (
               <li key={feature}>{feature}</li>
             ))}
