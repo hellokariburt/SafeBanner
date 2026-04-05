@@ -46,7 +46,7 @@ export async function sendLicenseEmail({
       "",
       "Docs: https://www.safebanner.com/docs",
       "",
-      "Questions? Reply to this email or reach us at admin@safebanner.com",
+      "Questions? Reply to this email or reach us at hello@safebanner.com",
     ].join("\n"),
   });
 

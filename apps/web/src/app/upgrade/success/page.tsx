@@ -54,10 +54,10 @@ export default async function UpgradeSuccessPage({
           <p className="mt-3 text-sm text-zinc-300">
             If your key does not arrive shortly, contact{" "}
             <a
-              href="mailto:admin@safebanner.com"
+              href="mailto:hello@safebanner.com"
               className="text-blue-400 hover:text-blue-300"
             >
-              admin@safebanner.com
+              hello@safebanner.com
             </a>
             {" "}and include your checkout email.
           </p>
