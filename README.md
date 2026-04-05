@@ -3,12 +3,12 @@
 Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~5kb%20core-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-~6kb%20core-green.svg)]()
 
 ## Why SafeBanner?
 
 - **Open source** — Audit the code yourself. No black boxes.
-- **Lightweight** — ~5kb gzipped core bundle. Pro languages load on demand.
+- **Lightweight** — ~6kb gzipped core bundle. Pro languages load on demand.
 - **Actually works** — Consent persists locally and Google Consent Mode is supported.
 - **No account required** — Free tier runs entirely client-side.
 
@@ -166,7 +166,7 @@ If Vercel points at the repo root, deployment will fail with `No Next.js version
 ```
 safebanner/
 ├── packages/
-│   └── consent-script/       # The embeddable script (~5kb gzipped core)
+│   └── consent-script/       # The embeddable script (~6kb gzipped core)
 │       ├── src/
 │       │   ├── index.ts      # Entry point + SafeBanner class
 │       │   ├── banner.ts     # UI component
