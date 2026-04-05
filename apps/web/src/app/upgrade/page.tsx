@@ -142,12 +142,41 @@ export default function UpgradePage() {
           >
             {pending ? "Redirecting..." : "Upgrade to Pro"}
           </button>
+          <p className="mt-3 text-center text-xs text-zinc-400">
+            Less than one billable hour a month for a banner you can actually ship.
+          </p>
           <p className="mt-3 text-center text-xs text-zinc-500">
             Cancel anytime · No lock-in ·{" "}
             <Link href="/legal" className="underline hover:text-zinc-300">
               Terms &amp; Privacy
             </Link>
           </p>
+        </div>
+
+        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+          <h2 className="text-lg font-semibold">Free vs Pro</h2>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-zinc-800 text-zinc-400">
+                <tr>
+                  <th className="px-0 py-3 font-medium">Feature</th>
+                  <th className="px-4 py-3 font-medium">Free</th>
+                  <th className="px-4 py-3 font-medium">Pro</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800 text-zinc-300">
+                <ComparisonRow feature="Consent banner" free="✓" pro="✓" />
+                <ComparisonRow feature="Google Consent Mode support" free="✓" pro="✓" />
+                <ComparisonRow feature="English, French, German" free="✓" pro="✓" />
+                <ComparisonRow feature="40+ additional languages" free="—" pro="✓" />
+                <ComparisonRow feature="Custom banner title and description" free="—" pro="✓" />
+                <ComparisonRow feature="Custom button labels" free="—" pro="✓" />
+                <ComparisonRow feature="Logo support and extra layouts" free="—" pro="✓" />
+                <ComparisonRow feature="No SafeBanner branding" free="—" pro="✓" />
+                <ComparisonRow feature="Commercial use license" free="—" pro="✓" />
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {error && (
@@ -157,5 +186,23 @@ export default function UpgradePage() {
         )}
       </main>
     </div>
+  );
+}
+
+function ComparisonRow({
+  feature,
+  free,
+  pro,
+}: {
+  feature: string;
+  free: string;
+  pro: string;
+}) {
+  return (
+    <tr>
+      <td className="px-0 py-3">{feature}</td>
+      <td className="px-4 py-3">{free}</td>
+      <td className="px-4 py-3">{pro}</td>
+    </tr>
   );
 }
