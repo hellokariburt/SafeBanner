@@ -329,7 +329,7 @@ export default function DemoPage() {
 
             {/* Trust signals */}
             <div className="mt-5 grid grid-cols-2 gap-2 border-t border-zinc-100 pt-5 text-xs text-zinc-400 sm:mt-6 sm:flex sm:items-center sm:justify-center sm:gap-6 sm:pt-6 dark:border-zinc-800">
-              <span>~4kb gzipped</span>
+              <span>~6kb gzipped</span>
               <span>No tracking</span>
               <span>GDPR-ready</span>
               <span>Google Consent v2</span>
