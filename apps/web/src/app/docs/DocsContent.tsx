@@ -182,9 +182,9 @@ export function DocsContent() {
                 />
                 <ConfigRow
                   attr="data-theme"
-                  values="light, dark"
+                  values="light, dark, auto (Pro)"
                   defaultVal="light"
-                  desc="Color scheme"
+                  desc="Color scheme. Pro adds automatic light/dark theme detection"
                 />
                 <ConfigRow
                   attr="data-color"
@@ -220,7 +220,79 @@ export function DocsContent() {
                   attr="data-project-key"
                   values="String"
                   defaultVal="—"
-                  desc="Pro license key — removes branding and unlocks additional languages"
+                  desc="Pro license key — removes branding and unlocks Pro layouts, styling, and additional languages"
+                />
+                <ConfigRow
+                  attr="data-layout"
+                  values="banner, bar, card (Pro)"
+                  defaultVal="banner"
+                  desc="Banner layout style. Pro adds compact bar and floating card layouts"
+                />
+                <ConfigRow
+                  attr="data-logo"
+                  values="Image URL (Pro)"
+                  defaultVal="—"
+                  desc="Logo shown inside the banner"
+                />
+                <ConfigRow
+                  attr="data-button-style"
+                  values="default, pill, square (Pro)"
+                  defaultVal="default"
+                  desc="Button shape preset for the banner actions"
+                />
+                <ConfigRow
+                  attr="data-banner-title"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom banner title text"
+                />
+                <ConfigRow
+                  attr="data-banner-description"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom banner body copy"
+                />
+                <ConfigRow
+                  attr="data-accept-label"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom Accept All button label"
+                />
+                <ConfigRow
+                  attr="data-reject-label"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom Reject All button label"
+                />
+                <ConfigRow
+                  attr="data-customize-label"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom Customize button label"
+                />
+                <ConfigRow
+                  attr="data-save-label"
+                  values="String (Pro)"
+                  defaultVal="Localized default"
+                  desc="Custom Save Preferences button label"
+                />
+                <ConfigRow
+                  attr="data-radius"
+                  values="Number in px (Pro)"
+                  defaultVal="Contextual default"
+                  desc="Border radius for the banner and buttons"
+                />
+                <ConfigRow
+                  attr="data-max-width"
+                  values="Number in px (Pro)"
+                  defaultVal="Layout default"
+                  desc="Maximum width for bar/card style layouts"
+                />
+                <ConfigRow
+                  attr="data-offset"
+                  values="Number in px (Pro)"
+                  defaultVal="16"
+                  desc="Distance from screen edges for corner and card layouts"
                 />
               </tbody>
             </table>
@@ -574,6 +646,10 @@ cd packages/consent-script && pnpm build
                 <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" />
                 <FeatureRow feature="English, French, German" free="✓" pro="✓" />
                 <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" />
+                <FeatureRow feature="Auto light/dark theme" free="—" pro="✓" />
+                <FeatureRow feature="Bar and card layouts" free="—" pro="✓" />
+                <FeatureRow feature="Logo support" free="—" pro="✓" />
+                <FeatureRow feature="Button style presets" free="—" pro="✓" />
                 <FeatureRow feature="Custom banner title and description" free="—" pro="✓" />
                 <FeatureRow feature="Custom button labels" free="—" pro="✓" />
                 <FeatureRow feature="Powered by SafeBanner branding" free="✓" pro="—" />
