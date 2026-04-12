@@ -42,10 +42,10 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          The simplest cookie banner for developers.
+          GDPR consent in one script tag. ~6kb. Done.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          One script tag. No dashboard. No account. Google Consent Mode v2 out of the box.
+          No account. No dashboard. Google Consent Mode v2 built in. Drop it on any site and move on to real work.
         </p>
 
         {/* Trust signals */}

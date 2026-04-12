@@ -78,15 +78,19 @@ export function DocsContent() {
             Script Tag (Recommended)
           </h3>
           <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            Add this script tag to your HTML, just before the closing{" "}
-            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-              &lt;/body&gt;
-            </code>{" "}
-            tag:
+            Add this script tag to your HTML:
           </p>
           <CodeBlock>
             {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
           </CodeBlock>
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/40">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Using Google Consent Mode v2?</p>
+            <p className="mt-1 text-sm text-amber-700 dark:text-amber-400">
+              SafeBanner must load <strong>before</strong> any Google tags. Place it in your{" "}
+              <code className="rounded bg-amber-100 px-1 dark:bg-amber-900">&lt;head&gt;</code>{" "}
+              above your Google tag scripts. If SafeBanner loads after, Google will fire before consent is set.
+            </p>
+          </div>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
             Self-Hosted

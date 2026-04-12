@@ -66,16 +66,16 @@ export default function UpgradePage() {
 
       <main className="mx-auto max-w-lg px-6 py-20">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
-          Upgrade
+          You&apos;re already using SafeBanner
         </p>
         <h1 className="mt-4 text-4xl font-bold tracking-tight">
-          SafeBanner Pro
+          Make it yours.
         </h1>
         <p className="mt-4 text-lg text-zinc-400">
-          Everything in Free, plus make the banner match your product.
+          Remove the &ldquo;Powered by&rdquo; badge, add your logo, and customize every label. One upgrade — your banner looks like you built it.
         </p>
         <p className="mt-2 text-sm text-zinc-500">
-          Used on client work? Pro gives you a clean commercial license with no SafeBanner branding on anything you ship.
+          Deploying for clients? Pro includes a commercial license. Ship it without the fine print.
         </p>
 
         <div className="mt-8 inline-flex rounded-full border border-zinc-800 bg-zinc-900 p-1 text-sm">
@@ -120,20 +120,31 @@ export default function UpgradePage() {
           <p className="mt-2 text-sm text-zinc-500">
             Cancel anytime. No lock-in. Commercial license included.
           </p>
-          <ul className="mt-6 space-y-3 text-sm text-zinc-300">
-            {[
-              "Everything in Free, plus:",
-              "No SafeBanner branding",
-              "Logo support",
-              "Auto dark/light theme",
-              "Compact bar and floating card layouts",
-              "Custom text, labels, and button styling",
-              "More control over placement and styling",
-              "40+ languages for production sites",
-              "Commercial use license",
-            ].map((feature) => (
-              <li key={feature}>{feature}</li>
-            ))}
+          <ul className="mt-6 space-y-4 text-sm text-zinc-300">
+            <li>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Branding &amp; Identity</p>
+              <ul className="space-y-2">
+                {["Remove \"Powered by SafeBanner\" badge", "Add your company logo to the banner", "Auto-match light/dark theme to your site"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+              </ul>
+            </li>
+            <li>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Layout &amp; Copy</p>
+              <ul className="space-y-2">
+                {["Compact bar and floating card layouts", "Custom banner title, description, and button labels", "Fine-grained placement and styling controls"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+              </ul>
+            </li>
+            <li>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Localization</p>
+              <ul className="space-y-2">
+                {["40+ languages beyond the 3 included in Free"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+              </ul>
+            </li>
+            <li>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Licensing</p>
+              <ul className="space-y-2">
+                {["Commercial use license for client work"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+              </ul>
+            </li>
           </ul>
           <button
             onClick={startCheckout}
@@ -154,7 +165,7 @@ export default function UpgradePage() {
         </div>
 
         <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-          <h2 className="text-lg font-semibold">Free vs Pro</h2>
+          <h2 className="text-lg font-semibold">What Pro unlocks</h2>
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-zinc-800 text-zinc-400">

@@ -64,6 +64,7 @@ function getValidationEndpoint(): string | null {
   }
 }
 
+
 function getProTranslationsEndpoint(): string | null {
   const script = getScriptElement();
   if (!script?.src) return null;
@@ -269,6 +270,24 @@ class SafeBanner {
   }
 
   private getBannerConfig(): ConsentConfig {
+    if (!this.hasProLicense) {
+      const gated = [
+        this.config.layout && 'data-layout',
+        this.config.logoUrl && 'data-logo',
+        this.config.bannerTitle && 'data-banner-title',
+        this.config.bannerDescription && 'data-banner-description',
+        this.config.buttonStyle && 'data-button-style',
+        this.config.theme === 'auto' && 'data-theme="auto"',
+        this.config.acceptLabel && 'data-accept-label',
+        this.config.rejectLabel && 'data-reject-label',
+      ].filter(Boolean);
+      if (gated.length > 0) {
+        console.info(
+          `[SafeBanner] ${gated.join(', ')} require${gated.length === 1 ? 's' : ''} a Pro license and will be ignored. Upgrade at https://www.safebanner.com/upgrade`
+        );
+      }
+    }
+
     const proFields = this.hasProLicense
       ? {
           layout: this.config.layout,

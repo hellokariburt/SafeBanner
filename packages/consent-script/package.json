@@ -1,11 +1,34 @@
 {
-  "name": "@safebanner/script",
+  "name": "safebanner",
   "version": "0.1.0",
+  "description": "Lightweight cookie consent banner with Google Consent Mode v2. One script tag, ~6kb gzipped, zero dependencies.",
+  "license": "MIT",
+  "author": "Kari Burt <hello@safebanner.com> (https://safebanner.com)",
+  "homepage": "https://safebanner.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hellokariburt/SafeBanner.git",
+    "directory": "packages/consent-script"
+  },
+  "keywords": [
+    "cookie-consent",
+    "gdpr",
+    "cookie-banner",
+    "google-consent-mode",
+    "consent-management",
+    "privacy",
+    "cookie-consent-banner",
+    "gdpr-compliance"
+  ],
   "type": "module",
   "main": "dist/safebanner.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node build.js",
-    "dev": "node build.js --watch"
+    "dev": "node build.js --watch",
+    "prepublishOnly": "node build.js"
   },
   "devDependencies": {
     "esbuild": "^0.20.0",

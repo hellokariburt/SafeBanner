@@ -51,7 +51,7 @@ function createPoweredBy(): HTMLDivElement {
   const div = document.createElement('div');
   div.className = 'cm-powered-by';
   const link = document.createElement('a');
-  link.href = 'https://www.safebanner.com';
+  link.href = 'https://www.safebanner.com/upgrade?ref=badge';
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   link.textContent = 'Powered by SafeBanner';
