@@ -2,7 +2,7 @@
 
 Lightweight cookie consent banner with Google Consent Mode v2. One script tag, ~6kb gzipped, zero dependencies.
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
 
 > **This package ships a pre-built browser script, not an importable module.**
