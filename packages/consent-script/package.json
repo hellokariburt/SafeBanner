@@ -1,6 +1,6 @@
 {
   "name": "safebanner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight cookie consent banner with Google Consent Mode v2. One script tag, ~6kb gzipped, zero dependencies.",
   "license": "MIT",
   "author": "Kari Burt <hello@safebanner.com> (https://safebanner.com)",

@@ -1,12 +1,30 @@
 # safebanner
 
-Lightweight cookie consent banner with Google Consent Mode v2. One script tag, ~6kb gzipped, zero dependencies.
+SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro removes branding and unlocks production customization for SaaS, client sites, and commercial projects.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
 
 > **This package ships a pre-built browser script, not an importable module.**
 > Use it via CDN or copy `dist/safebanner.js` to your own host.
+
+## Free vs Pro
+
+Free includes:
+- Cookie consent banner
+- Local browser storage (no hosted data)
+- Google Consent Mode v2
+- English, French, and German
+- SafeBanner branding
+
+Pro adds:
+- Remove "Powered by SafeBanner"
+- Logo, layouts, custom copy, and button labels
+- Auto theme and advanced styling
+- 40+ languages
+- Commercial license for client work
+
+Upgrade: https://safebanner.com/upgrade
 
 ## Usage
 
@@ -79,10 +97,6 @@ window.safeBanner.reset()                    // clears consent, shows banner aga
 window.safeBanner.show()
 window.safeBanner.hide()
 ```
-
-## Pro
-
-Pro removes the "Powered by SafeBanner" badge, unlocks visual customization, 40+ languages, and includes a commercial license for client work. $15/mo or $149/yr at [safebanner.com/upgrade](https://safebanner.com/upgrade).
 
 ## License
 
