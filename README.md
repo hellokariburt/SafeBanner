@@ -2,6 +2,7 @@
 
 Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
 
+[![npm](https://img.shields.io/npm/v/safebanner)](https://www.npmjs.com/package/safebanner)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Bundle Size](https://img.shields.io/badge/gzipped-~6kb%20core-green.svg)]()
 
