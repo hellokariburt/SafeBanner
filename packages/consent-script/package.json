@@ -20,15 +20,15 @@
     "cookie-consent-banner",
     "gdpr-compliance"
   ],
-  "type": "module",
   "main": "dist/safebanner.js",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
-    "build": "node build.js",
-    "dev": "node build.js --watch",
-    "prepublishOnly": "node build.js"
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch",
+    "prepublishOnly": "node build.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.20.0",

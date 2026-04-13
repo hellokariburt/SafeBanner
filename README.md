@@ -38,19 +38,25 @@ That's it. A GDPR-compliant consent banner appears for new visitors.
 
 ### Options
 
-| Attribute | Values | Default |
-|-----------|--------|---------|
-| `data-position` | `bottom`, `top`, `bottom-left`, `bottom-right` | `bottom` |
-| `data-theme` | `light`, `dark` | `light` |
-| `data-color` | Any hex color | `#2563eb` |
-| `data-company` | Your company name | `We` |
-| `data-privacy` | URL to privacy policy | — |
-| `data-project-key` | Pro license key | — |
+| Attribute | Values | Default | Notes |
+|-----------|--------|---------|-------|
+| `data-position` | `bottom`, `top`, `bottom-left`, `bottom-right` | `bottom` | |
+| `data-theme` | `light`, `dark`, `auto` | `light` | `auto` requires Pro |
+| `data-color` | Any hex color | `#2563eb` | |
+| `data-company` | Your company name | — | |
+| `data-privacy` | URL to privacy policy | — | |
+| `data-lang` | `en`, `fr`, `de` (free) · 40+ with Pro | `en` | |
+| `data-google-consent` | `advanced`, `basic`, `off` | `advanced` | |
+| `data-project-key` | Pro license key | — | Unlocks Pro features |
+| `data-layout` | `bar`, `card` | — | Pro only |
+| `data-logo` | Image URL | — | Pro only |
+| `data-button-style` | `rounded`, `square`, `pill` | — | Pro only |
+| `data-banner-title` | string | — | Pro only |
+| `data-banner-description` | string | — | Pro only |
 
 Free languages: `en`, `fr`, `de`
 
-Pro unlocks additional built-in languages via `data-project-key`.
-Those translations load on demand and do not bloat the free core bundle.
+Pro unlocks 40+ additional languages via `data-project-key`. Translations load on demand and do not bloat the free core bundle.
 
 ## JavaScript API
 
