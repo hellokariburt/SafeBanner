@@ -106,16 +106,21 @@ export default function UpgradePage() {
         </div>
         {interval === "annual" ? (
           <p className="mt-3 text-sm text-emerald-400">
-            Annual billing saves about two months.
+            Save 20% — $12/mo billed annually ($144/yr).
           </p>
         ) : null}
 
         <div className="mt-10 rounded-xl border border-blue-600 bg-zinc-900 p-6">
           <div className="flex items-baseline justify-between">
             <h2 className="text-xl font-semibold">Pro</h2>
-            <p className="text-3xl font-bold">
-              {interval === "annual" ? "$149/yr" : "$15/mo"}
-            </p>
+            <div className="text-right">
+              <p className="text-3xl font-bold">
+                {interval === "annual" ? "$12/mo" : "$15/mo"}
+              </p>
+              {interval === "annual" && (
+                <p className="text-xs text-zinc-500">billed annually ($144/yr)</p>
+              )}
+            </div>
           </div>
           <p className="mt-2 text-sm text-zinc-500">
             Cancel anytime. No lock-in. Commercial license included.
@@ -185,6 +190,29 @@ export default function UpgradePage() {
                 <ComparisonRow feature="Logo support and extra layouts" free="—" pro="✓" />
                 <ComparisonRow feature="No SafeBanner branding" free="—" pro="✓" />
                 <ComparisonRow feature="Commercial use license" free="—" pro="✓" />
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+          <h2 className="text-lg font-semibold">Built for developers who don&apos;t need a heavy CMP.</h2>
+          <p className="mt-2 text-sm text-zinc-400">Most consent platforms are built around a hosted dashboard. SafeBanner isn&apos;t.</p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-zinc-800 text-zinc-400">
+                <tr>
+                  <th className="px-0 py-3 font-medium">Feature</th>
+                  <th className="px-4 py-3 font-medium">SafeBanner Pro</th>
+                  <th className="px-4 py-3 font-medium">Typical CMP</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800 text-zinc-300">
+                <ComparisonRow feature="Pricing" free="$15/mo flat" pro="Often per domain" />
+                <ComparisonRow feature="Setup" free="1 script tag" pro="Dashboard + config" />
+                <ComparisonRow feature="Consent storage" free="Browser only" pro="Hosted records" />
+                <ComparisonRow feature="Account required" free="No" pro="Yes" />
+                <ComparisonRow feature="Best for" free="Devs, SaaS, agencies" pro="Larger compliance teams" />
               </tbody>
             </table>
           </div>

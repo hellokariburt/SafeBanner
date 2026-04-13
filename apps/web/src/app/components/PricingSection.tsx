@@ -42,7 +42,7 @@ export default function PricingSection() {
           </button>
         </div>
         {isAnnual ? (
-          <p className="mt-3 text-sm text-emerald-400">Annual billing saves about two months.</p>
+          <p className="mt-3 text-sm text-emerald-400">Save 20% — $12/mo billed annually.</p>
         ) : null}
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
@@ -64,7 +64,8 @@ export default function PricingSection() {
           />
           <PlanCard
             name="Pro"
-            price={isAnnual ? "$149/yr" : "$15/mo"}
+            price={isAnnual ? "$12/mo" : "$15/mo"}
+            priceNote={isAnnual ? "billed annually ($144/yr)" : undefined}
             badge="Make it yours"
             accent="text-blue-400"
             highlighted
@@ -91,6 +92,7 @@ export default function PricingSection() {
 function PlanCard({
   name,
   price,
+  priceNote,
   badge,
   accent,
   features,
@@ -101,6 +103,7 @@ function PlanCard({
 }: {
   name: string;
   price: string;
+  priceNote?: string;
   badge: string;
   accent: string;
   features: string[];
@@ -122,6 +125,7 @@ function PlanCard({
         </span>
       </div>
       <p className="mt-3 text-3xl font-bold text-white">{price}</p>
+      {priceNote && <p className="mt-1 text-xs text-zinc-500">{priceNote}</p>}
       <ul className="mt-6 space-y-3 text-sm text-zinc-400">
         {features.map((feature) => (
           <li key={feature}>{feature}</li>
