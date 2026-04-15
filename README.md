@@ -1,17 +1,21 @@
 # SafeBanner
 
-Pass audits without OneTrust. Cookie consent that's compliant, lightweight, and doesn't make your developers cry.
+Open-source cookie consent for developers who don't need a full CMP. One script tag, ~6kb gzipped, zero dependencies.
 
 [![npm](https://img.shields.io/npm/v/safebanner)](https://www.npmjs.com/package/safebanner)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~6kb%20core-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
 
 ## Why SafeBanner?
 
-- **Open source** — Audit the code yourself. No black boxes.
-- **Lightweight** — ~6kb gzipped core bundle. Pro languages load on demand.
-- **Actually works** — Consent persists locally and Google Consent Mode is supported.
-- **No account required** — Free tier runs entirely client-side.
+Most cookie consent tools are either enterprise software with dashboards and hosted consent databases (OneTrust, Cookiebot) or abandoned GitHub repos. SafeBanner is neither.
+
+- **~6kb gzipped** — no jQuery, no framework, no dependencies
+- **No hosted consent data** — consent stays in the visitor's browser via localStorage. SafeBanner does not store visitor consent records.
+- **No account required** — the free tier is fully functional with zero sign-up
+- **Google Consent Mode v2** — signals `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization` automatically
+- **No telemetry** — SafeBanner does not phone home, track installs, or collect any data about your visitors
+- **Open source** — MIT licensed, audit the code yourself
 
 ## Quick Start
 
@@ -21,7 +25,7 @@ Add one script tag:
 <script src="https://www.safebanner.com/safebanner.js"></script>
 ```
 
-That's it. A GDPR-compliant consent banner appears for new visitors.
+That's it. SafeBanner shows a consent banner, stores choices locally, and sends Google Consent Mode signals when configured.
 
 ## Configuration
 
@@ -181,7 +185,7 @@ safebanner/
 │       │   ├── storage.ts    # localStorage wrapper
 │       │   ├── styles.ts     # Inline CSS
 │       │   └── types.ts      # TypeScript types
-│       └── build.js          # esbuild config
+│       └── build.mjs         # esbuild config
 ├── apps/
 │   └── web/                  # Next.js landing page + docs
 │       ├── src/app/
@@ -199,9 +203,21 @@ safebanner/
 | Tier | Price | What you get |
 |------|-------|--------------|
 | **Free** | $0 | Full consent banner, local storage, GDPR mode, self-host |
-| **Pro** | $15/mo or $149/yr | Remove branding, unlock additional built-in languages, custom banner copy, custom button labels, commercial license key |
+| **Pro** | $15/mo or $144/yr | Remove branding, custom layouts, 40+ languages, custom copy and labels, commercial license |
 
-Free tier is fully functional. Pro keeps the product simple and does not include hosted consent records.
+Free tier is fully functional with no limits. Pro is a professionalization upgrade for production sites and client work — it does not add hosted consent records or a dashboard.
+
+## Design Decisions
+
+SafeBanner is a consent signaling layer, not a full CMP. These are intentional constraints:
+
+- **No dashboard** — configuration is done via `data-` attributes on the script tag, not a hosted UI
+- **No hosted consent database** — for basic cookie consent flows, SafeBanner keeps consent state client-side instead of offering hosted audit records.
+- **No script blocking** — SafeBanner signals consent state. It doesn't intercept or rewrite third-party scripts.
+- **No IAB TCF strings** — TCF is for programmatic ad exchanges. Most sites don't need it.
+- **No telemetry** — the free tier makes zero network requests. Pro contacts `safebanner.com` only for license validation and translations.
+
+These constraints are what keep the bundle at ~6kb and setup at under 2 minutes.
 
 ## License
 
@@ -211,4 +227,5 @@ MIT — use it however you want, including in commercial projects.
 
 - [Documentation](https://safebanner.com/docs)
 - [Live Demo](https://safebanner.com/demo)
+- [npm](https://www.npmjs.com/package/safebanner)
 - [GitHub](https://github.com/hellokariburt/SafeBanner)
