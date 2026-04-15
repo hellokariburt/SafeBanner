@@ -87,6 +87,8 @@ export default function DemoPage() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [devToolsOpen, setDevToolsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [demoScriptActivated, setDemoScriptActivated] = useState(false);
+  const demoScriptId = "safebanner-demo-blocked";
 
   const addLog = useCallback((event: string, details?: string, type: LogEntry["type"] = "info") => {
     const now = new Date();
@@ -104,6 +106,16 @@ export default function DemoPage() {
     }
   }, []);
 
+  // Listen for demo script activation
+  useEffect(() => {
+    const handler = () => {
+      setDemoScriptActivated(true);
+      addLog("Script Activated", "Analytics script was unblocked after consent", "consent");
+    };
+    document.addEventListener("safebanner-demo-activated", handler);
+    return () => document.removeEventListener("safebanner-demo-activated", handler);
+  }, [addLog]);
+
   // Cleanup function for banner elements
   useEffect(() => {
     return () => {
@@ -112,6 +124,7 @@ export default function DemoPage() {
       document.querySelector('.cm-banner')?.remove();
       document.querySelector('.cm-overlay')?.remove();
       document.getElementById('consent-manager-styles')?.remove();
+      document.getElementById("safebanner-demo-blocked")?.remove();
     };
   }, []);
 
@@ -177,6 +190,7 @@ export default function DemoPage() {
     // Clear consent so banner shows
     localStorage.removeItem("safebanner_consent");
     setConsent(null);
+    setDevToolsOpen(true);
 
     // Remove old script(s)
     document.querySelectorAll('script[src^="/safebanner.js"]').forEach(el => el.remove());
@@ -199,7 +213,20 @@ export default function DemoPage() {
     if (config.bannerDescription.trim()) script.dataset.bannerDescription = config.bannerDescription.trim();
     script.onload = () => {
       setScriptLoaded(true);
+      setDemoScriptActivated(false);
       addLog("Config Applied", `Layout: ${config.layout}, Theme: ${config.theme}, Lang: ${config.lang}`, "info");
+
+      // Insert a real type="text/safebanner" demo script to show blocking in action
+      document.getElementById(demoScriptId)?.remove();
+      document.getElementById(demoScriptId + "-activated")?.remove();
+      const blocked = document.createElement("script");
+      blocked.type = "text/safebanner";
+      blocked.id = demoScriptId;
+      blocked.dataset.consent = "analytics";
+      // Inline script that sets a flag when activated
+      blocked.textContent = `document.dispatchEvent(new CustomEvent("safebanner-demo-activated"))`;
+      document.body.appendChild(blocked);
+      addLog("Script Blocked", 'type="text/safebanner" data-consent="analytics" inserted — waiting for consent', "info");
     };
     document.body.appendChild(script);
   };
@@ -498,14 +525,14 @@ export default function DemoPage() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
-                          Make the banner match your product
+                          Enforce consent in production
                         </p>
                         <p className="mt-1 text-xs text-blue-700 dark:text-blue-300">
-                          Pro unlocks layouts, logo support, custom labels, and commercial use.
+                          Pro blocks marked scripts until consent, then unlocks layouts, branding, and languages.
                         </p>
                       </div>
                       <Link
-                        href="/upgrade"
+                        href="/upgrade?ref=demo_pro_panel"
                         className="shrink-0 rounded-md bg-blue-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-500"
                       >
                         Upgrade
@@ -630,7 +657,7 @@ export default function DemoPage() {
                       {hasProOptions && (
                         <p className="mt-2 text-xs text-zinc-400">
                           Pro features require a license key.{" "}
-                          <Link href="/upgrade" className="text-blue-500 hover:underline">
+                          <Link href="/upgrade?ref=demo_code_warning" className="text-blue-500 hover:underline">
                             Upgrade to Pro
                           </Link>
                         </p>
@@ -704,6 +731,66 @@ export default function DemoPage() {
                         </div>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Live script blocking demo */}
+                  <div className={`rounded-lg border p-3 ${
+                    demoScriptActivated
+                      ? "border-emerald-300 bg-emerald-50 dark:border-emerald-800/60 dark:bg-emerald-950/30"
+                      : scriptLoaded
+                        ? "border-amber-300 bg-amber-50 dark:border-amber-800/60 dark:bg-amber-950/30"
+                        : "border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800"
+                  }`}>
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className={`text-xs font-medium ${
+                          demoScriptActivated
+                            ? "text-emerald-900 dark:text-emerald-200"
+                            : scriptLoaded
+                              ? "text-amber-900 dark:text-amber-200"
+                              : "text-zinc-600 dark:text-zinc-300"
+                        }`}>
+                          Script blocking {scriptLoaded ? "(live)" : ""}
+                        </div>
+                        <p className={`mt-1 text-xs ${
+                          demoScriptActivated
+                            ? "text-emerald-700 dark:text-emerald-300"
+                            : scriptLoaded
+                              ? "text-amber-700 dark:text-amber-300"
+                              : "text-zinc-500 dark:text-zinc-400"
+                        }`}>
+                          {demoScriptActivated
+                            ? "Analytics consent granted — script was activated by SafeBanner."
+                            : scriptLoaded
+                              ? "A real type=\"text/safebanner\" script is in the DOM right now, blocked until you grant Analytics consent."
+                              : "Launch the banner to see script blocking in action."}
+                        </p>
+                      </div>
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
+                          demoScriptActivated
+                            ? "bg-emerald-200 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300"
+                            : scriptLoaded
+                              ? "animate-pulse bg-amber-200 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300"
+                              : "bg-zinc-200 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-400"
+                        }`}
+                      >
+                        {demoScriptActivated ? "Activated" : scriptLoaded ? "Blocked" : "Idle"}
+                      </span>
+                    </div>
+                    <pre className="mt-3 overflow-x-auto rounded bg-zinc-900 p-2 text-[11px] text-emerald-400 dark:bg-zinc-950">
+                      {'<script type="text/safebanner" data-consent="analytics">\n  // This script is blocked until analytics consent\n</script>'}
+                    </pre>
+                    {scriptLoaded && !demoScriptActivated && (
+                      <p className="mt-2 text-[11px] text-amber-600 dark:text-amber-400">
+                        Click &quot;Accept All&quot; on the banner to watch it unblock.
+                      </p>
+                    )}
+                    {!scriptLoaded && (
+                      <p className="mt-2 text-[11px] text-zinc-400">
+                        Pro feature. <Link href="/upgrade?ref=demo_blocking" className="text-blue-500 hover:underline">Upgrade</Link> to enforce consent on your site.
+                      </p>
+                    )}
                   </div>
 
                   {/* Google signals */}
