@@ -280,8 +280,11 @@ export default function Home() {
             <div>
               <h3 className="font-semibold text-white">Is this really free?</h3>
               <p className="mt-2 text-zinc-400">
-                Yes. The open-source version is fully functional. Pro adds
-                branding removal, more languages, and banner customization.
+                Yes. Free gives you a working consent banner with Google Consent
+                Mode v2 — no limits, no account. Pro ($15/mo) removes SafeBanner
+                branding and adds a commercial license, so you can deploy on
+                client sites without your clients seeing our name. Nothing in
+                Free stops working if you never upgrade.
               </p>
             </div>
             <div>

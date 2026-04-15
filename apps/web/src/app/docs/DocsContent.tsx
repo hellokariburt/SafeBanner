@@ -716,6 +716,27 @@ cd packages/consent-script && pnpm build
             name and privacy policy URL.
           </FaqItem>
 
+          <FaqItem question="What happens before a visitor makes a choice?">
+            All non-essential categories (analytics and marketing) default to
+            denied. No analytics or marketing cookies are set, and Google
+            Consent Mode signals are sent as denied. The banner stays visible
+            until the visitor makes a choice.
+          </FaqItem>
+
+          <FaqItem question="How long does consent last?">
+            Consent is stored in localStorage and does not expire
+            automatically. It persists until the visitor clears their browser
+            data or your site calls{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              window.safeBanner.reset()
+            </code>
+            . If you need to re-prompt visitors periodically, call{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              reset()
+            </code>{" "}
+            on a schedule in your own code.
+          </FaqItem>
+
           <FaqItem question="How do I add a 'Manage Cookies' link?">
             Call{" "}
             <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">

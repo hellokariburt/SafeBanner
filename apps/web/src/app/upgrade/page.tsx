@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 
 type BillingInterval = "monthly" | "annual";
 
@@ -16,6 +17,8 @@ export default function UpgradePage() {
     if (params.get("interval") === "annual") {
       setInterval("annual");
     }
+    const ref = params.get("ref") || "direct";
+    track("upgrade_page_viewed", { ref });
   }, []);
 
   async function startCheckout() {
@@ -25,6 +28,7 @@ export default function UpgradePage() {
 
     setPending(true);
     setError(null);
+    track("checkout_clicked", { interval });
 
     try {
       const response = await fetch("/api/stripe/checkout", {
@@ -40,7 +44,9 @@ export default function UpgradePage() {
 
       window.location.href = data.url;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Checkout failed");
+      const message = err instanceof Error ? err.message : "Checkout failed";
+      track("checkout_error", { error: message });
+      setError(message);
       setPending(false);
     }
   }

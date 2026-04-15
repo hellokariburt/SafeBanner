@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 
 interface ConsentState {
   necessary: boolean;
@@ -72,8 +73,16 @@ export default function DemoPage() {
     config.logoUrl.trim() !== "" ||
     config.bannerTitle.trim() !== "" ||
     config.bannerDescription.trim() !== "";
+
+  useEffect(() => {
+    if (hasProOptions && !proTrackedRef.current) {
+      proTrackedRef.current = true;
+      track("demo_pro_toggle");
+    }
+  }, [hasProOptions]);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const logIdRef = useRef(0);
+  const proTrackedRef = useRef(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [devToolsOpen, setDevToolsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
