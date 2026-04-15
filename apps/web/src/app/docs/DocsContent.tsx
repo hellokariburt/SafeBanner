@@ -106,7 +106,7 @@ export function DocsContent() {
         {/* Quick Start */}
         <Section id="quick-start" title="Quick Start">
           <p className="text-zinc-600 dark:text-zinc-400">
-            Get compliant in under 2 minutes:
+            Get set up in under 2 minutes:
           </p>
           <ol className="mt-4 list-inside list-decimal space-y-4 text-zinc-600 dark:text-zinc-400">
             <li>
@@ -674,11 +674,12 @@ cd packages/consent-script && pnpm build
 
         {/* FAQ */}
         <Section id="faq" title="FAQ">
-          <FaqItem question="Is this really GDPR compliant?">
-            SafeBanner helps you collect and store consent choices in the
-            browser. You are still responsible for configuring your site to
-            load analytics and advertising scripts only after consent when
-            required.
+          <FaqItem question="Does SafeBanner make my site GDPR compliant?">
+            SafeBanner provides a consent banner that follows the GDPR pattern
+            (opt-in by default) and stores choices in the browser. It does not
+            guarantee compliance — you are still responsible for configuring
+            your site to respect those choices, and for meeting any other
+            legal requirements that apply to your situation.
           </FaqItem>
 
           <FaqItem question="What about CCPA?">

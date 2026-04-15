@@ -169,6 +169,13 @@ export default function LegalPage() {
               </p>
             </div>
 
+            <div>
+              <h3 className="mb-2 text-base font-semibold text-zinc-900 dark:text-white">Data breach notification</h3>
+              <p className="text-sm leading-relaxed">
+                In the event of a data breach affecting your personal data, we will notify you and relevant supervisory authorities within 72 hours as required by GDPR.
+              </p>
+            </div>
+
           </div>
         </section>
 

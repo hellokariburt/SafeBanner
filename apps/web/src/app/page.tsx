@@ -113,7 +113,7 @@ export default function Home() {
                 3
               </div>
               <h3 className="mt-4 font-semibold text-white">
-                You&apos;re compliant
+                Consent is live
               </h3>
               <p className="mt-2 text-zinc-400">
                 Consent stored. Google signals sent automatically.
@@ -174,7 +174,7 @@ export default function Home() {
                   "Granular categories (Necessary, Analytics, Marketing)",
                   "Google Consent Mode v2 signals",
                   "Mobile-friendly, accessible UI",
-                  "GDPR-compliant opt-in by default",
+                  "Opt-in by default (GDPR pattern)",
                   "Multi-language support (EN, FR, DE)",
                   "Timestamped consent in localStorage",
                 ].map((item) => (
