@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Demo — SafeBanner Cookie Consent",
-  description: "Try SafeBanner live. Customize position, theme, colors, and language — plus Pro features like logo, auto dark/light theme, bar layout, and button styles.",
+  description: "Try SafeBanner live. See Google Consent Mode v2 signals, script blocking, and consent enforcement in action. Free and Pro controls with live embed code.",
   openGraph: {
     title: "Demo — SafeBanner Cookie Consent",
-    description: "Try SafeBanner live. Free and Pro controls, Google Consent Mode v2, live embed code generation.",
+    description: "See script blocking and Google Consent Mode v2 in action. Free signals consent, Pro enforces it.",
     url: "https://www.safebanner.com/demo",
   },
   alternates: {
