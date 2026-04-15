@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     title: "Google Consent Mode v2 Setup Guide — SafeBanner",
     description:
       "Set up Google Consent Mode v2 with one script tag. Free signals consent. Pro enforces it by blocking scripts until approval.",
+    url: "https://www.safebanner.com/guides/google-consent-mode-v2-setup",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: "Google Consent Mode v2 Setup Guide — SafeBanner",
+    description:
+      "Set up Google Consent Mode v2 with SafeBanner. Free signals consent. Pro blocks scripts until approval.",
+  },
+  alternates: {
+    canonical: "https://www.safebanner.com/guides/google-consent-mode-v2-setup",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

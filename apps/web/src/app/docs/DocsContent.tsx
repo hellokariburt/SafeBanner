@@ -680,8 +680,9 @@ cd packages/consent-script && pnpm build
             </p>
             <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
               Pro blocks marked analytics and marketing scripts until consent,
-              removes SafeBanner branding, adds more languages, and unlocks
-              customization controls that make the banner feel native to your product.
+              re-prompts after consent expires, cleans up accessible cookies
+              after rejection, removes SafeBanner branding, and adds production
+              customization.
             </p>
             <div className="mt-3 flex flex-wrap gap-3">
               <Link
