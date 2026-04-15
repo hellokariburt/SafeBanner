@@ -58,9 +58,43 @@ function Section({
   );
 }
 
+const guideStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How to Set Up Google Consent Mode v2 with SafeBanner",
+  description:
+    "Set up Google Consent Mode v2 with one script tag using SafeBanner. Sends default denied signals before Google tags load, then updates after consent.",
+  step: [
+    {
+      "@type": "HowToStep",
+      name: "Add SafeBanner before Google tags",
+      text: "Add the SafeBanner script tag to your HTML before any Google tags. SafeBanner sends default denied signals on page load.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Understand the enforcement gap",
+      text: "Google Consent Mode signals consent but doesn't block scripts. Free SafeBanner signals consent. Pro blocks scripts until approval.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Block scripts with Pro",
+      text: "Mark analytics and marketing scripts with type='text/safebanner' and data-consent attributes. Pro activates them only after consent.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Verify signals in Tag Assistant",
+      text: "Use Google Tag Assistant to confirm consent default and update events fire correctly.",
+    },
+  ],
+};
+
 export default function GoogleConsentModeGuide() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(guideStructuredData) }}
+      />
       <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link

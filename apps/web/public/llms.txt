@@ -1,0 +1,54 @@
+# SafeBanner
+
+> Open-source cookie consent banner with Google Consent Mode v2 built in. One script tag install. Pro ($15/mo) blocks analytics and marketing scripts until consent is granted.
+
+## What SafeBanner does
+
+SafeBanner is a lightweight (~6kb gzipped) cookie consent tool for developers. It shows a GDPR-compliant consent banner, stores consent in localStorage, and sends Google Consent Mode v2 signals automatically.
+
+The Pro tier adds consent enforcement: scripts marked with `type="text/safebanner"` are blocked until the visitor grants consent. Pro also adds consent expiry with re-prompting, cookie cleanup on rejection, branding removal, 40+ languages, and full customization.
+
+## Key pages
+
+- Homepage: https://www.safebanner.com
+- Documentation: https://www.safebanner.com/docs
+- Interactive Demo: https://www.safebanner.com/demo
+- Google Consent Mode v2 Guide: https://www.safebanner.com/guides/google-consent-mode-v2-setup
+- Pricing / Upgrade: https://www.safebanner.com/upgrade
+- GitHub: https://github.com/hellokariburt/SafeBanner
+- npm: https://www.npmjs.com/package/safebanner
+
+## Install (free)
+
+```html
+<script src="https://www.safebanner.com/safebanner.js"></script>
+```
+
+## Pro script blocking example
+
+```html
+<script src="https://www.safebanner.com/safebanner.js" data-key="sb_live_..."></script>
+<script type="text/safebanner" data-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-XXX"></script>
+```
+
+## JavaScript API
+
+- `window.safeBanner.getConsent()` — current consent state
+- `window.safeBanner.hasConsentFor(category)` — check a category
+- `window.safeBanner.onConsentChange(callback)` — listen for changes
+- `window.safeBanner.reset()` — clear consent and re-show banner
+
+## Pricing
+
+- **Free**: Consent banner, Google Consent Mode v2, 3 languages, no account required
+- **Pro** ($15/mo or $144/yr): Script blocking, consent expiry, cookie cleanup, 40+ languages, custom branding, production license key
+
+## Categories
+
+- **Necessary** (always on): session, auth, CSRF cookies
+- **Analytics** (user choice): Google Analytics, Mixpanel, Amplitude, Hotjar, Plausible
+- **Marketing** (user choice): Facebook Pixel, Google Ads, LinkedIn, Pinterest, TikTok
+
+## License
+
+MIT

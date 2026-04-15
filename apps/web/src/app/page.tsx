@@ -6,9 +6,85 @@ import HeroDemo from "./components/HeroDemo";
 import SiteFooter from "./components/SiteFooter";
 import BadgeReferralNotice from "./components/BadgeReferralNotice";
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      name: "SafeBanner",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Web",
+      description:
+        "Open-source cookie consent banner with Google Consent Mode v2. One script tag install. Pro blocks scripts until consent is granted.",
+      url: "https://www.safebanner.com",
+      license: "https://opensource.org/licenses/MIT",
+      offers: [
+        {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          name: "Free",
+          description:
+            "Consent banner with Google Consent Mode v2 signals, 3 languages, no account required",
+        },
+        {
+          "@type": "Offer",
+          price: "15",
+          priceCurrency: "USD",
+          name: "Pro",
+          description:
+            "Script blocking, consent expiry, cookie cleanup, 40+ languages, custom branding",
+          billingIncrement: "P1M",
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Is SafeBanner really free?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. Free gives you a working consent banner with Google Consent Mode v2 — no limits, no account. Pro ($15/mo) adds consent enforcement: block scripts until approval, re-prompt after expiry, remove branding, and customize everything.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can I self-host SafeBanner?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. MIT license. Run it on your own infrastructure.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Does SafeBanner work with React, Next.js, WordPress?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. It's a single script tag. Works with any framework or static site.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What if I'm audited?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Consent is stored in the user's browser. SafeBanner does not store hosted consent records or act as a compliance system of record — that keeps your setup simple and your liability low.",
+          },
+        },
+      ],
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* Header */}
       <header className="border-b border-zinc-800">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
@@ -80,7 +156,9 @@ export default function Home() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            Google Consent Mode v2
+            <Link href="/guides/google-consent-mode-v2-setup" className="hover:text-white">
+              Google Consent Mode v2
+            </Link>
           </span>
           <span>~6kb gzipped</span>
           <span>No account needed</span>
@@ -292,6 +370,12 @@ export default function Home() {
                 className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-900"
               >
                 Read Terms &amp; Privacy
+              </Link>
+              <Link
+                href="/guides/google-consent-mode-v2-setup"
+                className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-900"
+              >
+                Google Consent Mode v2 Guide
               </Link>
             </div>
           </div>
