@@ -10,12 +10,10 @@ export default function PricingSection() {
   return (
     <section id="pricing" className="border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-3xl font-bold text-white">Simple pricing.</h2>
+        <h2 className="text-3xl font-bold text-white">Free shows the banner. Pro enforces consent.</h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
-          Free gets you a fully working consent banner. Pro makes it match your product.
-        </p>
-        <p className="mt-2 text-sm text-zinc-500">
-          No hosted consent records. No enterprise bloat. Just a clean banner that works.
+          Free gives you a working consent banner with Google Consent Mode v2.
+          Pro blocks scripts until consent, re-prompts after expiry, and removes SafeBanner branding.
         </p>
         <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
           <button
@@ -49,37 +47,39 @@ export default function PricingSection() {
           <PlanCard
             name="Free"
             price="$0"
-            badge="Open source"
+            badge="Consent banner"
             accent="text-zinc-300"
             features={[
-              "Banner + consent UI",
-              "Google Consent Mode v2",
+              "Cookie consent banner + UI",
+              "Google Consent Mode v2 signals",
+              "onConsentChange() callback API",
               "Custom color, position, and theme",
               "English, French, German",
-              "Powered by SafeBanner",
+              "Powered by SafeBanner badge",
             ]}
             ctaHref="/docs"
-            ctaLabel="Get Started"
+            ctaLabel="Install Free"
             ctaClass="border border-zinc-700 text-zinc-200 hover:bg-zinc-800"
           />
           <PlanCard
             name="Pro"
             price={isAnnual ? "$12/mo" : "$15/mo"}
             priceNote={isAnnual ? "billed annually ($144/yr)" : undefined}
-            badge="Make it yours"
+            badge="Consent enforcement"
             accent="text-blue-400"
             highlighted
             features={[
               "Everything in Free, plus:",
+              "Block scripts until consent is granted",
+              "Re-prompt after consent expires",
+              "Clean up accessible cookies on rejection",
               "No SafeBanner branding",
-              "Logo support",
+              "Logo, layouts, custom labels",
               "Auto dark/light theme",
-              "Compact bar and floating card layouts",
-              "Custom text and button labels",
               "40+ additional languages",
-              "Commercial use license",
+              "License key for production and client sites",
             ]}
-            ctaHref={`/upgrade?interval=${interval}`}
+            ctaHref={`/upgrade?interval=${interval}&ref=pricing`}
             ctaLabel={`Upgrade to Pro${isAnnual ? " — Annual" : ""}`}
             ctaClass="bg-blue-600 text-white hover:bg-blue-500"
           />

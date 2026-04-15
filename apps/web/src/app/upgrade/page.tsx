@@ -11,14 +11,21 @@ export default function UpgradePage() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [interval, setInterval] = useState<BillingInterval>("monthly");
+  const [ref, setRef] = useState("direct");
+  const [checkoutCanceled, setCheckoutCanceled] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("interval") === "annual") {
       setInterval("annual");
     }
-    const ref = params.get("ref") || "direct";
-    track("upgrade_page_viewed", { ref });
+    if (params.get("canceled") === "1") {
+      setCheckoutCanceled(true);
+      track("checkout_canceled");
+    }
+    const refParam = params.get("ref") || "direct";
+    setRef(refParam);
+    track("upgrade_page_viewed", { ref: refParam });
   }, []);
 
   async function startCheckout() {
@@ -28,13 +35,13 @@ export default function UpgradePage() {
 
     setPending(true);
     setError(null);
-    track("checkout_clicked", { interval });
+    track("checkout_clicked", { interval, ref });
 
     try {
       const response = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: "pro", interval }),
+        body: JSON.stringify({ plan: "pro", interval, ref }),
       });
 
       const data = (await response.json()) as { url?: string; error?: string };
@@ -71,18 +78,25 @@ export default function UpgradePage() {
       </header>
 
       <main className="mx-auto max-w-3xl px-6 py-20">
+        {checkoutCanceled && (
+          <div className="mb-8 rounded-lg border border-amber-700/50 bg-amber-950/30 px-4 py-3 text-sm text-amber-200">
+            Checkout was canceled. Nothing was charged. You can keep using Free
+            or come back when you need script blocking.
+          </div>
+        )}
         <div className="text-center">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
-            For production sites and client work
+            Go from consent banner to consent enforcement
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight">
-            Make it yours.
+            Block scripts until consent. Not just signal it.
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-lg text-zinc-400">
-            Remove the &ldquo;Powered by&rdquo; badge, add your logo, and customize every label. One upgrade — your banner looks like you built it.
+            Free shows the banner and sends Google signals. Pro actually prevents analytics and marketing
+            scripts from running until your visitor says yes.
           </p>
           <p className="mt-2 text-sm text-zinc-500">
-            Deploying for clients? Use SafeBanner on client and commercial projects without leaving our branding on their site.
+            Plus: re-prompt after consent expires, clean up cookies on rejection, remove branding, and customize everything.
           </p>
         </div>
 
@@ -91,34 +105,26 @@ export default function UpgradePage() {
           <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-zinc-500">Free</p>
             <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4 text-sm">
-              <p className="font-medium text-zinc-200">We use cookies</p>
-              <p className="mt-1 text-xs text-zinc-400">This site uses cookies to improve your experience.</p>
-              <div className="mt-3 flex gap-2">
-                <span className="rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white">Accept all</span>
-                <span className="rounded border border-zinc-600 px-3 py-1 text-xs text-zinc-300">Manage</span>
+              <p className="font-medium text-zinc-200">Shows consent banner</p>
+              <p className="mt-1 text-xs text-zinc-400">Sends Google Consent Mode signals</p>
+              <div className="mt-3 rounded border border-amber-700/40 bg-amber-950/30 px-2 py-1.5">
+                <p className="text-[11px] text-amber-400">Scripts still load unless you manually gate them</p>
               </div>
-              <p className="mt-3 text-[10px] text-zinc-500">
-                Powered by <span className="underline">SafeBanner</span>
-              </p>
             </div>
           </div>
           <div className="rounded-xl border border-blue-600/40 bg-zinc-900 p-4">
             <p className="mb-3 text-xs font-medium uppercase tracking-wide text-blue-400">Pro</p>
-            <div className="rounded-lg border border-violet-400/30 bg-white p-4 text-sm shadow-sm">
-              <div className="flex items-center gap-2">
-                <div className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-[9px] font-bold text-white">A</div>
-                <p className="font-semibold text-zinc-900">Privacy preferences</p>
-              </div>
-              <p className="mt-1 text-xs text-zinc-500">Choose which cookies you&apos;d like to allow on acme.com.</p>
-              <div className="mt-3 flex gap-2">
-                <span className="rounded-full bg-violet-500 px-3 py-1 text-xs font-medium text-white">Accept all</span>
-                <span className="rounded-full border border-zinc-300 px-3 py-1 text-xs text-zinc-600">Manage cookies</span>
+            <div className="rounded-lg border border-emerald-500/30 bg-zinc-800 p-4 text-sm">
+              <p className="font-medium text-zinc-200">Enforces consent choices</p>
+              <p className="mt-1 text-xs text-zinc-400">Blocks marked scripts until visitor approves</p>
+              <div className="mt-3 rounded border border-emerald-700/40 bg-emerald-950/30 px-2 py-1.5">
+                <p className="text-[11px] text-emerald-400">Analytics and marketing scripts don&apos;t run until consent</p>
               </div>
             </div>
           </div>
         </div>
         <p className="mt-4 text-center text-sm text-zinc-400">
-          Make SafeBanner match your site.
+          Same one-line install. Pro adds enforcement via <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-emerald-400">type=&quot;text/safebanner&quot;</code>
         </p>
 
         <div className="mx-auto mt-10 flex w-fit rounded-full border border-zinc-800 bg-zinc-900 p-1 text-sm">
@@ -166,31 +172,43 @@ export default function UpgradePage() {
             </div>
           </div>
           <p className="mt-2 text-sm text-zinc-500">
-            Cancel anytime. No lock-in. Commercial license included.
+            Cancel anytime. No lock-in. License key included for production and client sites.
           </p>
           <ul className="mt-6 space-y-4 text-sm text-zinc-300">
             <li>
-              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Branding &amp; Identity</p>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Consent Enforcement</p>
               <ul className="space-y-2">
-                {["Remove \"Powered by SafeBanner\" badge", "Add your company logo to the banner", "Auto-match light/dark theme to your site"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+                {[
+                  "Block analytics and marketing scripts until consent",
+                  "Re-prompt visitors after consent expires",
+                  "Clean up accessible cookies when rejected",
+                ].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+              </ul>
+              <div className="mt-2 rounded bg-zinc-800 p-2.5">
+                <code className="text-xs text-zinc-400">
+                  {'<script type="text/safebanner" data-consent="analytics" data-src="...">'}
+                </code>
+              </div>
+            </li>
+            <li>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Branding &amp; Customization</p>
+              <ul className="space-y-2">
+                {[
+                  "Remove \"Powered by SafeBanner\" badge",
+                  "Add your logo, pick layouts (bar, card, banner)",
+                  "Custom title, description, and button labels",
+                  "Auto dark/light theme",
+                  "40+ languages",
+                ].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
               </ul>
             </li>
             <li>
-              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Layout &amp; Copy</p>
+              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Production &amp; Client Use</p>
               <ul className="space-y-2">
-                {["Compact bar and floating card layouts", "Custom banner title, description, and button labels", "Fine-grained placement and styling controls"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
-              </ul>
-            </li>
-            <li>
-              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Localization</p>
-              <ul className="space-y-2">
-                {["40+ languages beyond the 3 included in Free"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
-              </ul>
-            </li>
-            <li>
-              <p className="font-medium text-zinc-400 uppercase tracking-wide text-xs mb-2">Licensing</p>
-              <ul className="space-y-2">
-                {["Commercial use license for client work"].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
+                {[
+                  "License key for production and client sites",
+                  "Automatic updates via CDN",
+                ].map(f => <li key={f} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5">✓</span>{f}</li>)}
               </ul>
             </li>
           </ul>
@@ -231,12 +249,14 @@ export default function UpgradePage() {
                 <ComparisonRow feature="Consent banner" free="✓" pro="✓" />
                 <ComparisonRow feature="Google Consent Mode support" free="✓" pro="✓" />
                 <ComparisonRow feature="English, French, German" free="✓" pro="✓" />
+                <ComparisonRow feature="Script blocking" free="—" pro="✓" />
+                <ComparisonRow feature="Consent expiry and re-prompt" free="—" pro="✓" />
                 <ComparisonRow feature="40+ additional languages" free="—" pro="✓" />
                 <ComparisonRow feature="Custom banner title and description" free="—" pro="✓" />
                 <ComparisonRow feature="Custom button labels" free="—" pro="✓" />
                 <ComparisonRow feature="Logo support and extra layouts" free="—" pro="✓" />
                 <ComparisonRow feature="No SafeBanner branding" free="—" pro="✓" />
-                <ComparisonRow feature="Commercial use license" free="—" pro="✓" />
+                <ComparisonRow feature="Production/client license key" free="—" pro="✓" />
               </tbody>
             </table>
           </div>

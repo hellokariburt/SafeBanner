@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 import PricingSection from "./components/PricingSection";
 import HeroDemo from "./components/HeroDemo";
 import SiteFooter from "./components/SiteFooter";
+import BadgeReferralNotice from "./components/BadgeReferralNotice";
 
 export default function Home() {
   return (
@@ -14,7 +16,7 @@ export default function Home() {
             <Image src="/logo.png" alt="SafeBanner" width={28} height={28} />
             <span className="text-lg font-semibold text-white">SafeBanner</span>
           </Link>
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-3 sm:gap-6">
             <Link
               href="/docs"
               className="text-sm text-zinc-400 hover:text-white"
@@ -31,22 +33,45 @@ export default function Home() {
               href="https://github.com/hellokariburt/SafeBanner"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-zinc-400 hover:text-white"
+              className="hidden text-sm text-zinc-400 hover:text-white sm:inline"
             >
               GitHub
             </a>
+            <Link
+              href="/upgrade?ref=home_nav"
+              className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-100"
+            >
+              Upgrade
+            </Link>
           </nav>
         </div>
       </header>
 
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
+        <Suspense fallback={null}>
+          <BadgeReferralNotice />
+        </Suspense>
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
           Cookie consent without the CMP bloat.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          One script tag. No account. No dashboard. No hosted consent database. Google Consent Mode v2 built in.
+          One script tag. Google Consent Mode v2 built in. Pro blocks scripts until consent is granted.
         </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Link
+            href="/upgrade?ref=home_hero"
+            className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-zinc-950 shadow-sm hover:bg-zinc-100"
+          >
+            Upgrade for production
+          </Link>
+          <Link
+            href="/docs"
+            className="rounded-lg border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-200 hover:bg-zinc-900"
+          >
+            Install free
+          </Link>
+        </div>
 
         {/* Trust signals */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-400">
@@ -76,7 +101,8 @@ export default function Home() {
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
             OneTrust is for enterprises. Cookiebot is slow and expensive. Most free scripts are abandoned.
-            SafeBanner is a maintained, open source banner that takes 2 minutes to install and never needs a dashboard.
+            SafeBanner is a maintained, open source consent tool that takes 2 minutes to install.
+            Free shows the banner. Pro enforces consent by blocking scripts until approval.
           </p>
         </div>
       </section>
@@ -169,14 +195,14 @@ export default function Home() {
               </h2>
               <ul className="mt-6 space-y-3">
                 {[
-                  "Visible consent banner on first visit",
-                  "Accept All / Reject All buttons",
-                  "Granular categories (Necessary, Analytics, Marketing)",
+                  "Consent banner with Accept All / Reject All",
                   "Google Consent Mode v2 signals",
-                  "Mobile-friendly, accessible UI",
+                  "Script blocking until consent (Pro)",
+                  "Consent expiry and re-prompting (Pro)",
+                  "Cookie cleanup on rejection",
                   "Opt-in by default (GDPR pattern)",
-                  "Multi-language support (EN, FR, DE)",
-                  "Timestamped consent in localStorage",
+                  "Multi-language support (EN/FR/DE + 40 more with Pro)",
+                  "onConsentChange() callback API",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <svg
@@ -204,11 +230,10 @@ export default function Home() {
                 Intentionally simple
               </h2>
               <p className="mt-2 text-zinc-400">
-                SafeBanner focuses on consent UI and signaling. It doesn&apos;t:
+                SafeBanner handles consent and enforcement. It doesn&apos;t:
               </p>
               <ul className="mt-4 space-y-3">
                 {[
-                  "Block or rewrite scripts",
                   "Manage vendors or IAB TCF strings",
                   "Store hosted consent records",
                   "Act as your legal system of record",
@@ -233,7 +258,8 @@ export default function Home() {
                   <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-emerald-400">
                     hasConsentFor(&apos;analytics&apos;)
                   </code>{" "}
-                  before loading your trackers.
+                  before loading your trackers, or use Pro script blocking to
+                  activate marked scripts after consent.
                 </p>
               </div>
             </div>
@@ -281,10 +307,9 @@ export default function Home() {
               <h3 className="font-semibold text-white">Is this really free?</h3>
               <p className="mt-2 text-zinc-400">
                 Yes. Free gives you a working consent banner with Google Consent
-                Mode v2 — no limits, no account. Pro ($15/mo) removes SafeBanner
-                branding and adds a commercial license, so you can deploy on
-                client sites without your clients seeing our name. Nothing in
-                Free stops working if you never upgrade.
+                Mode v2 — no limits, no account. Pro ($15/mo) adds consent enforcement:
+                block scripts until approval, re-prompt after expiry, remove branding,
+                and customize everything. Nothing in Free stops working if you never upgrade.
               </p>
             </div>
             <div>
