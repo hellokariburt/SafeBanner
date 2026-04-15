@@ -1,16 +1,16 @@
 # SafeBanner
 
-Open-source cookie consent for developers who don't need a full CMP. One script tag, ~6kb gzipped, zero dependencies.
+Open-source cookie consent for developers who don't need a full CMP. One script tag, under 10kb gzipped, zero dependencies.
 
 [![npm](https://img.shields.io/npm/v/safebanner)](https://www.npmjs.com/package/safebanner)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-<10kb-green.svg)]()
 
 ## Why SafeBanner?
 
 Most cookie consent tools are either enterprise software with dashboards and hosted consent databases (OneTrust, Cookiebot) or abandoned GitHub repos. SafeBanner is neither.
 
-- **~6kb gzipped** — no jQuery, no framework, no dependencies
+- **Under 10kb gzipped** — no jQuery, no framework, no dependencies
 - **No hosted consent data** — consent stays in the visitor's browser via localStorage. SafeBanner does not store visitor consent records.
 - **No account required** — the free tier is fully functional with zero sign-up
 - **Google Consent Mode v2** — signals `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization` automatically
@@ -181,7 +181,7 @@ If Vercel points at the repo root, deployment will fail with `No Next.js version
 ```
 safebanner/
 ├── packages/
-│   └── consent-script/       # The embeddable script (~6kb gzipped core)
+│   └── consent-script/       # The embeddable script (under 10kb gzipped)
 │       ├── src/
 │       │   ├── index.ts      # Entry point + SafeBanner class
 │       │   ├── banner.ts     # UI component
@@ -221,7 +221,7 @@ SafeBanner is a consent signaling layer, not a full CMP. These are intentional c
 - **No IAB TCF strings** — TCF is for programmatic ad exchanges. Most sites don't need it.
 - **No telemetry** — the free tier makes zero network requests. Pro contacts `safebanner.com` only for license validation and translations.
 
-These constraints are what keep the bundle at ~6kb and setup at under 2 minutes.
+These constraints are what keep the bundle under 10kb and setup at under 2 minutes.
 
 ## License
 

@@ -160,7 +160,7 @@ export default function Home() {
               Google Consent Mode v2
             </Link>
           </span>
-          <span>~6kb gzipped</span>
+          <span>Under 10kb gzipped</span>
           <span>No account needed</span>
           <span>MIT Licensed</span>
         </div>

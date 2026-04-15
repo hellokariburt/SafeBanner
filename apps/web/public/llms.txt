@@ -4,7 +4,7 @@
 
 ## What SafeBanner does
 
-SafeBanner is a lightweight (~6kb gzipped) cookie consent tool for developers. It shows a GDPR-compliant consent banner, stores consent in localStorage, and sends Google Consent Mode v2 signals automatically.
+SafeBanner is a lightweight (under 10kb gzipped) cookie consent tool for developers. It shows a GDPR-compliant consent banner, stores consent in localStorage, and sends Google Consent Mode v2 signals automatically.
 
 The Pro tier adds consent enforcement: scripts marked with `type="text/safebanner"` are blocked until the visitor grants consent. Pro also adds consent expiry with re-prompting, cookie cleanup on rejection, branding removal, 40+ languages, and full customization.
 

@@ -3,7 +3,7 @@
 SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro adds consent enforcement and production customization for SaaS and client sites.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
+[![Bundle Size](https://img.shields.io/badge/gzipped-<10kb-green.svg)]()
 
 > **This package ships a pre-built browser script, not an importable module.**
 > Use it via CDN or copy `dist/safebanner.js` to your own host.
