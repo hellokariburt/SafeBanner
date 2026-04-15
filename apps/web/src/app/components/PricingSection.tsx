@@ -76,7 +76,7 @@ export default function PricingSection() {
               "Auto dark/light theme",
               "Compact bar and floating card layouts",
               "Custom text and button labels",
-              "More languages (ES, IT, NL, PT + 40 more)",
+              "40+ additional languages",
               "Commercial use license",
             ]}
             ctaHref={`/upgrade?interval=${interval}`}
