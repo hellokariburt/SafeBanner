@@ -42,10 +42,10 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          GDPR consent in one script tag. ~6kb. Done.
+          Cookie consent without the CMP bloat.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          No account. No dashboard. Google Consent Mode v2 built in. Drop it on any site and move on to real work.
+          One script tag. No account. No dashboard. No hosted consent database. Google Consent Mode v2 built in.
         </p>
 
         {/* Trust signals */}
