@@ -176,13 +176,13 @@ export default function HeroDemo() {
             Using SafeBanner on a client or production site?
           </p>
           <p className="mt-1 text-xs text-blue-300/70">
-            Pro removes SafeBanner branding and unlocks custom styling.
+            Pro blocks marked analytics and marketing scripts until consent.
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
             <Link href="/demo" className="text-blue-400 hover:text-blue-300">
-              Try Pro controls in the full demo →
+              Try enforcement in the full demo →
             </Link>
-            <Link href="/upgrade" className="text-zinc-300 hover:text-white">
+            <Link href="/upgrade?ref=hero_demo" className="text-zinc-300 hover:text-white">
               Upgrade to Pro
             </Link>
           </div>

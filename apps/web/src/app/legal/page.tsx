@@ -65,7 +65,7 @@ export default function LegalPage() {
             <div>
               <h3 className="mb-2 text-base font-semibold text-zinc-900 dark:text-white">1. What you&apos;re getting</h3>
               <p className="text-sm leading-relaxed">
-                SafeBanner is a cookie consent tool. The free version is open source (MIT) and you can use it however you like. The Pro license gives you access to additional features — branding removal, extended language support, and a commercial license — for as long as your subscription is active.
+                SafeBanner is a cookie consent tool. The free version is open source (MIT) and you can use it however you like. The Pro license gives you access to additional features — branding removal, extended language support, custom layouts, and production styling controls — for as long as your subscription is active.
               </p>
             </div>
 

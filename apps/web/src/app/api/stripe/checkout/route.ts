@@ -8,7 +8,7 @@ import {
 } from "@/lib/billing";
 
 export async function POST(request: NextRequest) {
-  let body: { plan?: Plan; interval?: BillingInterval };
+  let body: { plan?: Plan; interval?: BillingInterval; ref?: string };
 
   try {
     body = await request.json();
@@ -23,6 +23,10 @@ export async function POST(request: NextRequest) {
 
   const plan = body.plan;
   const interval = body.interval;
+  const ref =
+    typeof body.ref === "string" && /^[a-z0-9_-]{1,64}$/i.test(body.ref)
+      ? body.ref
+      : "direct";
   if (plan !== "pro") {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
   }
@@ -43,10 +47,18 @@ export async function POST(request: NextRequest) {
         },
       ],
       success_url: `${baseUrl}/upgrade/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/upgrade?canceled=1`,
+      cancel_url: `${baseUrl}/upgrade?canceled=1&ref=${encodeURIComponent(ref)}`,
       metadata: {
         plan,
         interval,
+        ref,
+      },
+      subscription_data: {
+        metadata: {
+          plan,
+          interval,
+          ref,
+        },
       },
     });
 

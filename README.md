@@ -116,13 +116,17 @@ export function SafeBanner() {
 }
 ```
 
-### Conditional Analytics Loading
+### Pro Script Blocking
 
-```javascript
-if (window.safeBanner?.hasConsentFor('analytics')) {
-  // Safe to load Google Analytics
-  loadGoogleAnalytics();
-}
+For production sites, Pro can block marked analytics and marketing scripts until consent:
+
+```html
+<script
+  type="text/safebanner"
+  data-consent="analytics"
+  data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"
+  data-async
+></script>
 ```
 
 ### "Manage Cookies" Footer Link
@@ -203,9 +207,9 @@ safebanner/
 | Tier | Price | What you get |
 |------|-------|--------------|
 | **Free** | $0 | Full consent banner, local storage, GDPR mode, self-host |
-| **Pro** | $15/mo or $144/yr | Remove branding, custom layouts, 40+ languages, custom copy and labels, commercial license |
+| **Pro** | $15/mo or $144/yr | Script blocking, consent expiry, remove branding, custom layouts, 40+ languages, custom copy and labels, production/client license key |
 
-Free tier is fully functional with no limits. Pro is a professionalization upgrade for production sites and client work — it does not add hosted consent records or a dashboard.
+Free tier is fully functional with no limits. Pro is the enforcement and polish upgrade for production sites and client work — it does not add hosted consent records or a dashboard.
 
 ## Design Decisions
 
@@ -213,7 +217,7 @@ SafeBanner is a consent signaling layer, not a full CMP. These are intentional c
 
 - **No dashboard** — configuration is done via `data-` attributes on the script tag, not a hosted UI
 - **No hosted consent database** — for basic cookie consent flows, SafeBanner keeps consent state client-side instead of offering hosted audit records.
-- **No script blocking** — SafeBanner signals consent state. It doesn't intercept or rewrite third-party scripts.
+- **Explicit script blocking** — Pro only activates scripts you mark with `type="text/safebanner"`. It does not silently scan or rewrite arbitrary third-party scripts.
 - **No IAB TCF strings** — TCF is for programmatic ad exchanges. Most sites don't need it.
 - **No telemetry** — the free tier makes zero network requests. Pro contacts `safebanner.com` only for license validation and translations.
 

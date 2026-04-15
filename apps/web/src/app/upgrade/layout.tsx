@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Upgrade to SafeBanner Pro — $15/mo",
   description:
-    "Remove SafeBanner branding, add your logo, unlock auto dark/light theme, compact layouts, custom labels, and commercial use. Starting at $15/mo.",
+    "Remove SafeBanner branding, add your logo, unlock auto dark/light theme, compact layouts, custom labels, and additional languages. Starting at $15/mo.",
   openGraph: {
     title: "Upgrade to SafeBanner Pro",
     description:

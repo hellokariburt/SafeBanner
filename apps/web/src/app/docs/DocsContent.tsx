@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "#installation", label: "Installation" },
   { href: "#quick-start", label: "Quick Start" },
   { href: "#configuration", label: "Configuration" },
+  { href: "#script-blocking", label: "Script Blocking" },
   { href: "#javascript-api", label: "JavaScript API" },
   { href: "#examples", label: "Examples" },
   { href: "#self-hosting", label: "Self-Hosting" },
@@ -123,8 +124,8 @@ export function DocsContent() {
               </strong>
               <p className="mt-2">
                 The banner appears automatically for new visitors. Consent is
-                stored locally. Load analytics and ad scripts only after
-                checking consent if your setup requires opt-in behavior.
+                stored locally. If your setup requires enforced opt-in behavior,
+                use Pro script blocking for analytics and marketing tags.
               </p>
             </li>
           </ol>
@@ -132,9 +133,8 @@ export function DocsContent() {
           <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950">
             <p className="text-sm text-blue-800 dark:text-blue-200">
               <strong>Default behavior:</strong> SafeBanner stores consent
-              choices locally and exposes them through the JavaScript API. For
-              the safest setup, only load non-essential scripts after checking
-              consent.
+              choices locally and exposes them through the JavaScript API. Pro
+              adds script blocking for sites that need enforcement.
             </p>
           </div>
         </Section>
@@ -224,7 +224,7 @@ export function DocsContent() {
                   attr="data-project-key"
                   values="String"
                   defaultVal="—"
-                  desc="Pro license key — removes branding and unlocks Pro layouts, styling, and additional languages"
+                  desc="Pro license key — unlocks script blocking, consent expiry, branding removal, layouts, and languages"
                 />
                 <ConfigRow
                   attr="data-layout"
@@ -298,6 +298,12 @@ export function DocsContent() {
                   defaultVal="16"
                   desc="Distance from screen edges for corner and card layouts"
                 />
+                <ConfigRow
+                  attr="data-consent-expiry-days"
+                  values="Number in days (Pro)"
+                  defaultVal="—"
+                  desc="Re-prompt visitors after stored consent expires"
+                />
               </tbody>
             </table>
           </div>
@@ -341,6 +347,81 @@ export function DocsContent() {
           </div>
         </Section>
 
+        {/* Script Blocking */}
+        <Section id="script-blocking" title="Script Blocking">
+          <p className="text-zinc-600 dark:text-zinc-400">
+            Pro can activate Analytics and Marketing scripts only after the
+            matching consent category is granted. Mark blocked scripts with{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              type=&quot;text/safebanner&quot;
+            </code>{" "}
+            and put the real source in{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              data-src
+            </code>
+            .
+          </p>
+          <CodeBlock>
+            {`<script
+  src="https://www.safebanner.com/safebanner.js"
+  data-project-key="your-pro-key"
+></script>
+
+<script
+  type="text/safebanner"
+  data-consent="analytics"
+  data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"
+  data-async
+></script>`}
+          </CodeBlock>
+          <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+            Inline scripts work too. Omit{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              data-src
+            </code>{" "}
+            and place the code inside the marked script tag.
+          </p>
+          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+            Use{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              data-type=&quot;module&quot;
+            </code>{" "}
+            for module scripts. SafeBanner preserves common attributes such as{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              id
+            </code>
+            ,{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              nonce
+            </code>
+            ,{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              integrity
+            </code>
+            ,{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              crossorigin
+            </code>
+            , and{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              referrerpolicy
+            </code>{" "}
+            when activating marked scripts.
+          </p>
+          <CodeBlock>
+            {`<script type="text/safebanner" data-consent="marketing">
+  fbq('init', '123456789');
+  fbq('track', 'PageView');
+</script>`}
+          </CodeBlock>
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/40">
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              SafeBanner only activates scripts you explicitly mark. It does not
+              scan, rewrite, or guess third-party scripts automatically.
+            </p>
+          </div>
+        </Section>
+
         {/* JavaScript API */}
         <Section id="javascript-api" title="JavaScript API">
           <p className="text-zinc-600 dark:text-zinc-400">
@@ -373,8 +454,7 @@ export function DocsContent() {
             description="Check if user has consented to a specific category."
             returns="boolean"
             example={`if (window.safeBanner.hasConsentFor('analytics')) {
-  // Safe to load Google Analytics
-  loadGoogleAnalytics();
+  showAnalyticsEnabledState();
 }`}
           />
 
@@ -465,29 +545,19 @@ export default function RootLayout({ children }) {
           </CodeBlock>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
-            Conditional Analytics Loading
+            Pro Script Blocking
           </h3>
+          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+            For production sites, Pro can activate marked analytics and
+            marketing scripts only after matching consent is granted.
+          </p>
           <CodeBlock>
-            {`// Only load Google Analytics if user consented
-function loadAnalytics() {
-  if (window.safeBanner?.hasConsentFor('analytics')) {
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_ID';
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'GA_ID');
-  }
-}
-
-// Run on page load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadAnalytics);
-} else {
-  loadAnalytics();
-}`}
+            {`<script
+  type="text/safebanner"
+  data-consent="analytics"
+  data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"
+  data-async
+></script>`}
           </CodeBlock>
 
           <h3 className="mt-8 text-lg font-semibold text-zinc-900 dark:text-white">
@@ -600,21 +670,22 @@ cd packages/consent-script && pnpm build
         {/* Paid Features */}
         <Section id="paid-features" title="Paid Features">
           <p className="text-zinc-600 dark:text-zinc-400">
-            The free tier covers the core banner. Pro removes branding,
-            unlocks additional built-in languages, and adds customization
-            controls for teams that want the banner to match their product.
+            The free tier covers the core banner and consent state. Pro adds
+            enforcement: script blocking, consent expiry, accessible cookie
+            cleanup, and production customization.
           </p>
           <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-4 dark:border-blue-900/40 dark:bg-blue-950/30">
             <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
               Shipping client work or a real SaaS?
             </p>
             <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-              Pro is the commercial upgrade: no SafeBanner branding, more languages,
-              and customization controls that make the banner feel native to your product.
+              Pro blocks marked analytics and marketing scripts until consent,
+              removes SafeBanner branding, adds more languages, and unlocks
+              customization controls that make the banner feel native to your product.
             </p>
             <div className="mt-3 flex flex-wrap gap-3">
               <Link
-                href="/upgrade"
+                href="/upgrade?ref=docs_paid_features"
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
               >
                 Upgrade to Pro
@@ -649,6 +720,8 @@ cd packages/consent-script && pnpm build
                 <FeatureRow feature="Google Consent Mode support" free="✓" pro="✓" />
                 <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" />
                 <FeatureRow feature="English, French, German" free="✓" pro="✓" />
+                <FeatureRow feature="Script blocking" free="—" pro="✓" />
+                <FeatureRow feature="Consent expiry and re-prompt" free="—" pro="✓" />
                 <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" />
                 <FeatureRow feature="Auto light/dark theme" free="—" pro="✓" />
                 <FeatureRow feature="Bar and card layouts" free="—" pro="✓" />
@@ -657,14 +730,14 @@ cd packages/consent-script && pnpm build
                 <FeatureRow feature="Custom banner title and description" free="—" pro="✓" />
                 <FeatureRow feature="Custom button labels" free="—" pro="✓" />
                 <FeatureRow feature="Powered by SafeBanner branding" free="✓" pro="—" />
-                <FeatureRow feature="Commercial license key" free="—" pro="✓" />
+                <FeatureRow feature="Production/client license key" free="—" pro="✓" />
               </tbody>
             </table>
           </div>
 
           <div className="mt-8">
             <Link
-              href="/upgrade"
+              href="/upgrade?ref=docs_paid_features_bottom"
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
             >
               Upgrade to Pro
@@ -678,8 +751,8 @@ cd packages/consent-script && pnpm build
             SafeBanner provides a consent banner that follows the GDPR pattern
             (opt-in by default) and stores choices in the browser. It does not
             guarantee compliance — you are still responsible for configuring
-            your site to respect those choices, and for meeting any other
-            legal requirements that apply to your situation.
+            your site correctly and meeting any other legal requirements that
+            apply to your situation.
           </FaqItem>
 
           <FaqItem question="What about CCPA?">
@@ -699,16 +772,19 @@ cd packages/consent-script && pnpm build
           </FaqItem>
 
           <FaqItem question="Does this block cookies automatically?">
-            No. SafeBanner stores consent state and exposes it via the
-            JavaScript API. For opt-in behavior, load non-essential scripts
-            only after checking consent.
+            Free stores consent state and sends Google Consent Mode signals.
+            Pro can block marked analytics and marketing scripts until consent,
+            and can clean up accessible analytics and marketing cookies after
+            rejection. Browser JavaScript cannot delete HttpOnly cookies or
+            cookies owned by unrelated third-party domains.
           </FaqItem>
 
           <FaqItem question="What does Pro unlock?">
-            Pro removes the Powered by SafeBanner footer, unlocks additional
-            built-in languages, and enables custom banner copy and button
-            labels. Those translations load on demand, so the core banner stays
-            small.
+            Pro adds consent enforcement first: script blocking, consent expiry,
+            re-prompting, and accessible cookie cleanup after rejection. It also
+            removes the Powered by SafeBanner footer, unlocks additional
+            languages, and enables custom layouts, banner copy, and button
+            labels.
           </FaqItem>
 
           <FaqItem question="Can I customize the banner text?">
@@ -719,23 +795,26 @@ cd packages/consent-script && pnpm build
 
           <FaqItem question="What happens before a visitor makes a choice?">
             All non-essential categories (analytics and marketing) default to
-            denied. No analytics or marketing cookies are set, and Google
-            Consent Mode signals are sent as denied. The banner stays visible
-            until the visitor makes a choice.
+            denied, and Google Consent Mode signals are sent as denied. In Pro,
+            scripts marked with{" "}
+            <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+              type=&quot;text/safebanner&quot;
+            </code>{" "}
+            stay blocked until consent. The banner stays visible until the
+            visitor makes a choice.
           </FaqItem>
 
           <FaqItem question="How long does consent last?">
-            Consent is stored in localStorage and does not expire
-            automatically. It persists until the visitor clears their browser
-            data or your site calls{" "}
+            In Free, consent is stored in localStorage until the visitor clears
+            browser data or your site calls{" "}
             <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
               window.safeBanner.reset()
             </code>
-            . If you need to re-prompt visitors periodically, call{" "}
+            . In Pro, use{" "}
             <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-              reset()
+              data-consent-expiry-days
             </code>{" "}
-            on a schedule in your own code.
+            to re-prompt visitors after a set number of days.
           </FaqItem>
 
           <FaqItem question="How do I add a 'Manage Cookies' link?">
@@ -780,9 +859,11 @@ cd packages/consent-script && pnpm build
                 (analytics, ads, etc.)
               </li>
               <li>
-                SafeBanner exposes consent state but does not block scripts or
-                cookies — ensure you only load non-essential scripts after
-                checking consent
+                Free does not block scripts. Use Pro script blocking with{" "}
+                <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+                  type=&quot;text/safebanner&quot;
+                </code>{" "}
+                for analytics and marketing tags that must wait for consent.
               </li>
               <li>Check if the cookie is categorized as &quot;necessary&quot;</li>
             </ul>
