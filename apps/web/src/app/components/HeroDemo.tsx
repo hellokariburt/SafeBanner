@@ -164,7 +164,7 @@ export default function HeroDemo() {
               : "bg-blue-600 text-white hover:bg-blue-500"
           }`}
         >
-          {launched ? "Re-launch with new settings ↺" : "Launch Banner →"}
+          {launched ? "Re-launch with new settings ↺" : "Preview Banner →"}
         </button>
         {launched && (
           <p className="mt-2 text-center text-xs text-zinc-500">
@@ -173,7 +173,10 @@ export default function HeroDemo() {
         )}
         <div className="mt-4 rounded-lg border border-blue-900/30 bg-blue-950/20 px-4 py-3 text-left">
           <p className="text-xs font-medium text-blue-300">
-            Want logo, auto theme, and compact layouts?
+            Using SafeBanner on a client or production site?
+          </p>
+          <p className="mt-1 text-xs text-blue-300/70">
+            Pro removes SafeBanner branding and unlocks custom styling.
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
             <Link href="/demo" className="text-blue-400 hover:text-blue-300">
