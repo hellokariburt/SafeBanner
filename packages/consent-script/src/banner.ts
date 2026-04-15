@@ -5,6 +5,7 @@ import { getTranslations, type Translations } from './translations';
 
 let bannerElement: HTMLElement | null = null;
 let overlayElement: HTMLElement | null = null;
+let previouslyFocusedElement: HTMLElement | null = null;
 
 /**
  * Validates a URL is safe (http/https only).
@@ -260,6 +261,9 @@ export function showBanner(config: ConsentConfig): void {
   const t = getTranslations(config.lang);
   const isBar = config.layout === 'bar';
 
+  // Save the currently focused element so we can restore it when the banner closes
+  previouslyFocusedElement = document.activeElement as HTMLElement | null;
+
   // Create overlay
   overlayElement = document.createElement('div');
   overlayElement.className = 'cm-overlay';
@@ -269,14 +273,38 @@ export function showBanner(config: ConsentConfig): void {
   bannerElement = document.createElement('div');
   bannerElement.className = 'cm-banner';
   bannerElement.setAttribute('role', 'dialog');
+  bannerElement.setAttribute('aria-modal', 'true');
   bannerElement.setAttribute('aria-label', config.bannerTitle || t.title);
+  bannerElement.setAttribute('tabindex', '-1');
   bannerElement.appendChild(isBar ? buildBarBanner(config, t) : buildSimpleBanner(config, t));
   document.body.appendChild(bannerElement);
 
-  // Trigger animation
+  // Trigger animation and move focus into the dialog
   requestAnimationFrame(() => {
     overlayElement?.classList.add('cm-visible');
     bannerElement?.classList.add('cm-visible');
+    bannerElement?.focus();
+  });
+
+  // Trap focus inside the dialog
+  bannerElement.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !bannerElement) return;
+
+    const focusable = bannerElement.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
 
   // Handle clicks
@@ -338,6 +366,12 @@ export function hideBanner(): void {
     bannerElement?.remove();
     overlayElement = null;
     bannerElement = null;
+
+    // Restore focus to the element that was focused before the banner opened
+    if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+      previouslyFocusedElement.focus();
+      previouslyFocusedElement = null;
+    }
   }, 300);
 }
 

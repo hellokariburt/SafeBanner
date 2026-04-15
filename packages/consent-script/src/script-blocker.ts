@@ -62,6 +62,21 @@ function discoverBlockedScripts(): BlockedScript[] {
   return scripts;
 }
 
+/**
+ * Validates a URL is safe (http/https only).
+ */
+function safeScriptURL(url: string): string | null {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return parsed.toString();
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 function activateScript(blocked: BlockedScript): void {
   const script = document.createElement('script');
 
@@ -78,7 +93,9 @@ function activateScript(blocked: BlockedScript): void {
   }
 
   if (blocked.src) {
-    script.src = blocked.src;
+    const safeSrc = safeScriptURL(blocked.src);
+    if (!safeSrc) return;
+    script.src = safeSrc;
     // Carry over async/defer if the original element specified them
     if (blocked.element.hasAttribute('data-async')) script.async = true;
     if (blocked.element.hasAttribute('data-defer')) script.defer = true;
