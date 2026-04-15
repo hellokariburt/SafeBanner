@@ -45,6 +45,8 @@ export interface ConsentConfig {
   borderRadius?: number;
   /** Pro: Button shape — 'default' (6px), 'pill', 'square' */
   buttonStyle?: 'default' | 'pill' | 'square';
+  /** Pro: number of days before consent expires and the banner re-appears */
+  consentExpiryDays?: number;
   onAccept?: (consent: ConsentState) => void;
   onDecline?: () => void;
   onUpdate?: (consent: ConsentState) => void;

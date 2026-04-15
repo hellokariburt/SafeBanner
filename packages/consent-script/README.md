@@ -1,6 +1,6 @@
 # safebanner
 
-SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro removes branding and unlocks production customization for SaaS, client sites, and commercial projects.
+SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro adds consent enforcement and production customization for SaaS and client sites.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Bundle Size](https://img.shields.io/badge/gzipped-~6kb-green.svg)]()
@@ -20,13 +20,15 @@ Free includes:
 - SafeBanner branding
 
 Pro adds:
+- Script blocking for Analytics and Marketing tags
+- Consent expiry and re-prompting
 - Remove "Powered by SafeBanner"
 - Logo, layouts, custom copy, and button labels
 - Auto theme and advanced styling
 - 40+ languages
-- Commercial license for client work
+- License key for production and client projects
 
-Upgrade: https://safebanner.com/upgrade
+Upgrade: https://safebanner.com/upgrade?ref=npm_readme
 
 ## Usage
 
@@ -82,12 +84,28 @@ If you use Google tags, SafeBanner **must load before them**. Place it in `<head
 | `data-privacy` | URL to privacy policy | — | |
 | `data-lang` | `en`, `fr`, `de` (free) · 40+ with Pro | `en` | |
 | `data-google-consent` | `advanced`, `basic`, `off` | `advanced` | |
-| `data-project-key` | Pro license key | — | Unlocks Pro features |
+| `data-project-key` | Pro license key | — | Unlocks Pro enforcement and customization |
 | `data-layout` | `bar`, `card` | — | Pro only |
 | `data-logo` | Image URL | — | Pro only |
 | `data-button-style` | `rounded`, `square`, `pill` | — | Pro only |
 | `data-banner-title` | string | — | Pro only |
 | `data-banner-description` | string | — | Pro only |
+| `data-consent-expiry-days` | number | — | Pro only |
+
+## Pro script blocking
+
+Mark Analytics or Marketing scripts with `type="text/safebanner"` and a consent category. SafeBanner Pro activates them only after matching consent is granted.
+
+```html
+<script
+  type="text/safebanner"
+  data-consent="analytics"
+  data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"
+  data-async
+></script>
+```
+
+Use `data-type="module"` for module scripts. SafeBanner also preserves common script attributes such as `id`, `nonce`, `integrity`, `crossorigin`, and `referrerpolicy` when it activates a marked script.
 
 ## JavaScript API
 

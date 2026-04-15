@@ -4,6 +4,7 @@ import { detectCookies, deleteCookiesByCategory } from './detector';
 import { showBanner, hideBanner, isBannerVisible } from './banner';
 import { initGoogleConsent, updateGoogleConsent, type GoogleConsentMode } from './google-consent';
 import { hasTranslations, isProLanguage, registerTranslations, resolveLanguage, type ProLanguage, type Translations } from './translations';
+import { enforceScriptBlocking, hasBlockedScripts } from './script-blocker';
 
 // Export types for consumers
 export type { ConsentConfig, ConsentState, ConsentCategory };
@@ -33,6 +34,8 @@ function getConfigFromScript(): ConsentConfig {
     lang: script.dataset.lang,
     googleConsentMode,
     projectKey: script.dataset.projectKey,
+    // Pro enforcement attributes
+    consentExpiryDays: script.dataset.consentExpiryDays != null ? parseInt(script.dataset.consentExpiryDays, 10) : undefined,
     // Pro customization attributes — only applied when license is valid
     layout: (script.dataset.layout as ConsentConfig['layout']),
     maxWidth: script.dataset.maxWidth != null ? parseInt(script.dataset.maxWidth, 10) : undefined,
@@ -116,6 +119,7 @@ class SafeBanner {
   private hasProLicense = false;
   private validationStarted = false;
   private proTranslationsPromise: Promise<void> | null = null;
+  private consentChangeListeners: Array<(consent: ConsentState) => void> = [];
 
   constructor(config: ConsentConfig = {}) {
     this.config = { ...getConfigFromScript(), ...config };
@@ -150,6 +154,17 @@ class SafeBanner {
   async init(): Promise<void> {
     if (this.initialized) return;
     this.initialized = true;
+
+    // Check consent expiry (Pro)
+    if (this.hasProLicense && this.config.consentExpiryDays && hasConsented()) {
+      const consent = getStoredConsent();
+      if (consent) {
+        const expiryMs = this.config.consentExpiryDays * 24 * 60 * 60 * 1000;
+        if (Date.now() - consent.timestamp > expiryMs) {
+          clearConsent();
+        }
+      }
+    }
 
     // If already consented, enforce preferences
     if (hasConsented()) {
@@ -246,6 +261,20 @@ class SafeBanner {
     this.applyLicenseState(valid);
     await this.ensureRequestedLanguageLoaded();
 
+    if (valid) {
+      if (this.config.consentExpiryDays && hasConsented()) {
+        const consent = getStoredConsent();
+        if (consent) {
+          const expiryMs = this.config.consentExpiryDays * 24 * 60 * 60 * 1000;
+          if (Date.now() - consent.timestamp > expiryMs) {
+            clearConsent();
+          }
+        }
+      }
+
+      this.enforceConsent();
+    }
+
     if (!isBannerVisible()) {
       return;
     }
@@ -280,6 +309,7 @@ class SafeBanner {
         this.config.theme === 'auto' && 'data-theme="auto"',
         this.config.acceptLabel && 'data-accept-label',
         this.config.rejectLabel && 'data-reject-label',
+        this.config.consentExpiryDays && 'data-consent-expiry-days',
       ].filter(Boolean);
       if (gated.length > 0) {
         console.info(
@@ -348,12 +378,30 @@ class SafeBanner {
     const consent = getStoredConsent();
     if (!consent) return;
 
-    // Delete cookies for declined categories
-    if (!consent.analytics) {
-      deleteCookiesByCategory('analytics');
+    if (this.hasProLicense) {
+      // Pro enforcement: clean up accessible cookies for declined categories.
+      if (!consent.analytics) {
+        deleteCookiesByCategory('analytics');
+      }
+      if (!consent.marketing) {
+        deleteCookiesByCategory('marketing');
+      }
+
+      // Pro enforcement: activate scripts whose category is now consented.
+      enforceScriptBlocking(consent);
+    } else if (hasBlockedScripts()) {
+      console.info(
+        '[SafeBanner] Script blocking (type="text/safebanner") requires a Pro license. Upgrade at https://www.safebanner.com/upgrade'
+      );
     }
-    if (!consent.marketing) {
-      deleteCookiesByCategory('marketing');
+
+    // Fire consent change listeners
+    for (const listener of this.consentChangeListeners) {
+      try {
+        listener(consent);
+      } catch {
+        // Don't let a broken listener break consent enforcement
+      }
     }
   }
 
@@ -415,6 +463,18 @@ class SafeBanner {
 
   hide(): void {
     hideBanner();
+  }
+
+  /**
+   * Register a callback that fires whenever consent changes.
+   * Returns an unsubscribe function.
+   */
+  onConsentChange(listener: (consent: ConsentState) => void): () => void {
+    this.consentChangeListeners.push(listener);
+    return () => {
+      const index = this.consentChangeListeners.indexOf(listener);
+      if (index !== -1) this.consentChangeListeners.splice(index, 1);
+    };
   }
 
   detectCookies() {
