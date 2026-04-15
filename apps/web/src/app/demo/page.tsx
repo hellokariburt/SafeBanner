@@ -74,15 +74,16 @@ export default function DemoPage() {
     config.bannerTitle.trim() !== "" ||
     config.bannerDescription.trim() !== "";
 
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const logIdRef = useRef(0);
+  const proTrackedRef = useRef(false);
+
   useEffect(() => {
     if (hasProOptions && !proTrackedRef.current) {
       proTrackedRef.current = true;
       track("demo_pro_toggle");
     }
   }, [hasProOptions]);
-  const [logs, setLogs] = useState<LogEntry[]>([]);
-  const logIdRef = useRef(0);
-  const proTrackedRef = useRef(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [devToolsOpen, setDevToolsOpen] = useState(false);
   const [copied, setCopied] = useState(false);

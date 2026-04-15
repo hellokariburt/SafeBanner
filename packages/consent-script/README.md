@@ -8,6 +8,8 @@ SafeBanner is a tiny cookie consent banner for developers. Free works with one s
 > **This package ships a pre-built browser script, not an importable module.**
 > Use it via CDN or copy `dist/safebanner.js` to your own host.
 
+> **Network requests:** After the script loads, the free tier makes no additional network requests. Pro license validation and 40+ language support require a `data-project-key` attribute — only then does the script contact `safebanner.com` to verify the key and load translations. No end-user consent data is sent.
+
 ## Free vs Pro
 
 Free includes:
