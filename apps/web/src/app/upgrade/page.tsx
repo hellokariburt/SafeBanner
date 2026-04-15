@@ -64,21 +64,58 @@ export default function UpgradePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-lg px-6 py-20">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
-          You&apos;re already using SafeBanner
-        </p>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight">
-          Make it yours.
-        </h1>
-        <p className="mt-4 text-lg text-zinc-400">
-          Remove the &ldquo;Powered by&rdquo; badge, add your logo, and customize every label. One upgrade — your banner looks like you built it.
-        </p>
-        <p className="mt-2 text-sm text-zinc-500">
-          Deploying for clients? Pro includes a commercial license. Ship it without the fine print.
+      <main className="mx-auto max-w-3xl px-6 py-20">
+        <div className="text-center">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
+            For production sites and client work
+          </p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight">
+            Make it yours.
+          </h1>
+          <p className="mx-auto mt-4 max-w-lg text-lg text-zinc-400">
+            Remove the &ldquo;Powered by&rdquo; badge, add your logo, and customize every label. One upgrade — your banner looks like you built it.
+          </p>
+          <p className="mt-2 text-sm text-zinc-500">
+            Deploying for clients? Use SafeBanner on client and commercial projects without leaving our branding on their site.
+          </p>
+        </div>
+
+        {/* Before / After visual preview */}
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-zinc-500">Free</p>
+            <div className="rounded-lg border border-zinc-700 bg-zinc-800 p-4 text-sm">
+              <p className="font-medium text-zinc-200">We use cookies</p>
+              <p className="mt-1 text-xs text-zinc-400">This site uses cookies to improve your experience.</p>
+              <div className="mt-3 flex gap-2">
+                <span className="rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white">Accept all</span>
+                <span className="rounded border border-zinc-600 px-3 py-1 text-xs text-zinc-300">Manage</span>
+              </div>
+              <p className="mt-3 text-[10px] text-zinc-500">
+                Powered by <span className="underline">SafeBanner</span>
+              </p>
+            </div>
+          </div>
+          <div className="rounded-xl border border-blue-600/40 bg-zinc-900 p-4">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-blue-400">Pro</p>
+            <div className="rounded-lg border border-violet-400/30 bg-white p-4 text-sm shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500 text-[9px] font-bold text-white">A</div>
+                <p className="font-semibold text-zinc-900">Privacy preferences</p>
+              </div>
+              <p className="mt-1 text-xs text-zinc-500">Choose which cookies you&apos;d like to allow on acme.com.</p>
+              <div className="mt-3 flex gap-2">
+                <span className="rounded-full bg-violet-500 px-3 py-1 text-xs font-medium text-white">Accept all</span>
+                <span className="rounded-full border border-zinc-300 px-3 py-1 text-xs text-zinc-600">Manage cookies</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-center text-sm text-zinc-400">
+          Make SafeBanner match your site.
         </p>
 
-        <div className="mt-8 inline-flex rounded-full border border-zinc-800 bg-zinc-900 p-1 text-sm">
+        <div className="mx-auto mt-10 flex w-fit rounded-full border border-zinc-800 bg-zinc-900 p-1 text-sm">
           <button
             type="button"
             onClick={() => setInterval("monthly")}
@@ -105,12 +142,12 @@ export default function UpgradePage() {
           </button>
         </div>
         {interval === "annual" ? (
-          <p className="mt-3 text-sm text-emerald-400">
+          <p className="mt-3 text-center text-sm text-emerald-400">
             Save 20% — $12/mo billed annually ($144/yr).
           </p>
         ) : null}
 
-        <div className="mt-10 rounded-xl border border-blue-600 bg-zinc-900 p-6">
+        <div className="mx-auto mt-10 max-w-lg rounded-xl border border-blue-600 bg-zinc-900 p-6">
           <div className="flex items-baseline justify-between">
             <h2 className="text-xl font-semibold">Pro</h2>
             <div className="text-right">
@@ -159,17 +196,21 @@ export default function UpgradePage() {
             {pending ? "Redirecting..." : "Upgrade to Pro"}
           </button>
           <p className="mt-3 text-center text-xs text-zinc-400">
-            Less than one billable hour a month for a banner you can actually ship.
+            Used on production sites. No hosted consent database. Cancel anytime.
           </p>
-          <p className="mt-3 text-center text-xs text-zinc-500">
-            Cancel anytime · No lock-in ·{" "}
+          <p className="mt-2 text-center text-xs text-zinc-500">
             <Link href="/legal" className="underline hover:text-zinc-300">
               Terms &amp; Privacy
             </Link>
           </p>
+          <p className="mt-4 text-center text-xs">
+            <Link href="/demo" className="text-blue-400 hover:text-blue-300">
+              Try Pro controls in the demo &rarr;
+            </Link>
+          </p>
         </div>
 
-        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+        <div className="mx-auto mt-8 max-w-lg rounded-xl border border-zinc-800 bg-zinc-900 p-6">
           <h2 className="text-lg font-semibold">What Pro unlocks</h2>
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -195,28 +236,6 @@ export default function UpgradePage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-          <h2 className="text-lg font-semibold">Built for developers who don&apos;t need a heavy CMP.</h2>
-          <p className="mt-2 text-sm text-zinc-400">Most consent platforms are built around a hosted dashboard. SafeBanner isn&apos;t.</p>
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-zinc-800 text-zinc-400">
-                <tr>
-                  <th className="px-0 py-3 font-medium">Feature</th>
-                  <th className="px-4 py-3 font-medium">SafeBanner Pro</th>
-                  <th className="px-4 py-3 font-medium">Typical CMP</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800 text-zinc-300">
-                <ComparisonRow feature="Pricing" free="$15/mo flat" pro="Often per domain" />
-                <ComparisonRow feature="Setup" free="1 script tag" pro="Dashboard + config" />
-                <ComparisonRow feature="Consent storage" free="Browser only" pro="Hosted records" />
-                <ComparisonRow feature="Account required" free="No" pro="Yes" />
-                <ComparisonRow feature="Best for" free="Devs, SaaS, agencies" pro="Larger compliance teams" />
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         {error && (
           <p className="mt-6 rounded-lg border border-red-900 bg-red-950/40 px-4 py-3 text-sm text-red-300">
