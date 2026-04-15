@@ -113,6 +113,7 @@ Use `data-type="module"` for module scripts. SafeBanner also preserves common sc
 window.safeBanner.hasConsentFor('analytics') // true/false
 window.safeBanner.getConsent()               // { necessary, analytics, marketing, timestamp }
 window.safeBanner.updateConsent({ analytics: false })
+window.safeBanner.onConsentChange((consent) => { ... }) // returns unsubscribe fn
 window.safeBanner.reset()                    // clears consent, shows banner again
 window.safeBanner.show()
 window.safeBanner.hide()
