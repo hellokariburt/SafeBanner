@@ -13,6 +13,10 @@ dist
 # Internal docs
 CLAUDE.md
 DECISIONS.md
+notes/
+
+# Compliance PDFs
+*.pdf
 
 # Dev screenshots
 *.png
