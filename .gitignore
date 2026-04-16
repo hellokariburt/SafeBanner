@@ -21,3 +21,6 @@ notes/
 # Dev screenshots
 *.png
 !apps/web/public/*.png
+
+# Build artifacts
+*.gz
