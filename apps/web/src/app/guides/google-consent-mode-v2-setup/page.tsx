@@ -6,11 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Google Consent Mode v2 Setup Guide — SafeBanner",
   description:
-    "Set up Google Consent Mode v2 with one script tag. SafeBanner sends default denied signals before Google tags load, then updates after consent. Free tier signals consent. Pro blocks scripts until approval.",
+    "Set up Google Consent Mode v2 with one script tag. SafeBanner sends default denied signals before Google tags load, then updates after consent. Free tier signals consent. Pro blocks marked scripts until approval.",
   openGraph: {
     title: "Google Consent Mode v2 Setup Guide — SafeBanner",
     description:
-      "Set up Google Consent Mode v2 with one script tag. Free signals consent. Pro enforces it by blocking scripts until approval.",
+      "Set up Google Consent Mode v2 with one script tag. Free signals consent. Pro enforces it by blocking marked scripts until approval.",
     url: "https://www.safebanner.com/guides/google-consent-mode-v2-setup",
     type: "article",
   },
@@ -88,11 +88,11 @@ const guideStructuredData = {
     {
       "@type": "HowToStep",
       name: "Understand the enforcement gap",
-      text: "Google Consent Mode signals consent but doesn't block scripts. Free SafeBanner signals consent. Pro blocks scripts until approval.",
+      text: "Google Consent Mode signals consent but doesn't block scripts. Free SafeBanner signals consent. Pro blocks marked scripts until approval.",
     },
     {
       "@type": "HowToStep",
-      name: "Block scripts with Pro",
+      name: "Block marked scripts with Pro",
       text: "Mark analytics and marketing scripts with type='text/safebanner' and data-consent attributes. Pro activates them only after consent.",
     },
     {
@@ -322,7 +322,7 @@ export default function GoogleConsentModeGuide() {
         {/* Step 3: Pro enforcement */}
         <Section
           id="step-3-enforce"
-          title="Step 3: Block scripts until consent (Pro)"
+          title="Step 3: Block marked scripts until consent (Pro)"
         >
           <p>
             Pro adds a consent enforcement layer. Mark any script with{" "}

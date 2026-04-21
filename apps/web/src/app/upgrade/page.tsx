@@ -86,10 +86,10 @@ export default function UpgradePage() {
         )}
         <div className="text-center">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
-            Go from consent banner to consent enforcement
+            For production sites and client work
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight">
-            Block scripts until consent. Not just signal it.
+            Block marked scripts until consent. Not just signal it.
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-lg text-zinc-400">
             Free shows the banner and sends Google signals. Pro actually prevents analytics and marketing
@@ -249,7 +249,7 @@ export default function UpgradePage() {
                 <ComparisonRow feature="Consent banner" free="✓" pro="✓" />
                 <ComparisonRow feature="Google Consent Mode support" free="✓" pro="✓" />
                 <ComparisonRow feature="English, French, German" free="✓" pro="✓" />
-                <ComparisonRow feature="Script blocking" free="—" pro="✓" />
+                <ComparisonRow feature="Marked script blocking" free="—" pro="✓" />
                 <ComparisonRow feature="Consent expiry and re-prompt" free="—" pro="✓" />
                 <ComparisonRow feature="40+ additional languages" free="—" pro="✓" />
                 <ComparisonRow feature="Custom banner title and description" free="—" pro="✓" />

@@ -13,7 +13,7 @@ export default function PricingSection() {
         <h2 className="text-3xl font-bold text-white">Free shows the banner. Pro enforces consent.</h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
           Free gives you a working consent banner with Google Consent Mode v2.
-          Pro blocks scripts until consent, re-prompts after expiry, and removes SafeBanner branding.
+          Pro blocks marked scripts until consent, re-prompts after expiry, and removes SafeBanner branding.
         </p>
         <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
           <button
@@ -70,7 +70,7 @@ export default function PricingSection() {
             highlighted
             features={[
               "Everything in Free, plus:",
-              "Block scripts until consent is granted",
+              "Block marked scripts until consent is granted",
               "Re-prompt after consent expires",
               "Clean up accessible cookies on rejection",
               "No SafeBanner branding",

@@ -721,7 +721,7 @@ cd packages/consent-script && pnpm build
                 <FeatureRow feature="Google Consent Mode support" free="✓" pro="✓" />
                 <FeatureRow feature="Self-host or use CDN" free="✓" pro="✓" />
                 <FeatureRow feature="English, French, German" free="✓" pro="✓" />
-                <FeatureRow feature="Script blocking" free="—" pro="✓" />
+                <FeatureRow feature="Marked script blocking" free="—" pro="✓" />
                 <FeatureRow feature="Consent expiry and re-prompt" free="—" pro="✓" />
                 <FeatureRow feature="Spanish, Italian, Dutch, Portuguese" free="—" pro="✓" />
                 <FeatureRow feature="Auto light/dark theme" free="—" pro="✓" />
@@ -781,7 +781,7 @@ cd packages/consent-script && pnpm build
           </FaqItem>
 
           <FaqItem question="What does Pro unlock?">
-            Pro adds consent enforcement first: script blocking, consent expiry,
+            Pro adds consent enforcement first: marked script blocking, consent expiry,
             re-prompting, and accessible cookie cleanup after rejection. It also
             removes the Powered by SafeBanner footer, unlocks additional
             languages, and enables custom layouts, banner copy, and button
@@ -860,7 +860,7 @@ cd packages/consent-script && pnpm build
                 (analytics, ads, etc.)
               </li>
               <li>
-                Free does not block scripts. Use Pro script blocking with{" "}
+                Free does not block scripts. Use Pro to block marked scripts with{" "}
                 <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
                   type=&quot;text/safebanner&quot;
                 </code>{" "}
