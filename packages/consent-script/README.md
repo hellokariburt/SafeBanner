@@ -1,6 +1,6 @@
 # safebanner
 
-SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro adds consent enforcement and production customization for SaaS and client sites.
+SafeBanner is a tiny cookie consent banner for developers. Free works with one script tag. Pro adds marked script blocking, consent expiry, and production customization for SaaS and client sites.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Bundle Size](https://img.shields.io/badge/gzipped-<10kb-green.svg)]()

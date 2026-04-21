@@ -10,7 +10,7 @@ export default function PricingSection() {
   return (
     <section id="pricing" className="border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-3xl font-bold text-white">Free shows the banner. Pro enforces consent.</h2>
+        <h2 className="text-3xl font-bold text-white">Free shows the banner. Pro adds script blocking and customization.</h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
           Free gives you a working consent banner with Google Consent Mode v2.
           Pro blocks marked scripts until consent, re-prompts after expiry, and removes SafeBanner branding.
@@ -65,7 +65,7 @@ export default function PricingSection() {
             name="Pro"
             price={isAnnual ? "$12/mo" : "$15/mo"}
             priceNote={isAnnual ? "billed annually ($144/yr)" : undefined}
-            badge="Consent enforcement"
+            badge="Script blocking + customization"
             accent="text-blue-400"
             highlighted
             features={[

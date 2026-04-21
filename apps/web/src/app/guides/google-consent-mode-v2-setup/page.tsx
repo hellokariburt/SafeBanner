@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Google Consent Mode v2 Setup Guide — SafeBanner",
     description:
-      "Set up Google Consent Mode v2 with one script tag. Free signals consent. Pro enforces it by blocking marked scripts until approval.",
+      "Set up Google Consent Mode v2 with one script tag. Free signals consent. Pro can block marked scripts until approval.",
     url: "https://www.safebanner.com/guides/google-consent-mode-v2-setup",
     type: "article",
   },
@@ -325,7 +325,7 @@ export default function GoogleConsentModeGuide() {
           title="Step 3: Block marked scripts until consent (Pro)"
         >
           <p>
-            Pro adds a consent enforcement layer. Mark any script with{" "}
+            Pro can block marked scripts. Add{" "}
             <Code>type=&quot;text/safebanner&quot;</Code> and it won&apos;t load
             until the matching consent category is granted.
           </p>

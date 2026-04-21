@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Install SafeBanner in 2 minutes. One script tag for consent + Google Consent Mode v2. Pro marked script blocking, consent expiry, JavaScript API, and React/Next.js examples.",
   openGraph: {
     title: "Documentation — SafeBanner",
-    description: "One script tag for cookie consent and Google Consent Mode v2. Pro adds marked script blocking and consent enforcement.",
+    description: "One script tag for cookie consent and Google Consent Mode v2. Pro adds marked script blocking, consent expiry, and customization.",
     url: "https://www.safebanner.com/docs",
   },
   alternates: {

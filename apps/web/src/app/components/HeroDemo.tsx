@@ -180,7 +180,7 @@ export default function HeroDemo() {
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
             <Link href="/demo" className="text-blue-400 hover:text-blue-300">
-              Try enforcement in the full demo →
+              Try script blocking in the full demo →
             </Link>
             <Link href="/upgrade?ref=hero_demo" className="text-zinc-300 hover:text-white">
               Upgrade to Pro

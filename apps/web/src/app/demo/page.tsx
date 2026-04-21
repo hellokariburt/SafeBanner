@@ -788,7 +788,7 @@ export default function DemoPage() {
                     )}
                     {!scriptLoaded && (
                       <p className="mt-2 text-[11px] text-zinc-400">
-                        Pro feature. <Link href="/upgrade?ref=demo_blocking" className="text-blue-500 hover:underline">Upgrade</Link> to enforce consent on your site.
+                        Pro feature. <Link href="/upgrade?ref=demo_blocking" className="text-blue-500 hover:underline">Upgrade</Link> to block marked scripts on your site.
                       </p>
                     )}
                   </div>

@@ -206,10 +206,10 @@ safebanner/
 
 | Tier | Price | What you get |
 |------|-------|--------------|
-| **Free** | $0 | Full consent banner, local storage, opt-in by default (GDPR pattern), self-host |
+| **Free** | $0 | Full consent banner, local storage, opt-in by default for non-essential categories, self-host |
 | **Pro** | $15/mo or $144/yr | Script blocking, consent expiry, remove branding, custom layouts, 40+ languages, custom copy and labels, production/client license key |
 
-Free tier is fully functional with no limits. Pro is the enforcement and polish upgrade for production sites and client work — it does not add hosted consent records or a dashboard.
+Free tier is fully functional with no limits. Pro is the script-blocking and polish upgrade for production sites and client work — it does not add hosted consent records or a dashboard.
 
 ## Design Decisions
 

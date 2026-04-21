@@ -124,7 +124,7 @@ export default function UpgradePage() {
           </div>
         </div>
         <p className="mt-4 text-center text-sm text-zinc-400">
-          Same one-line install. Pro adds enforcement via <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-emerald-400">type=&quot;text/safebanner&quot;</code>
+          Same one-line install. Pro adds script blocking via <code className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-emerald-400">type=&quot;text/safebanner&quot;</code>
         </p>
 
         <div className="mx-auto mt-10 flex w-fit rounded-full border border-zinc-800 bg-zinc-900 p-1 text-sm">

@@ -134,7 +134,7 @@ export function DocsContent() {
             <p className="text-sm text-blue-800 dark:text-blue-200">
               <strong>Default behavior:</strong> SafeBanner stores consent
               choices locally and exposes them through the JavaScript API. Pro
-              adds script blocking for sites that need enforcement.
+              adds script blocking for sites that need it.
             </p>
           </div>
         </Section>
@@ -671,7 +671,7 @@ cd packages/consent-script && pnpm build
         <Section id="paid-features" title="Paid Features">
           <p className="text-zinc-600 dark:text-zinc-400">
             The free tier covers the core banner and consent state. Pro adds
-            enforcement: script blocking, consent expiry, accessible cookie
+            marked script blocking, consent expiry, accessible cookie
             cleanup, and production customization.
           </p>
           <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-4 dark:border-blue-900/40 dark:bg-blue-950/30">
@@ -749,8 +749,8 @@ cd packages/consent-script && pnpm build
         {/* FAQ */}
         <Section id="faq" title="FAQ">
           <FaqItem question="Does SafeBanner make my site GDPR compliant?">
-            SafeBanner provides a consent banner that follows the GDPR pattern
-            (opt-in by default) and stores choices in the browser. It does not
+            SafeBanner provides a consent banner that uses an opt-in-by-default
+            flow for non-essential categories and stores choices in the browser. It does not
             guarantee compliance — you are still responsible for configuring
             your site correctly and meeting any other legal requirements that
             apply to your situation.
@@ -781,7 +781,7 @@ cd packages/consent-script && pnpm build
           </FaqItem>
 
           <FaqItem question="What does Pro unlock?">
-            Pro adds consent enforcement first: marked script blocking, consent expiry,
+            Pro adds marked script blocking, consent expiry,
             re-prompting, and accessible cookie cleanup after rejection. It also
             removes the Powered by SafeBanner footer, unlocks additional
             languages, and enables custom layouts, banner copy, and button
