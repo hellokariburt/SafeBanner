@@ -82,7 +82,7 @@ export function DocsContent() {
             Add this script tag to your HTML:
           </p>
           <CodeBlock>
-            {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
+            {`<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>`}
           </CodeBlock>
           <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/40">
             <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Using Google Consent Mode v2?</p>
@@ -100,7 +100,7 @@ export function DocsContent() {
             Download the script and host it yourself:
           </p>
           <CodeBlock>
-            {`curl -o safebanner.js https://www.safebanner.com/safebanner.js`}
+            {`curl -o safebanner.js https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js`}
           </CodeBlock>
         </Section>
 
@@ -115,7 +115,7 @@ export function DocsContent() {
                 Add the script
               </strong>
               <CodeBlock>
-                {`<script src="https://www.safebanner.com/safebanner.js"></script>`}
+                {`<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>`}
               </CodeBlock>
             </li>
             <li>
@@ -146,13 +146,12 @@ export function DocsContent() {
           </p>
           <CodeBlock>
 {`<script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
   data-company="Acme Inc"
   data-privacy="https://acme.com/privacy"
-  data-project-key="your-pro-key"
 ></script>`}
           </CodeBlock>
 
@@ -363,7 +362,7 @@ export function DocsContent() {
           </p>
           <CodeBlock>
             {`<script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-project-key="your-pro-key"
 ></script>
 
@@ -521,7 +520,7 @@ import Script from 'next/script';
 export function SafeBanner() {
   return (
     <Script
-      src="https://www.safebanner.com/safebanner.js"
+      src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
       data-position="bottom-right"
       data-theme="light"
       strategy="afterInteractive"
@@ -566,7 +565,7 @@ export default function RootLayout({ children }) {
           <CodeBlock>
             {`// Add to your theme's functions.php
 function add_consent_manager() {
-  echo '<script src="https://www.safebanner.com/safebanner.js" data-company="' . get_bloginfo('name') . '"></script>';
+  echo '<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js" data-company="' . get_bloginfo('name') . '"></script>';
 }
 add_action('wp_footer', 'add_consent_manager');`}
           </CodeBlock>
@@ -586,7 +585,7 @@ add_action('wp_footer', 'add_consent_manager');`}
 export default {
   mounted() {
     const script = document.createElement('script');
-    script.src = 'https://www.safebanner.com/safebanner.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js';
     script.dataset.position = 'bottom-right';
     document.body.appendChild(script);
   }
@@ -622,7 +621,7 @@ export default {
           </h3>
           <CodeBlock>
             {`# Download the latest version
-curl -o safebanner.js https://www.safebanner.com/safebanner.js
+curl -o safebanner.js https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js
 
 # Host it on your server
 cp safebanner.js /var/www/html/js/`}
@@ -654,6 +653,13 @@ cd packages/consent-script && pnpm build
             <li>
               Recommended: serve via CDN for performance (Cloudflare, Vercel
               Edge, etc.)
+            </li>
+            <li>
+              Pro features (license validation, 40+ languages) always contact{" "}
+              <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
+                safebanner.com
+              </code>{" "}
+              regardless of where the script is hosted
             </li>
           </ul>
 
@@ -876,9 +882,9 @@ cd packages/consent-script && pnpm build
                 If self-hosting, ensure your server sends proper CORS headers
               </li>
               <li>
-                Use our CDN (
+                Use the jsdelivr CDN (
                 <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-                  www.safebanner.com
+                  cdn.jsdelivr.net/npm/safebanner
                 </code>
                 ) which handles CORS automatically
               </li>

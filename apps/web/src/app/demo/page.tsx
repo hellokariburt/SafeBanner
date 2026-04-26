@@ -232,7 +232,7 @@ export default function DemoPage() {
   };
 
   const generateScriptTag = () => {
-    const attrs = [`src="https://www.safebanner.com/safebanner.js"`];
+    const attrs = [`src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"`];
     if (config.position !== "bottom") attrs.push(`data-position="${config.position}"`);
     if (config.theme !== "light") attrs.push(`data-theme="${config.theme}"`);
     if (config.color !== "#2563eb") attrs.push(`data-color="${config.color}"`);
@@ -354,7 +354,7 @@ export default function DemoPage() {
               </div>
               <div className="mt-2 overflow-hidden rounded-lg bg-zinc-900 dark:bg-zinc-950">
                 <pre className="overflow-x-auto p-3 text-xs text-emerald-400 sm:p-4 sm:text-sm">
-                  <code>{`<script src="https://www.safebanner.com/safebanner.js"></script>`}</code>
+                  <code>{`<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>`}</code>
                 </pre>
               </div>
               <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-400 sm:gap-x-4">

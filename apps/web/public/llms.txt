@@ -21,13 +21,13 @@ The Pro tier adds consent enforcement: scripts marked with `type="text/safebanne
 ## Install (free)
 
 ```html
-<script src="https://www.safebanner.com/safebanner.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>
 ```
 
 ## Pro script blocking example
 
 ```html
-<script src="https://www.safebanner.com/safebanner.js" data-project-key="sb_live_..."></script>
+<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js" data-project-key="sb_live_..."></script>
 <script type="text/safebanner" data-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-XXX"></script>
 ```
 

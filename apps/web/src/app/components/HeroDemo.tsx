@@ -23,7 +23,7 @@ export default function HeroDemo() {
   const [launched, setLaunched] = useState(false);
 
   const scriptTag =
-    `<script src="https://www.safebanner.com/safebanner.js"` +
+    `<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"` +
     (config.position !== "bottom" ? ` data-position="${config.position}"` : "") +
     (config.theme !== "light" ? ` data-theme="${config.theme}"` : "") +
     (config.lang !== "en" ? ` data-lang="${config.lang}"` : "") +

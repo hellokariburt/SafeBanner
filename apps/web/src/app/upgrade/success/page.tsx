@@ -95,7 +95,7 @@ export default async function UpgradeSuccessPage({
           <p className="text-sm text-zinc-500">Add it to your site</p>
           <pre className="mt-3 overflow-x-auto rounded-lg bg-zinc-950 p-4 text-xs text-zinc-300">
             {`<script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-project-key="${license?.license_key || "your-pro-key"}"
 ></script>`}
           </pre>

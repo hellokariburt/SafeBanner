@@ -25,7 +25,7 @@ export async function sendLicenseEmail({
   }
 
   const scriptTag = `<script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-project-key="${licenseKey}">
 </script>`;
 

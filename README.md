@@ -22,7 +22,7 @@ Most cookie consent tools are either enterprise software with dashboards and hos
 Add one script tag:
 
 ```html
-<script src="https://www.safebanner.com/safebanner.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>
 ```
 
 That's it. SafeBanner shows a consent banner, stores choices locally, and sends Google Consent Mode signals when configured.
@@ -31,13 +31,12 @@ That's it. SafeBanner shows a consent banner, stores choices locally, and sends 
 
 ```html
 <script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"
   data-company="Acme Inc"
   data-privacy="https://acme.com/privacy"
-  data-project-key="your-pro-key"
 ></script>
 ```
 
@@ -108,7 +107,7 @@ import Script from 'next/script';
 export function SafeBanner() {
   return (
     <Script
-      src="https://www.safebanner.com/safebanner.js"
+      src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
       data-position="bottom-right"
       strategy="afterInteractive"
     />

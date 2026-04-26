@@ -8,7 +8,7 @@ SafeBanner is a tiny cookie consent banner for developers. Free works with one s
 > **This package ships a pre-built browser script, not an importable module.**
 > Use it via CDN or copy `dist/safebanner.js` to your own host.
 
-> **Network requests:** After the script loads, the free tier makes no additional network requests. Pro license validation and 40+ language support require a `data-project-key` attribute — only then does the script contact `safebanner.com` to verify the key and load translations. No end-user consent data is sent.
+> **Network requests:** After the script loads, the free tier makes no additional network requests. Pro license validation and 40+ language support require a `data-project-key` attribute — only then does the script contact `safebanner.com` to verify the key and load translations. This applies regardless of where the script is hosted (jsDelivr, self-hosted, etc.). No end-user consent data is sent.
 
 ## Free vs Pro
 
@@ -35,7 +35,7 @@ Upgrade: https://safebanner.com/upgrade?ref=npm_readme
 ### CDN (recommended)
 
 ```html
-<script src="https://www.safebanner.com/safebanner.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>
 ```
 
 ### Self-hosted
@@ -53,7 +53,7 @@ If you use Google tags, SafeBanner **must load before them**. Place it in `<head
 ```html
 <head>
   <!-- 1. SafeBanner FIRST -->
-  <script src="https://www.safebanner.com/safebanner.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>
 
   <!-- 2. Google tag AFTER -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
@@ -64,7 +64,7 @@ If you use Google tags, SafeBanner **must load before them**. Place it in `<head
 
 ```html
 <script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-position="bottom-right"
   data-theme="dark"
   data-color="#8b5cf6"

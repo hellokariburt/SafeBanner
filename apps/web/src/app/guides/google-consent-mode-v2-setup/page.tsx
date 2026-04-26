@@ -261,7 +261,7 @@ export default function GoogleConsentModeGuide() {
 
           <CodeBlock title="In your <head>, SafeBanner first:">{`<head>
   <!-- 1. SafeBanner FIRST -->
-  <script src="https://www.safebanner.com/safebanner.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"></script>
 
   <!-- 2. Google tag AFTER -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
@@ -332,7 +332,7 @@ export default function GoogleConsentModeGuide() {
 
           <CodeBlock title="Block Google Analytics until analytics consent:">{`<!-- SafeBanner with Pro license -->
 <script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-project-key="your-pro-key"
 ></script>
 
@@ -379,7 +379,7 @@ export default function GoogleConsentModeGuide() {
           </p>
 
           <CodeBlock>{`<script
-  src="https://www.safebanner.com/safebanner.js"
+  src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
   data-project-key="your-pro-key"
   data-consent-expiry-days="180"
 ></script>`}</CodeBlock>
@@ -433,7 +433,7 @@ export default function RootLayout({ children }) {
       <head>
         {/* SafeBanner must load before Google tags */}
         <Script
-          src="https://www.safebanner.com/safebanner.js"
+          src="https://cdn.jsdelivr.net/npm/safebanner/dist/safebanner.js"
           strategy="beforeInteractive"
         />
       </head>

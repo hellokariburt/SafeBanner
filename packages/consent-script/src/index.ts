@@ -52,31 +52,14 @@ function getConfigFromScript(): ConsentConfig {
   };
 }
 
-function getScriptElement(): HTMLScriptElement | null {
-  return document.currentScript as HTMLScriptElement | null;
+const SAFEBANNER_ORIGIN = 'https://www.safebanner.com';
+
+function getValidationEndpoint(): string {
+  return `${SAFEBANNER_ORIGIN}/api/validate-key`;
 }
 
-function getValidationEndpoint(): string | null {
-  const script = getScriptElement();
-  if (!script?.src) return null;
-
-  try {
-    return new URL('/api/validate-key', script.src).toString();
-  } catch {
-    return null;
-  }
-}
-
-
-function getProTranslationsEndpoint(): string | null {
-  const script = getScriptElement();
-  if (!script?.src) return null;
-
-  try {
-    return new URL('/safebanner-pro-translations.json', script.src).toString();
-  } catch {
-    return null;
-  }
+function getProTranslationsEndpoint(): string {
+  return `${SAFEBANNER_ORIGIN}/safebanner-pro-translations.json`;
 }
 
 function getLicenseCache(projectKey: string): boolean | null {
@@ -203,7 +186,6 @@ class SafeBanner {
     if (this.proTranslationsPromise) return this.proTranslationsPromise;
 
     const endpoint = getProTranslationsEndpoint();
-    if (!endpoint) return;
 
     this.proTranslationsPromise = (async () => {
       try {
@@ -227,7 +209,6 @@ class SafeBanner {
     this.validationStarted = true;
 
     const endpoint = getValidationEndpoint();
-    if (!endpoint) return;
 
     try {
       const response = await fetch(endpoint, {
