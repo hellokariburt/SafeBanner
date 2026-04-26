@@ -136,16 +136,16 @@ export default function Home() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/upgrade?ref=home_hero"
+            href="/docs"
             className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-zinc-950 shadow-sm hover:bg-zinc-100"
           >
-            Upgrade for production
+            Get started free
           </Link>
           <Link
-            href="/docs"
+            href="/upgrade?ref=home_hero"
             className="rounded-lg border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-200 hover:bg-zinc-900"
           >
-            Install free
+            See Pro features
           </Link>
         </div>
 
@@ -243,7 +243,7 @@ export default function Home() {
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">Lightweight</h3>
               <p className="mt-2 text-zinc-400">
-                ~6kb gzipped. No external dependencies.
+                Under 10kb gzipped. No external dependencies.
               </p>
             </div>
             <div className="rounded-lg border border-zinc-800 p-6">

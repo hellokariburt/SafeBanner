@@ -78,11 +78,15 @@ window.safeBanner.getConsent()
 // Update consent programmatically
 window.safeBanner.updateConsent({ analytics: false })
 
+// Listen for consent changes (returns unsubscribe fn)
+window.safeBanner.onConsentChange((consent) => { ... })
+
 // Reset consent (shows banner again)
 window.safeBanner.reset()
 
-// Show banner manually
+// Show/hide banner manually
 window.safeBanner.show()
+window.safeBanner.hide()
 ```
 
 ## Cookie Categories
