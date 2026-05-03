@@ -15,7 +15,7 @@ const structuredData = {
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Web",
       description:
-        "Open-source cookie consent banner with Google Consent Mode v2. One script tag install. Pro adds marked script blocking, consent expiry, and customization.",
+        "Open-source cookie consent banner with Google Consent Mode v2. One script tag install. Pro adds marked script blocking, consent expiry, cookie cleanup, and production customization.",
       url: "https://www.safebanner.com",
       license: "https://opensource.org/licenses/MIT",
       offers: [
@@ -33,7 +33,7 @@ const structuredData = {
           priceCurrency: "USD",
           name: "Pro",
           description:
-            "Marked script blocking, consent expiry, cookie cleanup, 40+ languages, custom branding",
+            "Marked script blocking, consent expiry, cookie cleanup, 40+ languages, production customization",
           billingIncrement: "P1M",
         },
       ],
@@ -46,7 +46,7 @@ const structuredData = {
           name: "Is SafeBanner really free?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Yes. Free gives you a working consent banner with Google Consent Mode v2 — no limits, no account. Pro ($15/mo) can block marked analytics and marketing scripts until approval, re-prompt after expiry, remove branding, and customize everything.",
+            text: "Yes. Free gives you a working consent banner with Google Consent Mode v2 — no limits, no account. Pro ($15/mo) blocks marked analytics and marketing scripts until approval, then adds expiry, cookie cleanup, branding removal, and production customization.",
           },
         },
         {
@@ -132,7 +132,9 @@ export default function Home() {
           Cookie consent without the CMP bloat.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          One script tag. Google Consent Mode v2 built in. Pro adds marked script blocking, consent expiry, and customization.
+          One script tag. Google Consent Mode v2 built in. Pro adds marked
+          script blocking, consent expiry, cookie cleanup, and production
+          customization.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
@@ -180,7 +182,8 @@ export default function Home() {
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
             OneTrust is for enterprises. Cookiebot is slow and expensive. Most free scripts are abandoned.
             SafeBanner is a maintained, open source consent tool that takes 2 minutes to install.
-            Free shows the banner. Pro adds marked script blocking for analytics and marketing tags.
+            Free handles the banner and consent signals. Pro helps stop marked
+            analytics and marketing tags from running before approval.
           </p>
         </div>
       </section>

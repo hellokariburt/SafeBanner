@@ -10,10 +10,14 @@ export default function PricingSection() {
   return (
     <section id="pricing" className="border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-3xl font-bold text-white">Free shows the banner. Pro adds script blocking and customization.</h2>
+        <h2 className="text-3xl font-bold text-white">
+          Free handles consent UI. Pro helps stop marked scripts from running before approval.
+        </h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
-          Free gives you a working consent banner with Google Consent Mode v2.
-          Pro blocks marked scripts until consent, re-prompts after expiry, and removes SafeBanner branding.
+          Free gives you a working banner with Google Consent Mode v2. Pro is
+          for production sites that need stronger control: block marked
+          analytics and marketing scripts until the visitor approves,
+          re-prompt after expiry, and clean up accessible cookies on rejection.
         </p>
         <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
           <button
@@ -47,7 +51,7 @@ export default function PricingSection() {
           <PlanCard
             name="Free"
             price="$0"
-            badge="Consent banner"
+            badge="Consent UI"
             accent="text-zinc-300"
             features={[
               "Cookie consent banner + UI",
@@ -65,7 +69,7 @@ export default function PricingSection() {
             name="Pro"
             price={isAnnual ? "$12/mo" : "$15/mo"}
             priceNote={isAnnual ? "billed annually ($144/yr)" : undefined}
-            badge="Script blocking + customization"
+            badge="Consent enforcement"
             accent="text-blue-400"
             highlighted
             features={[
@@ -73,11 +77,11 @@ export default function PricingSection() {
               "Block marked scripts until consent is granted",
               "Re-prompt after consent expires",
               "Clean up accessible cookies on rejection",
+              "Production/client license key",
               "No SafeBanner branding",
               "Logo, layouts, custom labels",
               "Auto dark/light theme",
               "40+ additional languages",
-              "License key for production and client sites",
             ]}
             ctaHref={`/upgrade?interval=${interval}&ref=pricing`}
             ctaLabel={`Upgrade to Pro${isAnnual ? " — Annual" : ""}`}

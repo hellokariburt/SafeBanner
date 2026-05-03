@@ -685,7 +685,7 @@ cd packages/consent-script && pnpm build
               Shipping client work or a real SaaS?
             </p>
             <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-              Pro blocks marked analytics and marketing scripts until consent,
+              Pro blocks marked analytics and marketing scripts until approval,
               re-prompts after consent expires, cleans up accessible cookies
               after rejection, removes SafeBanner branding, and adds production
               customization.

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.safebanner.com"),
   title: "SafeBanner — Open Source Cookie Consent Banner for Developers",
   description:
-    "Open-source cookie consent with Google Consent Mode v2. One script tag. Pro blocks analytics and marketing scripts until consent is granted.",
+    "Open-source cookie consent with Google Consent Mode v2. One script tag. Pro blocks marked analytics and marketing scripts until consent is granted.",
   keywords: [
     "cookie consent",
     "cookie banner",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SafeBanner — Open Source Cookie Consent Banner for Developers",
     description:
-      "Open-source cookie consent with Google Consent Mode v2. One script tag. Pro adds marked script blocking, consent expiry, and customization.",
+      "Open-source cookie consent with Google Consent Mode v2. One script tag. Pro adds marked script blocking, consent expiry, cookie cleanup, and customization.",
     url: "https://www.safebanner.com",
     siteName: "SafeBanner",
     type: "website",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "SafeBanner — Open Source Cookie Consent Banner for Developers",
     description:
-      "Open-source cookie consent with Google Consent Mode v2. Pro adds marked script blocking, consent expiry, and customization.",
+      "Open-source cookie consent with Google Consent Mode v2. Pro adds marked script blocking, consent expiry, cookie cleanup, and customization.",
     images: ["https://www.safebanner.com/logo.png"],
   },
   robots: {
