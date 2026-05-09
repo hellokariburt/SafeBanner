@@ -129,25 +129,29 @@ export default function Home() {
           <BadgeReferralNotice />
         </Suspense>
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          Cookie consent without the CMP bloat.
+          Cookie consent that can actually block scripts.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-          One script tag. Google Consent Mode v2 built in. Pro adds marked
-          script blocking, consent expiry, cookie cleanup, and production
-          customization.
+          SafeBanner is an open-source cookie consent banner for indie
+          developers and agencies. Free gives you the banner and Google Consent
+          Mode v2. Pro stops marked analytics and marketing scripts from
+          running before the visitor says yes.
+        </p>
+        <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-500">
+          One script tag. No account. No hosted consent database. MIT licensed.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/docs"
+            href="/demo?ref=home_hero_primary"
             className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-zinc-950 shadow-sm hover:bg-zinc-100"
           >
-            Get started free
+            See it work
           </Link>
           <Link
-            href="/upgrade?ref=home_hero"
+            href="/docs"
             className="rounded-lg border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-200 hover:bg-zinc-900"
           >
-            See Pro features
+            Install free
           </Link>
         </div>
 
@@ -162,6 +166,14 @@ export default function Home() {
               Google Consent Mode v2
             </Link>
           </span>
+          <a
+            href="https://github.com/hellokariburt/SafeBanner"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            Open source on GitHub
+          </a>
           <span>Under 10kb gzipped</span>
           <span>No account needed</span>
           <span>MIT Licensed</span>
@@ -171,19 +183,31 @@ export default function Home() {
         <div className="mx-auto mt-12 max-w-2xl">
           <HeroDemo />
         </div>
+
+        <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center gap-3 text-center">
+          <p className="text-sm text-zinc-400">
+            Convinced? Get the license key for production and client sites.
+          </p>
+          <Link
+            href="/upgrade?ref=home_hero_post_demo"
+            className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-6 py-3 text-base font-semibold text-blue-100 hover:bg-blue-500/20"
+          >
+            Get my license key — $15/mo
+          </Link>
+        </div>
       </section>
 
       {/* Problem */}
       <section className="border-t border-zinc-800">
         <div className="mx-auto max-w-5xl px-6 py-20">
           <h2 className="text-3xl font-bold text-white">
-            What you need, without enterprise baggage.
+            What SafeBanner actually does
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-            OneTrust is for enterprises. Cookiebot is slow and expensive. Most free scripts are abandoned.
-            SafeBanner is a maintained, open source consent tool that takes 2 minutes to install.
-            Free handles the banner and consent signals. Pro helps stop marked
-            analytics and marketing tags from running before approval.
+            It shows a cookie banner, stores the visitor&apos;s choice in their
+            browser, and sends Google Consent Mode v2 signals automatically.
+            If you upgrade, SafeBanner can also hold marked analytics and
+            marketing scripts until consent is granted.
           </p>
         </div>
       </section>
@@ -234,7 +258,7 @@ export default function Home() {
       <section className="border-t border-zinc-800">
         <div className="mx-auto max-w-5xl px-6 py-20">
           <h2 className="text-3xl font-bold text-white">
-            Built for teams who hate their current solution.
+            Built for indie devs and agencies who want control without CMP bloat.
           </h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg border border-zinc-800 p-6">
@@ -252,13 +276,37 @@ export default function Home() {
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">Actually works</h3>
               <p className="mt-2 text-zinc-400">
-                Opt-in by default for non-essential categories. Consent persists. Google gets the signal.
+                Opt-in by default for non-essential categories. Consent persists.
+                Google gets the signal. Pro can stop marked scripts before approval.
               </p>
             </div>
             <div className="rounded-lg border border-zinc-800 p-6">
               <h3 className="font-semibold text-white">No account required</h3>
               <p className="mt-2 text-zinc-400">
                 Free tier runs entirely client-side.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-zinc-800 bg-zinc-900">
+        <div className="mx-auto max-w-5xl px-6 py-20">
+          <h2 className="text-3xl font-bold text-white">Why teams switch</h2>
+          <div className="mt-10">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">
+                Founder note
+              </p>
+              <p className="mt-4 text-lg text-zinc-200">
+                &ldquo;I built SafeBanner because the choices were either bloated
+                enterprise CMPs or abandoned cookie banners. This gives you the
+                small, understandable version that developers actually want to
+                ship.&rdquo;
+              </p>
+              <p className="mt-4 text-sm text-zinc-500">
+                Open source code, live demo, and docs are all public before you
+                pay.
               </p>
             </div>
           </div>
@@ -401,6 +449,17 @@ export default function Home() {
               </p>
             </div>
             <div>
+              <h3 className="font-semibold text-white">
+                Will this break my existing Google Analytics setup?
+              </h3>
+              <p className="mt-2 text-zinc-400">
+                No code changes are required for Free beyond adding the
+                SafeBanner script before your Google tags. For Pro script
+                blocking, you only mark the scripts you want SafeBanner to hold
+                until consent.
+              </p>
+            </div>
+            <div>
               <h3 className="font-semibold text-white">Can I self-host?</h3>
               <p className="mt-2 text-zinc-400">
                 Yes. MIT license. Run it on your own infra.
@@ -412,6 +471,17 @@ export default function Home() {
               </h3>
               <p className="mt-2 text-zinc-400">
                 Yes. It&apos;s a single script tag. Works everywhere.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-white">
+                What happens if I cancel Pro?
+              </h3>
+              <p className="mt-2 text-zinc-400">
+                Your subscription stops renewing. SafeBanner Free still works
+                as the banner and consent-signaling layer. Pro-only features
+                like license-gated script blocking and branding removal require
+                an active subscription.
               </p>
             </div>
             <div>
@@ -430,23 +500,25 @@ export default function Home() {
       <section className="border-t border-zinc-800 bg-zinc-900">
         <div className="mx-auto max-w-5xl px-6 py-20 text-center">
           <h2 className="text-3xl font-bold text-white">
-            Install it in 2 minutes. Never think about it again.
+            See it work, then install it in minutes.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-            One script tag. Works with any stack. No account, no dashboard, no bloat.
+            Start with the live demo if you&apos;re comparing options. Install
+            Free if you just need the banner. Upgrade when you need actual
+            script blocking.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/demo"
               className="rounded-lg bg-white px-6 py-3 text-base font-semibold text-zinc-900 shadow-sm hover:bg-zinc-100"
             >
-              Try the Demo
+              See it work
             </Link>
             <Link
-              href="/docs"
-              className="rounded-lg border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-200 hover:bg-zinc-800"
+              href="/upgrade?ref=footer_cta"
+              className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-6 py-3 text-base font-semibold text-blue-100 hover:bg-blue-500/20"
             >
-              Read the Docs
+              Get my license key
             </Link>
           </div>
         </div>

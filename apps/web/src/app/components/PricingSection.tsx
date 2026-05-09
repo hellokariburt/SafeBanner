@@ -11,13 +11,13 @@ export default function PricingSection() {
     <section id="pricing" className="border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-5xl px-6 py-20">
         <h2 className="text-3xl font-bold text-white">
-          Free handles consent UI. Pro helps stop marked scripts from running before approval.
+          Free shows the banner. Pro stops marked scripts from running before consent.
         </h2>
         <p className="mt-3 max-w-2xl text-zinc-400">
-          Free gives you a working banner with Google Consent Mode v2. Pro is
-          for production sites that need stronger control: block marked
-          analytics and marketing scripts until the visitor approves,
-          re-prompt after expiry, and clean up accessible cookies on rejection.
+          Built for indie developers and agencies who want OneTrust-level
+          enforcement without the OneTrust bill. Free gives you a working
+          banner with Google Consent Mode v2. Pro adds actual script blocking,
+          consent expiry, and cookie cleanup.
         </p>
         <div className="mt-8 inline-flex rounded-full border border-zinc-700 bg-zinc-800 p-1 text-sm">
           <button
@@ -54,6 +54,7 @@ export default function PricingSection() {
             badge="Consent UI"
             accent="text-zinc-300"
             features={[
+              "Scripts still run unless you gate them yourself",
               "Cookie consent banner + UI",
               "Google Consent Mode v2 signals",
               "onConsentChange() callback API",
@@ -84,7 +85,7 @@ export default function PricingSection() {
               "40+ additional languages",
             ]}
             ctaHref={`/upgrade?interval=${interval}&ref=pricing`}
-            ctaLabel={`Upgrade to Pro${isAnnual ? " — Annual" : ""}`}
+            ctaLabel={`Get my license key${isAnnual ? " — Annual" : ""}`}
             ctaClass="bg-blue-600 text-white hover:bg-blue-500"
           />
         </div>

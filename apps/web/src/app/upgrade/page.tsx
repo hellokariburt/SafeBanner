@@ -86,17 +86,19 @@ export default function UpgradePage() {
         )}
         <div className="text-center">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
-            For production sites and client work
+            For indie developers and agencies
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight">
-            Block marked scripts until consent. Not just signal it.
+            Stop marked scripts from running before consent.
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-lg text-zinc-400">
-            Free shows the banner and sends Google signals. Pro actually prevents analytics and marketing
-            scripts from running until your visitor says yes.
+            SafeBanner Free shows the banner and sends Google signals. Pro
+            actually prevents marked analytics and marketing scripts from
+            running until your visitor says yes.
           </p>
           <p className="mt-2 text-sm text-zinc-500">
-            Plus: re-prompt after consent expires, clean up cookies on rejection, remove branding, and customize everything.
+            Same one-line install. Plus re-prompt after consent expires, clean
+            up cookies on rejection, remove branding, and customize everything.
           </p>
         </div>
 
@@ -108,7 +110,7 @@ export default function UpgradePage() {
               <p className="font-medium text-zinc-200">Shows consent banner</p>
               <p className="mt-1 text-xs text-zinc-400">Sends Google Consent Mode signals</p>
               <div className="mt-3 rounded border border-amber-700/40 bg-amber-950/30 px-2 py-1.5">
-                <p className="text-[11px] text-amber-400">Scripts still load unless you manually gate them</p>
+                <p className="text-[11px] text-amber-400">Scripts still run unless you manually gate them</p>
               </div>
             </div>
           </div>
@@ -172,7 +174,7 @@ export default function UpgradePage() {
             </div>
           </div>
           <p className="mt-2 text-sm text-zinc-500">
-            Cancel anytime. No lock-in. License key included for production and client sites.
+            Cancel anytime. License key included for production and client sites.
           </p>
           <ul className="mt-6 space-y-4 text-sm text-zinc-300">
             <li>
@@ -217,10 +219,10 @@ export default function UpgradePage() {
             disabled={pending}
             className="mt-8 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {pending ? "Redirecting..." : "Upgrade to Pro"}
+            {pending ? "Redirecting..." : `Get my license key — ${interval === "annual" ? "$144/yr" : "$15/mo"}`}
           </button>
           <p className="mt-3 text-center text-xs text-zinc-400">
-            Used on production sites. No hosted consent database. Cancel anytime.
+            Used on live sites. No hosted consent database. Cancel anytime.
           </p>
           <p className="mt-2 text-center text-xs text-zinc-500">
             <Link href="/legal" className="underline hover:text-zinc-300">
@@ -229,7 +231,7 @@ export default function UpgradePage() {
           </p>
           <p className="mt-4 text-center text-xs">
             <Link href="/demo" className="text-blue-400 hover:text-blue-300">
-              Try Pro controls in the demo &rarr;
+              See script blocking in the demo &rarr;
             </Link>
           </p>
         </div>
@@ -259,6 +261,34 @@ export default function UpgradePage() {
                 <ComparisonRow feature="Production/client license key" free="—" pro="✓" />
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-8 max-w-lg rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+          <h2 className="text-lg font-semibold">Common questions</h2>
+          <div className="mt-4 space-y-5 text-sm text-zinc-300">
+            <div>
+              <p className="font-medium text-white">Do I need to change my existing GA setup?</p>
+              <p className="mt-1 text-zinc-400">
+                Free only needs the SafeBanner script loaded before your Google
+                tags. Pro script blocking only applies to the scripts you
+                explicitly mark.
+              </p>
+            </div>
+            <div>
+              <p className="font-medium text-white">What happens if I cancel?</p>
+              <p className="mt-1 text-zinc-400">
+                Free keeps working. Pro-only features require an active
+                subscription.
+              </p>
+            </div>
+            <div>
+              <p className="font-medium text-white">Can I try it before buying?</p>
+              <p className="mt-1 text-zinc-400">
+                Yes. Use the live demo to see the banner, consent flow, and
+                script blocking behavior before checkout.
+              </p>
+            </div>
           </div>
         </div>
 
